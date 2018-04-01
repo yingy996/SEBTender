@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.viewCart" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
+
+            <Grid VerticalOptions="FillAndExpand">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+
+                <!-- <Label x:Name="lblPageName" Grid.Row="0" Grid.RowSpan="1" Text="Page Name"/> -->
+                <Label Text="View Cart" FontSize="20" Grid.Row="0" FontAttributes="Bold"/>
+
+                <!-- Cart table -->
+                <Grid Grid.Row="1" BackgroundColor="LightGreen">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <!--<Grid x:Name="headers" Grid.ColumnSpan="6"/> -->
+                    <Grid Grid.Row="0" Grid.ColumnSpan="6" BackgroundColor="DarkSeaGreen">
+                        <Grid Grid.Column="0">
+                            <Label Text="a"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Label Text="b"/>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <Label Text="c"/>
+                        </Grid>
+                        <Grid Grid.Column="3">
+                            <Label Text="d"/>
+                        </Grid>
+                        <Grid Grid.Column="4">
+                            <Label Text="e"/>
+                        </Grid>
+                        <Grid Grid.Column="5">
+                            <Label Text="f"/>
+                        </Grid>
+                    </Grid>
+                    
+                    <ScrollView Grid.Row="1" Grid.ColumnSpan="6" BackgroundColor="Plum">
+                        <Grid x:Name="tRef" Grid.Column="0"/>
+                        <Grid x:Name="tTitle" Grid.Column="1"/>
+                        <Grid x:Name="tQuantity" Grid.Column="2"/>
+                        <Grid x:Name="tFee" Grid.Column="3"/>
+                        <Grid x:Name="tTotalFee" Grid.Column="4"/>
+                        <Grid x:Name="tDelete" Grid.Column="5"/>
+                    </ScrollView>
+                    
+                    <Grid Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" BackgroundColor="DarkSeaGreen">
+                        <Grid Grid.Row="0">
+                            <Label Text="a"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Label Text="b"/>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Label Text="c"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Label Text="d"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                
+                <Button Text="Clear Cart" FontSize="10" TextColor="White" BackgroundColor="LimeGreen" Grid.Row="2" Margin="0"  BorderRadius="10" HorizontalOptions="End"/>
+                <Button Text="Confirm" FontSize="10" TextColor="White" BackgroundColor="LimeGreen" Grid.Row="2" Margin="0"  BorderRadius="10" HorizontalOptions="Start"/>
+            </Grid>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
