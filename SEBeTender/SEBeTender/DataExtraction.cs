@@ -58,7 +58,12 @@ namespace SEBeTender
                                 switch (count)
                                 {
                                     case 0:
-                                        tender.Reference = tdNode.InnerHtml;
+                                        string aNodeString = tdNode.InnerHtml.Trim();
+                                        var htmlDoc = new HtmlDocument();
+                                        htmlDoc.LoadHtml(aNodeString);
+                                        var aNode = htmlDoc.DocumentNode.SelectSingleNode("//a");
+                                 
+                                        tender.Reference = aNode.InnerHtml;
                                         break;
                                     case 1:
                                         tender.Title = tdNode.FirstChild.InnerHtml;
@@ -67,7 +72,7 @@ namespace SEBeTender
                                         tender.OriginatingStation = tdNode.InnerHtml;
                                         break;
                                     case 3:
-                                        tender.ClosingDate = tdNode.InnerHtml;
+                                        tender.ClosingDate = "Closing date: " + tdNode.InnerHtml;
                                         break;
                                     case 4:
                                         tender.BidClosingDate = tdNode.InnerHtml;

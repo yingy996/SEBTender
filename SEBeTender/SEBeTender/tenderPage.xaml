@@ -37,7 +37,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Label Text="{Binding Reference}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                        <Label Text="Closing date: {Binding ClosingDate}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding ClosingDate}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
                                         <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
                                         <Label Text="{Binding Title}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
