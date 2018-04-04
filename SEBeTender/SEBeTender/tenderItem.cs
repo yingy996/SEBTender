@@ -6,7 +6,7 @@ namespace SEBeTender
 {
     class tenderItem
     {
-        private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST;
+        private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass;
 
         public string Reference
         {
@@ -54,6 +54,12 @@ namespace SEBeTender
         {
             get { return feeGST; }
             set { feeGST = value; }
+        }
+
+        public string TendererClass
+        {
+            get { return tendererClass; }
+            set { tendererClass = value; }
         }
     }
 }
