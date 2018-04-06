@@ -20,6 +20,7 @@ namespace SEBeTender
             this.Add(new menuItem() {
                 Title = "Tender Document",
                 TargetType = typeof(tenderPage)
+                //TargetType = typeof(MainPage)
             });
 
             this.Add(new menuItem()
@@ -68,6 +69,12 @@ namespace SEBeTender
             {
                 Title = "Logout",
                 TargetType = typeof(MainPage)
+            });
+
+            this.Add(new menuItem()
+            {
+                Title = "Registration",
+                TargetType = typeof(Registration)
             });
         }
 	}
