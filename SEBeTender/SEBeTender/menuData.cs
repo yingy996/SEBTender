@@ -70,6 +70,12 @@ namespace SEBeTender
                 Title = "Logout",
                 TargetType = typeof(MainPage)
             });
+
+            this.Add(new menuItem()
+            {
+                Title = "Registration",
+                TargetType = typeof(Registration)
+            });
         }
 	}
 }
