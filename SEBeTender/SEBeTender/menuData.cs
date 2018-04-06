@@ -20,6 +20,7 @@ namespace SEBeTender
             this.Add(new menuItem() {
                 Title = "Tender Document",
                 TargetType = typeof(tenderPage)
+                //TargetType = typeof(MainPage)
             });
 
             this.Add(new menuItem()

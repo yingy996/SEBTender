@@ -16,10 +16,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)DataExtraction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)editContactPage.xaml.cs">
       <DependentUpon>editContactPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)HttpRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)loginPage.xaml.cs">
       <DependentUpon>loginPage.xaml</DependentUpon>
       <SubType>Code</SubType>
