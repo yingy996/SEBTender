@@ -13,8 +13,11 @@ namespace SEBeTender
 	public partial class viewCart : ContentPage
 	{
 		public viewCart ()
-		{
+        {   
+            BindingContext = this;
 			InitializeComponent ();
-		}
+            var items = Enumerable.Range(0, 10);
+            listView.ItemsSource = items;
+        }
 	}
 }
