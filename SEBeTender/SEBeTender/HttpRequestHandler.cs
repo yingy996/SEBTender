@@ -12,7 +12,8 @@ namespace SEBeTender
         {
             HttpClient client = new HttpClient();
             string result = "";
-            var uri = new Uri(string.Format("http://www2.sesco.com.my/etender/notice/notice.jsp", string.Empty));
+            var uri = new Uri(string.Format(url, string.Empty));
+            
             try
             {
                 var response = await client.GetAsync(uri);

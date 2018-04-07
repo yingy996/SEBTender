@@ -19,7 +19,7 @@ namespace SEBeTender
 			InitializeComponent ();
 
             //Sending HTTP request to obtain the tender page data
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://html-agility-pack.net/"));
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice.jsp"));
             var httpResult = httpTask.Result.ToString();
             
             //Extract tender data from the response
@@ -38,7 +38,7 @@ namespace SEBeTender
             if (item != null)
             {
                 listView.SelectedItem = null;
-                await Navigation.PushAsync(new tenderDetailPage());
+                await Navigation.PushAsync(new tenderDetailPage(item));
             }
         }
 
