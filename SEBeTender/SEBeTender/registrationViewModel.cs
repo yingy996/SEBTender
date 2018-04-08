@@ -7,14 +7,23 @@ using System.Windows.Input;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+
 
 using Xamarin.Forms;
+using Android.Graphics;
+using System.Globalization;
+
 namespace SEBeTender
 {
     public class registrationViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public Grid gridUPK = new Grid();
+        public Grid gridCIBD = new Grid();
+        IWebDriver driver = new FirefoxDriver();
+        
         // Dictionary storing countries list in countrypicker for Registration page 2
         Dictionary<string, Color> nameToColor = new Dictionary<string, Color>
         {
@@ -32,7 +41,7 @@ namespace SEBeTender
         public registrationViewModel()
         {
             //Registration first page
-            var registrationPage1 = new ContentView
+            var registrationPage1 = new ScrollView
             {
                 Content = new StackLayout
                 {
@@ -58,7 +67,7 @@ namespace SEBeTender
             }
 
             //Registration second page
-            var registrationPage2 = new ContentView
+            var registrationPage2 = new ScrollView
             {
                 Content = new StackLayout
                 {
@@ -78,7 +87,7 @@ namespace SEBeTender
             };
 
             //Registration third page
-            var registrationPage3 = new ContentView
+            var registrationPage3 = new ScrollView
             {
                 Content = new StackLayout
                 {
@@ -99,7 +108,7 @@ namespace SEBeTender
             };
 
             //Registration fourth page
-            var registrationPage4 = new ContentView
+            var registrationPage4 = new ScrollView
             {
                 Content = new StackLayout
                 {
@@ -118,89 +127,66 @@ namespace SEBeTender
 
 
 
-            //Grid design for Registration fifth page
-            var grid = new Grid();
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-            //Interface for UPK section
-            CustomCheckbox checkbox1 = new CustomCheckbox();
-            var instruction1 = new Label { Text = "Please enter the exact license number as stated on the certificate (e.g. UPKJ-B/00011)" };
-            var instruction2 = new Label { Text = "For those who registered in the year 2004 and above please enter the license number as 'UPKJ' at the beginning of the number instead of 'UPK' . If any issue arises, please contact SFS for verification." };
-            var firstcheckboxtext = new Label { Text = "UPK", HorizontalTextAlignment = TextAlignment.Center };
-            var license1 = new Entry { Placeholder = "1." };
-            var license2 = new Entry { Placeholder = "2." };
-            var license3 = new Entry { Placeholder = "3." };
-            var license4 = new Entry { Placeholder = "4." };
-
-            grid.Children.Add(instruction1, 0, 3, 0, 4);
-
-            grid.Children.Add(checkbox1, 0, 4);
-            grid.Children.Add(firstcheckboxtext, 0, 5);
-            grid.Children.Add(license1, 1, 4);
-            grid.Children.Add(license2, 2, 4);
-            grid.Children.Add(license3, 1, 5);
-            grid.Children.Add(license4, 2, 5);
-
-            //Interface for CIDB section
-            CustomCheckbox checkbox2 = new CustomCheckbox();
-            var gradelabel = new Label { Text = "Grade :", HorizontalTextAlignment = TextAlignment.Center };
-            var categorylabel = new Label { Text = "Category :", HorizontalTextAlignment = TextAlignment.Center };
-            var specializationlabel = new Label { Text = "Specialization: " };
-            var secondcheckboxtext = new Label { Text = "CIDB", HorizontalTextAlignment = TextAlignment.Center };
-            Picker gradepicker = new Picker()
+            //Grid rows and columns number for registrationPage5 UPK 
+            for (int i = 0; i < 6; i++)
             {
-                Title = "- Grade -",
-                VerticalOptions = LayoutOptions.CenterAndExpand
-            };
-
-            for (int i = 1; i < 8; i++)
-            {
-
-                gradepicker.Items.Add("G" + i);
-
+                gridUPK.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
             }
 
-            Picker categorypicker = new Picker()
+            for (int i = 0; i < 6; i++)
             {
-                Title = "- Category -",
-                VerticalOptions = LayoutOptions.CenterAndExpand
-            };
+                gridUPK.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            }
 
-            categorypicker.Items.Add("CE - Civil Engineering Construction");
-            categorypicker.Items.Add("B - Building Construction");
-            categorypicker.Items.Add("ME - Mechanical and Electrical");
+            //Grid rows and columns number for registrationPage5 CIBD
+            for (int i = 0; i < 6; i++)
+            {
+                gridCIBD.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            }
 
-            grid.Children.Add(checkbox2, 0, 7);
-            grid.Children.Add(secondcheckboxtext, 0, 8);
-            grid.Children.Add(gradelabel, 0, 9);
-            grid.Children.Add(categorylabel, 1, 9);
-            grid.Children.Add(specializationlabel, 2, 9);
+            for (int i = 0; i < 6; i++)
+            {
+                gridCIBD.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            }
 
-            grid.Children.Add(gradepicker, 0, 10);
-            grid.Children.Add(categorypicker, 1, 10);
+            //Checkbox and its listener for UPK checkbox
+            CustomCheckbox UPKcheckbox = new CustomCheckbox();
+            var UPKcheckboxTapRecognizer = new TapGestureRecognizer();
+            UPKcheckboxTapRecognizer.Tapped += onUPKcheckboxClicked;
+            UPKcheckbox.GestureRecognizers.Add(UPKcheckboxTapRecognizer);
 
+            
+            var firstcheckboxtext = new Label { Text = "UPK", HorizontalTextAlignment = TextAlignment.Center };
+
+            gridUPK.Children.Add(UPKcheckbox, 0, 6, 0, 1);
+            gridUPK.Children.Add(firstcheckboxtext, 0, 6, 1, 2);
+
+
+            //Checkbox and its listener for CIBD checkbox
+            CustomCheckbox CIBDcheckbox = new CustomCheckbox();
+ 
+            var CIBDcheckboxTapRecognizer = new TapGestureRecognizer();
+            CIBDcheckboxTapRecognizer.Tapped += onCIBDcheckboxClicked;
+            CIBDcheckbox.GestureRecognizers.Add(CIBDcheckboxTapRecognizer);
+
+            var CIBDcheckboxtext = new Label { Text = "CIDB", HorizontalTextAlignment = TextAlignment.Center };
+            
+            gridCIBD.Children.Add(CIBDcheckbox, 0, 6, 0, 1);
+            gridCIBD.Children.Add(CIBDcheckboxtext, 0, 6, 1, 2);
+
+            //Captcha content
+            var captchalabel = new Label { Text = "Please enter the CODE displayed:" };
             //Registration fifth page
-            var registrationPage5 = new ContentView
+            var registrationPage5 = new ScrollView
             {
                 Content = new StackLayout
                 {
                     
                     Children = {
                         new Label {Text = "Please select where applicable:", FontAttributes = FontAttributes.Bold, BackgroundColor = Color.FromHex("#E5E7E8")},
-                        grid,
+                        gridUPK,
+                        gridCIBD,
+                        captchalabel,
                         },
                        
                         
@@ -208,6 +194,9 @@ namespace SEBeTender
                 
             };
 
+            
+            
+            
             MyItemsSource = new ObservableCollection<View>()
             {
                 registrationPage1,
@@ -222,6 +211,187 @@ namespace SEBeTender
             {
                 Debug.WriteLine("Position selected.");
             });
+        }
+
+        //GAVE UP *CANNOT SOLVE RECAPTCHA ISSUE
+        /*public void TakeCaptcheScreenshot()
+        {
+            driver.Navigate().GoToUrl("http://www2.sesco.com.my/etender/registration/vendor_register.jsp");
+            
+            Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
+            ss.SaveAsFile(@"D:\Screenshots\SeleniumTestingScreenshot.jpg", ScreenshotImageFormat.Jpeg);
+
+            //Get screenshot of specific element
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+
+            }else if(Device.RuntimePlatform == Device.Android)
+            {
+                var bmpScreen = new Bitmap(new MemoryStream(screenshot.AsByteArray));
+                IWebElement element = driver.FindElement(By.CssSelector("label.realperson-challenge"));
+                
+                var cropArea = new Rectangle(element.Location, element.Size);
+                return bmpScreen.Clone(cropArea, bmpScreen.PixelFormat);
+
+            }
+        }*/
+
+        /*public class PointConverter : Xamarin.Forms.IValueConverter {  
+            public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+            {
+                System.Drawing.Point dp = (System.Drawing.Point)value;
+                return new Xamarin.Forms.Point(dp.X, dp.Y);
+            }
+
+            public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+            {
+                Xamarin.Forms.Point wp = (Xamarin.Forms.Point)value;
+                return new System.Drawing.Point((int)wp.X, (int)wp.Y);
+            }
+        }*/
+
+
+        // UPK Checkbox toggle actions 
+        public void onUPKcheckboxClicked(object sender, EventArgs eventArgs)
+        {
+            var checkbox = (CustomCheckbox)sender;
+            var license1 = new Entry { Placeholder = "1." };
+            var license2 = new Entry { Placeholder = "2." };
+            var license3 = new Entry { Placeholder = "3." };
+            var license4 = new Entry { Placeholder = "4." };
+            var instruction1 = new StackLayout{Children = {new Label { Text = "Please enter the exact license number as stated on the certificate (e.g. UPKJ-B/00011)" },},};
+            var instruction2 = new StackLayout{Children ={new Label { Text = "For those who registered in the year 2004 and above please enter the license number as 'UPKJ' at the beginning of the number instead of 'UPK' . If any issue arises, please contact SFS for verification.", TextColor = Color.Red },},};
+
+            if (checkbox.Checked)
+            {
+                gridUPK.Children.Add(instruction1, 0, 6, 2, 3);
+                gridUPK.Children.Add(instruction2, 0, 6, 3, 4);
+                gridUPK.Children.Add(license1, 0, 3, 4, 5);
+                gridUPK.Children.Add(license2, 3, 6, 4, 5);
+                gridUPK.Children.Add(license3, 0, 3, 5, 6);
+                gridUPK.Children.Add(license4, 3, 6, 5, 6);
+            } 
+
+            if (checkbox.Checked == false) {
+                foreach (var child in gridUPK.Children.Reverse())
+                {
+                    var childTypeName = child.GetType().Name;
+                    if (childTypeName == "Entry")
+                    {
+                        gridUPK.Children.Remove(child);
+                    } else if(childTypeName == "StackLayout")
+                    {
+                        gridUPK.Children.Remove(child);
+                    }
+                    
+                }
+                
+            }
+        }
+
+        // CIBD Checkbox toggle actions 
+        public void onCIBDcheckboxClicked(object sender, EventArgs eventArgs)
+        {
+            var checkbox = (CustomCheckbox)sender;
+            var gradelabel = new StackLayout { Children = { new Label { Text = "Grade :", HorizontalTextAlignment = TextAlignment.Center }, }, };
+            var categorylabel = new StackLayout { Children = { new Label { Text = "Category :", HorizontalTextAlignment = TextAlignment.Center }, }, };
+            var specializationlabel = new StackLayout { Children = { new Label { Text = "Specialization: ", HorizontalTextAlignment = TextAlignment.Center }, }, };
+
+            var specializationentry1 = new Entry();
+            var specializationentry2 = new Entry();
+            var specializationentry3 = new Entry();
+            Picker gradepicker1 = new Picker()
+            {
+                Title = "- Grade -",
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            Picker gradepicker2 = new Picker()
+            {
+                Title = "- Grade -",
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            Picker gradepicker3 = new Picker()
+            {
+                Title = "- Grade -",
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            for (int i = 1; i < 8; i++)
+            {
+
+                gradepicker1.Items.Add("G" + i);
+                gradepicker2.Items.Add("G" + i);
+                gradepicker3.Items.Add("G" + i);
+
+            }
+
+            Picker categorypicker1 = new Picker()
+            {
+                Title = "- Category -",
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+            Picker categorypicker2 = new Picker()
+            {
+                Title = "- Category -",
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+            Picker categorypicker3 = new Picker()
+            {
+                Title = "- Category -",
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+
+            categorypicker1.Items.Add("CE - Civil Engineering Construction");
+            categorypicker1.Items.Add("B - Building Construction");
+            categorypicker1.Items.Add("ME - Mechanical and Electrical");
+            categorypicker2.Items.Add("CE - Civil Engineering Construction");
+            categorypicker2.Items.Add("B - Building Construction");
+            categorypicker2.Items.Add("ME - Mechanical and Electrical");
+            categorypicker3.Items.Add("CE - Civil Engineering Construction");
+            categorypicker3.Items.Add("B - Building Construction");
+            categorypicker3.Items.Add("ME - Mechanical and Electrical");
+
+            if (checkbox.Checked)
+            {
+                gridCIBD.Children.Add(gradelabel, 0, 2, 2, 3);
+                gridCIBD.Children.Add(categorylabel, 2, 4, 2, 3);
+                gridCIBD.Children.Add(specializationlabel, 4, 6, 2, 3);
+
+                gridCIBD.Children.Add(gradepicker1, 0, 2, 3, 4);
+                gridCIBD.Children.Add(categorypicker1, 2, 4, 3, 4);
+                gridCIBD.Children.Add(specializationentry1, 4, 6, 3, 4);
+                gridCIBD.Children.Add(gradepicker2, 0, 2, 4, 5);
+                gridCIBD.Children.Add(categorypicker2, 2, 4, 4, 5);
+                gridCIBD.Children.Add(specializationentry2, 4, 6, 4, 5);
+                gridCIBD.Children.Add(gradepicker3, 0, 2, 5, 6);
+                gridCIBD.Children.Add(categorypicker3, 2, 4, 5, 6);
+                gridCIBD.Children.Add(specializationentry3, 4, 6, 5, 6);
+            }
+
+            if (checkbox.Checked == false)
+            {
+                foreach (var child in gridCIBD.Children.Reverse())
+                {
+                    var childTypeName = child.GetType().Name;
+                    if (childTypeName == "Picker")
+                    {
+                        gridCIBD.Children.Remove(child);
+                    }else if(childTypeName == "Entry")
+                    {
+                        gridCIBD.Children.Remove(child);
+                    }else if(childTypeName == "StackLayout")
+                    {
+                        gridCIBD.Children.Remove(child);
+                    }
+
+                }
+
+            }
         }
 
         ObservableCollection<View> _myitemsSource;
@@ -251,7 +421,7 @@ namespace SEBeTender
     public class CustomCheckbox : Image
     {
         private const string CheckboxUnCheckedImage = "checkbox_unchecked.png";
-        private const string CheckboxCheckedImage = "checkbox_checked";
+        private const string CheckboxCheckedImage = "checkbox_checked.png";
 
         public CustomCheckbox()
         {
@@ -264,10 +434,10 @@ namespace SEBeTender
 
         private void ImageTapGestureOnTapped(object sender, EventArgs eventArgs)
         {
-            if (IsEnabled)
-            {
+            //if (IsEnabled)
+            //{
                 Checked = !Checked;
-            }
+            //}
         }
 
         /// <summary>
@@ -278,7 +448,7 @@ namespace SEBeTender
         /// <summary>
         /// The checked state property.
         /// </summary>
-        public static readonly BindableProperty CheckedProperty = BindableProperty.Create("Checked", typeof(bool), typeof(CustomCheckbox), false, BindingMode.TwoWay, propertyChanged: OnCheckedPropertyChanged);
+        public static BindableProperty CheckedProperty = BindableProperty.Create("Checked", typeof(bool), typeof(CustomCheckbox), false, BindingMode.TwoWay, propertyChanged: OnCheckedPropertyChanged);
 
         public bool Checked
         {
