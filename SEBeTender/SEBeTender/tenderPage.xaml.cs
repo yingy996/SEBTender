@@ -44,19 +44,23 @@ namespace SEBeTender
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(httpResult);
             var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
-
-            foreach(var aNode in aNodes)
+            if (aNodes != null)
             {
-                if (aNode.InnerHtml == "Previous")
+                foreach (var aNode in aNodes)
                 {
-                    previousUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                    isPreviousAvailable = true;
-                } else if (aNode.InnerHtml == "Next")
-                {
-                    nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                    isNextAvailable = true;
+                    if (aNode.InnerHtml == "Previous")
+                    {
+                        previousUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
+                        isPreviousAvailable = true;
+                    }
+                    else if (aNode.InnerHtml == "Next")
+                    {
+                        nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
+                        isNextAvailable = true;
+                    }
                 }
             }
+            
 
             //Extract tender data from the response
             var tenders = DataExtraction.getWebData(httpResult, "tender");
@@ -119,7 +123,8 @@ namespace SEBeTender
             //var tenders = DataExtraction.getWebData(httpResult, "tender");
             //List<tenderItem> tenderItems = (List<tenderItem>)tenders;
 
-            listView.ItemsSource = (List<tenderItem>)tenderItems;           
+            listView.ItemsSource = (List<tenderItem>)tenderItems;
+            listView.ItemTemplate = dataTemplate;
 
             if (isPreviousAvailable)
             {
@@ -177,7 +182,8 @@ namespace SEBeTender
             //List<tenderItem> tenderItems = (List<tenderItem>)tenders;
 
             listView.ItemsSource = (List<tenderItem>)tenderItems;
-            
+            listView.ItemTemplate = dataTemplate;
+
             if (isPreviousAvailable)
             {
                 previousPage.IsVisible = true;

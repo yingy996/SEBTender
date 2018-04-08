@@ -33,10 +33,10 @@
                 
                     <ListView x:Name="listView" HasUnevenRows="true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
                         <ListView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:Name="dataTemplate">
                                 <ViewCell>
                                     <!--Frame's background color controls the background color for each tender items-->
-                                    <Frame BackgroundColor="#E5E7E8" Margin="0,0,0,15" Padding="0" CornerRadius="10">
+                                    <Frame BackgroundColor="#E5E7E8" Margin="5,5,5,15" Padding="0,5" CornerRadius="10" HasShadow="False">
                                         <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="15,0,15,5" Margin="0,0,0,15" BackgroundColor="Transparent">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
