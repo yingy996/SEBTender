@@ -69,7 +69,7 @@
                                 <Label FontSize="Small" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" Text="RM1" />
                                 <Label FontSize="Small" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="End" Text="RM11" />
                                 <Label FontSize="Small" Grid.Row="2" Grid.Column="1" HorizontalTextAlignment="End" Text="RM111" />
-                                <Label FontSize="Small" Grid.Row="3" Grid.Column="1" HorizontalTextAlignment="End" Text="RM1111" />
+                                <Label FontSize="Small" Grid.Row="3" Grid.Column="1" HorizontalTextAlignment="End" Text="RM1111" FontAttributes="Bold"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -77,8 +77,8 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Button Text="Confirm" Grid.Column="0" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" BackgroundColor="#0CFD0C"/>
-                                <Button Text="Clear Cart" Grid.Column="1" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" />
+                                <Button Text="Confirm" Grid.Column="0" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" BackgroundColor="PaleGreen" Clicked="onConfirmButtonClicked"/>
+                                <Button Text="Clear Cart" Grid.Column="1" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" Clicked="onClearCartClicked"/>
                             </Grid>
                         </StackLayout>
                     </ListView.Footer>
