@@ -18,13 +18,15 @@ namespace SEBeTender
 
             if (page == "tender")
             {
-                var output = getTenderPage(htmlDocument);
+                Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
+                var output = getTenderTask.Result;
+                //var output = getTenderPage(htmlDocument);
                 return output;
             }
             return "No result";
         }
 
-        public static Object getTenderPage(HtmlDocument htmlDocument)
+        public static async Task<Object> getTenderPage(HtmlDocument htmlDocument)
         {
             var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//tbody/tr");
             int rowCount = 0;
@@ -100,8 +102,8 @@ namespace SEBeTender
                         //Get the ORIGINATOR details of the tender item
                         string url = "http://www2.sesco.com.my/etender/notice/notice_originator.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
                         
-                        Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest(url));
-                        var httpResult = httpTask.Result.ToString();
+                        string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url));
+                        var httpResult = httpTask.ToString();
 
                         var htmlDoc = new HtmlDocument();
                         htmlDoc.LoadHtml(httpResult);
@@ -147,39 +149,26 @@ namespace SEBeTender
                         //Get the downloadable files of the tender item
                         string url2 = "http://www2.sesco.com.my/etender/notice/notice_tender.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
                         
-                        Task<string> httpTask2 = Task.Run<string>(() => HttpRequestHandler.GetRequest(url2));
-                        var httpResult2 = httpTask2.Result.ToString();
+                        string httpTask2 = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url2));
+                        var httpResult2 = httpTask2.ToString();
                        
                         var htmlDoc2 = new HtmlDocument();
                         htmlDoc2.LoadHtml(httpResult2);
 
                         var filesTdNodes = htmlDoc2.DocumentNode.SelectNodes("//table/tr/td");
 
-                        /*foreach (var filesTdNode in filesTdNodes)
-                        {
-                            var fileLinkNodes = filesTdNode.Elements("a");
-
-                            foreach (var fileLinkNode in fileLinkNodes)
-                            {
-                                Console.WriteLine("Link node:" + fileLinkNode.InnerHtml);
-                            }
-                        }*/
-
                         var fileLinkNodes = filesTdNodes.Elements("a");
                         
                         
                         foreach (var fileLinkNode in fileLinkNodes)
-                        {
-                            //Console.WriteLine("1-1. " + fileLinkNode.InnerHtml);
+                        {                    
                             if (fileLinkNode.NodeType == HtmlNodeType.Element)
-                            {
-                                //Console.WriteLine("2. " + fileLinkNode.InnerHtml);
+                            {                                
                                 string fileName = fileLinkNode.InnerHtml;
                                 string fileLink = fileLinkNode.Attributes["href"].Value;
                                 string[] linkSplit = Regex.Split(fileLink, "noticeDoc/");
                                 string link = "http://www2.sesco.com.my/noticeDoc/" +  Uri.EscapeUriString(linkSplit[1]);
-                                tender.FileLinks[fileName] = link;
-                                Console.WriteLine("File: " + tender.FileLinks[fileName]);
+                                tender.FileLinks[fileName] = link;                               
                             }
                         }
 
