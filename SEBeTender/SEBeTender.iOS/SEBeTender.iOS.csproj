@@ -143,7 +143,7 @@
     <BundleResource Include="Resources\menuicon.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\trash.png" />
+    <BundleResource Include="Resources\trashicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\SEBeTender\SEBeTender.projitems" Label="Shared" />

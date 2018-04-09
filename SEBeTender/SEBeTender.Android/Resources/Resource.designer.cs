@@ -5078,7 +5078,7 @@ namespace SEBeTender.Droid
 			public const int smallUpBtn = 2130837778;
 			
 			// aapt resource value: 0x7f020113
-			public const int trash = 2130837779;
+			public const int trashicon = 2130837779;
 			
 			// aapt resource value: 0x7f020114
 			public const int Up = 2130837780;

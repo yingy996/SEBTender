@@ -12,7 +12,8 @@ namespace SEBeTender
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class viewCart : ContentPage
 	{
-		public viewCart ()
+
+        public viewCart ()
         {   
             BindingContext = this;
 			InitializeComponent ();
@@ -33,8 +34,9 @@ namespace SEBeTender
 
         async void onClearCartClicked(object sender, EventArgs e)
         {
-            //var answer = await DisplayAlert("Confirmation", "Are you sure you want to checkout the cart items?", "Confirm", "Cancel");
-
+            listView.ItemsSource = null;
+            
         }
+
     }
 }

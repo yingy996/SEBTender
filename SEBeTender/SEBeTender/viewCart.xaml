@@ -11,9 +11,10 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame BackgroundColor="#E5E7E8" Margin="0,0,0,15" Padding="0" CornerRadius="10">
-                                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="15,5,15,5" Margin="0,0,0,15">
+                                <Frame BackgroundColor="#E5E7E8" Padding="0" Margin="0,0,0,15" CornerRadius="10">
+                                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="5">
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
@@ -25,16 +26,17 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Text="zzzz" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                        <Label Text="zzzz" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        <Label Text="GPI50/18" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
                                         <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-                                        <Label Text="zzzz" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                        <Label Text="SUPPLY OF YANMAR ENGINE SPARE PARTS MODEL: YAN6N330L FOR LIMBANG POWER STATION" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
 
                                         <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                        <Label Text="Doc. Fee: 50.00" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="Quantity: 1" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                                        <Label Text="zzzz" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                        <Label Text="zzz" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        <Label Text="Total Doc. Fee: 120.00" Grid.Row="5" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Button Image="trashicon.png" Grid.Row="5" Grid.Column="1" HorizontalOptions="End" WidthRequest="38"/>
                                     </Grid>
                                 </Frame>
                             </ViewCell>
@@ -46,7 +48,7 @@
                     </ListView.Header>
 
                     <ListView.Footer>
-                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0" IsVisible="True" >
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0" IsVisible="{Binding IsNotEmpty}">
                             <Grid Padding="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -71,13 +73,13 @@
                                 <Label FontSize="Small" Grid.Row="2" Grid.Column="1" HorizontalTextAlignment="End" Text="RM111" />
                                 <Label FontSize="Small" Grid.Row="3" Grid.Column="1" HorizontalTextAlignment="End" Text="RM1111" FontAttributes="Bold"/>
                             </Grid>
-                            <Grid>
+                            <Grid IsVisible="{Binding IsNotEmpty}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Button Text="Confirm" Grid.Column="0" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" BackgroundColor="PaleGreen" Clicked="onConfirmButtonClicked"/>
+                                <Button Text="Confirm" Grid.Column="0" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" BackgroundColor="#3C83B8" TextColor="White" Clicked="onConfirmButtonClicked"/>
                                 <Button Text="Clear Cart" Grid.Column="1" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" Clicked="onClearCartClicked"/>
                             </Grid>
                         </StackLayout>
