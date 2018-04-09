@@ -62,5 +62,34 @@ namespace SEBeTender
             }
             return "Success";
         }
+
+        public static async Task<string> PostUserLogout()
+        {
+            string responseStatus = "";
+            HttpClient httpClient = new HttpClient();
+
+            try
+            {
+                var response = await httpClient.GetAsync("http://www2.sesco.com.my/etender/vendor/vendor_logout.jsp");
+                Console.WriteLine("Response code: " + response.StatusCode);
+                responseStatus = response.StatusCode.ToString();
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    Console.WriteLine("Logout Successfully");
+
+                } else
+                {
+                    Console.WriteLine("Error: " + response.StatusCode);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return "Success";
+        }
     }
 }

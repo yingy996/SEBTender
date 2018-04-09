@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.logoutPage" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Grid VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand" Margin="0,50,0,0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="0" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+
+                <Label Text="You have logged out of eTender System." Grid.Row="1" FontSize="Default" FontAttributes="None" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                <Label Text="Thank you for using this system." Grid.Row="2" FontSize="Default" FontAttributes="None" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+
+            </Grid>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
