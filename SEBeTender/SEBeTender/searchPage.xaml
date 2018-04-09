@@ -43,8 +43,23 @@
                 <Frame CornerRadius="5" Grid.Row="3" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2">
                     <Picker Title="- Select -" >
                         <Picker.Items>
-                            <x:String>Baboon</x:String>
-                            <x:String>Mandrill</x:String>
+                            <x:String>Batang Ai Power Station</x:String>
+                            <x:String>Bintulu</x:String>
+                            <x:String>Central Region (Sibu)</x:String>
+                            <x:String>Head Office</x:String>
+                            <x:String>Kuching Power Station</x:String>
+                            <x:String>Limbang</x:String>
+                            <x:String>Miri Power Station</x:String>
+                            <x:String>Mukah Power Generation</x:String>
+                            <x:String>Murum HEPS</x:String>
+                            <x:String>Northen Region (Miri)</x:String>
+                            <x:String>PPLS Management Services Sdn. Bhd.</x:String>
+                            <x:String>PPLS Power Generation Sdn. Bhd.</x:String>
+                            <x:String>Sarikei</x:String>
+                            <x:String>Sejingkat Power Corporation</x:String>
+                            <x:String>Sri Aman</x:String>
+                            <x:String>Western Region - Customer Service (Kuching)</x:String>
+                            <x:String>Western Region - Network (Kuching)</x:String>
                         </Picker.Items>
                     </Picker>
                 </Frame>
