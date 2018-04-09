@@ -4,8 +4,11 @@
              x:Class="SEBeTender.loginPage" Title="Sarawak Energy e-Tender">
     <ContentPage.Content>
         <ScrollView VerticalOptions="FillAndExpand" Padding="10,10,10,10">
+            
             <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RowSpacing="10" Margin="0,30,0,0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -16,23 +19,24 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-
-                <Label Text="User Login" FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
-
-                <Frame CornerRadius="5" Grid.Row="1" Grid.Column="0" BackgroundColor="#E5E7E8" Padding="2">
-                    <Entry Placeholder="User ID"/>
+                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="0" Grid.Column="0" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Label Text="User Login" FontSize="20" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
+                <Label x:Name="errorLbl" Text="" FontAttributes="Italic" TextColor="Red" Grid.Row="2" Grid.Column="0" HorizontalTextAlignment="Start"/>
+                
+                <Frame CornerRadius="5" Grid.Row="3" Grid.Column="0" BackgroundColor="#E5E7E8" Padding="2">
+                    <Entry x:Name="userIdEntry" Placeholder="User ID"/>
                 </Frame>
 
-                <Frame CornerRadius="5" Grid.Row="2" Grid.Column="0" BackgroundColor="#E5E7E8" Padding="2">
-                    <Entry IsPassword="True" Placeholder="Password"/>
+                <Frame CornerRadius="5" Grid.Row="4" Grid.Column="0" BackgroundColor="#E5E7E8" Padding="2">
+                    <Entry x:Name="passwordEntry" IsPassword="True" Placeholder="Password"/>
                 </Frame>
 
-                <Button Text="Login" CornerRadius="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Grid.Row="3" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
+                <Button Text="Login" Clicked="onLoginBtnClicked" CornerRadius="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Grid.Row="5" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
 
-                <BoxView Grid.Row="4" Grid.Column="0" BackgroundColor="DarkGray" HeightRequest="0.5" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                <BoxView Grid.Row="6" Grid.Column="0" BackgroundColor="DarkGray" HeightRequest="0.5" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
 
                 <!--<Label Text="Admin? Login here" FontAttributes="Italic" Grid.Row="5" Grid.Column="0" TextColor="DarkGray" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>-->
-                <Button Text="Admin? Login here" FontAttributes="Italic" BackgroundColor="Transparent" TextColor="#4295d1" Grid.Row="5" Grid.Column="0" HorizontalOptions="CenterAndExpand" Margin="0,30,0,0"/>
+                <Button Text="Admin? Login here" FontAttributes="Italic" BackgroundColor="Transparent" TextColor="#4295d1" Grid.Row="7" Grid.Column="0" HorizontalOptions="CenterAndExpand" Margin="0,30,0,0"/>
             </Grid>
         </ScrollView>
     </ContentPage.Content>
