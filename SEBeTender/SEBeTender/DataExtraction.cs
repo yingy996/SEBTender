@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using HtmlAgilityPack;
+using System.Threading.Tasks;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace SEBeTender
 {
@@ -15,13 +18,15 @@ namespace SEBeTender
 
             if (page == "tender")
             {
-                var output = getTenderPage(htmlDocument);
+                Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
+                var output = getTenderTask.Result;
+                //var output = getTenderPage(htmlDocument);
                 return output;
             }
             return "No result";
         }
 
-        public static Object getTenderPage(HtmlDocument htmlDocument)
+        public static async Task<Object> getTenderPage(HtmlDocument htmlDocument)
         {
             var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//tbody/tr");
             int rowCount = 0;
@@ -36,25 +41,19 @@ namespace SEBeTender
                 //If the row is not the first row, create the tender item
                 if (rowCount > 0)
                 {
+                    //Get contact details of the tender 
                     var tdNodes = trNode.ChildNodes;
                     var tdNodeCount = tdNodes.Count;
                     int count = 0;
 
                     tenderItem tender = new tenderItem();
-
-                    //get the details of the tender item
+                    
                     foreach (var tdNode in tdNodes)
                     {
                         if (tdNodeCount > 3) 
                         {
                             if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
                             {
-                                if (rowCount == 1)
-                                {
-                                    Console.WriteLine(count);
-                                    Console.WriteLine(tdNode.InnerHtml.Trim());
-                                }
-                                
                                 switch (count)
                                 {
                                     case 0:
@@ -97,9 +96,82 @@ namespace SEBeTender
                             }
                         }
                     }
-                    //Console.WriteLine(tender.OriginatingStation);
+
                     if (tdNodeCount > 3)
                     {
+                        //Get the ORIGINATOR details of the tender item
+                        string url = "http://www2.sesco.com.my/etender/notice/notice_originator.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
+                        
+                        string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url));
+                        var httpResult = httpTask.ToString();
+
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(httpResult);
+                        var originatorTrNodes = htmlDoc.DocumentNode.SelectNodes("//table/tr/td/table/tr");
+                        int originatorTrRowCount = 0;
+
+                        foreach (var originatorTrNode in originatorTrNodes)
+                        {
+                            var originatorTdNodes = originatorTrNode.ChildNodes;
+                            foreach (var originatorTdNode in originatorTdNodes)
+                            {
+                                if (!String.IsNullOrWhiteSpace(originatorTdNode.InnerHtml) && !originatorTdNode.FirstChild.HasChildNodes) {
+                                    
+                                    //The originator info starts on row 3, thus row 0,1,2 are skipped
+                                    switch (originatorTrRowCount)
+                                    {
+                                        case 3:
+                                            tender.Name = originatorTdNode.InnerHtml;
+                                            break;
+                                        case 4:
+                                            tender.OffinePhone = originatorTdNode.InnerHtml;
+                                            break;
+                                        case 5:
+                                            tender.Extension = originatorTdNode.InnerHtml;
+                                            break;
+                                        case 6:
+                                            tender.MobilePhone = originatorTdNode.InnerHtml;
+                                            break;
+                                        case 7:
+                                            tender.Email = originatorTdNode.InnerHtml;
+                                            break;
+                                        case 8:
+                                            tender.Fax = originatorTdNode.InnerHtml;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            originatorTrRowCount++;
+                        }
+
+                        //Get the downloadable files of the tender item
+                        string url2 = "http://www2.sesco.com.my/etender/notice/notice_tender.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
+                        
+                        string httpTask2 = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url2));
+                        var httpResult2 = httpTask2.ToString();
+                       
+                        var htmlDoc2 = new HtmlDocument();
+                        htmlDoc2.LoadHtml(httpResult2);
+
+                        var filesTdNodes = htmlDoc2.DocumentNode.SelectNodes("//table/tr/td");
+
+                        var fileLinkNodes = filesTdNodes.Elements("a");
+                        
+                        
+                        foreach (var fileLinkNode in fileLinkNodes)
+                        {                    
+                            if (fileLinkNode.NodeType == HtmlNodeType.Element)
+                            {                                
+                                string fileName = fileLinkNode.InnerHtml;
+                                string fileLink = fileLinkNode.Attributes["href"].Value;
+                                string[] linkSplit = Regex.Split(fileLink, "noticeDoc/");
+                                string link = "http://www2.sesco.com.my/noticeDoc/" +  Uri.EscapeUriString(linkSplit[1]);
+                                tender.FileLinks[fileName] = link;                               
+                            }
+                        }
+
                         tenderItems.Add(tender);
                     }
                     
