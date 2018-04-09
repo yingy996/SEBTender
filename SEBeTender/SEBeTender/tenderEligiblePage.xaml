@@ -1,12 +1,77 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.tenderEligiblePage">
+             x:Class="SEBeTender.tenderEligiblePage" Title="Sarawak Energy e-Tender">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
+            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+            <Label Text="Available Tender Documents for Purchase" FontSize="20" FontAttributes="Bold"/>
+
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <ListView x:Name="listView" HasUnevenRows="true" Grid.Row="0" Grid.Column="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:Name="dataTemplate">
+                            <ViewCell>
+                                <!--Frame's background color controls the background color for each tender items-->
+                                <Frame BackgroundColor="#E5E7E8" Margin="5,5,5,15" Padding="0,5" CornerRadius="10" HasShadow="False">
+                                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="15,0,15,5" Margin="0,0,0,15" BackgroundColor="Transparent">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="M031/18" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="Tender closes: 2017-05-12" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                        <Label Text="SUPPLY OF YANMAR ENGINE SPARE PARTS MODEL: YAN6N330L FOR LIMBANG POWER STATION" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                                        <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                                        <Label Text="Bid closes: N/A" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="Time closes: 3:00pm" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                        <Label Text="Tenderer class: Bonafide" Grid.Row="5" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="RM80" Grid.Row="5" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                        <StackLayout Orientation="Horizontal" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+                                            <Stepper x:Name="stepper"  Minimum="1" Increment="1" HorizontalOptions="Center"  VerticalOptions="Center"/>
+                                            <Frame CornerRadius="5" Padding="2" HorizontalOptions="FillAndExpand" BackgroundColor="#d6d7d7">
+                                                <Entry Text="{Binding Source={x:Reference stepper}, Path=Value, StringFormat='{0:F0}'}" Keyboard="Numeric" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                                            </Frame>
+                                        </StackLayout>
+
+                                        <Image Source="cart.png" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="End" VerticalOptions="Center" Margin="0,20,10,0">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnCartTapped"/>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
