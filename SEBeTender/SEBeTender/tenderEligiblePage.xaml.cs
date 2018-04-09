@@ -14,7 +14,31 @@ namespace SEBeTender
 	{
 		public tenderEligiblePage ()
 		{
-			InitializeComponent ();
-		}
-	}
+            BindingContext = this;
+            InitializeComponent ();
+            var items = Enumerable.Range(0, 10);
+            
+            listView.ItemsSource = items;
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
+        }
+
+        async void onItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            listView.SelectedItem = null;
+            //var item = e.SelectedItem as tenderItem;
+
+            /*if (item != null)
+            {
+                
+                await Navigation.PushAsync(new tenderDetailPage(item));
+            }*/
+        }
+
+        void OnCartTapped(object sender, EventArgs args)
+        {
+            Console.WriteLine("Im tapped!");
+            DisplayAlert("Success", "Item has been successfully added to cart", "OK");
+        }
+    }
 }
