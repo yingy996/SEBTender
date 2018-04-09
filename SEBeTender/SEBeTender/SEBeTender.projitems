@@ -47,6 +47,10 @@
       <DependentUpon>tenderDetailPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)tenderEligiblePage.xaml.cs">
+      <DependentUpon>tenderEligiblePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)tenderItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tenderPage.xaml.cs">
       <DependentUpon>tenderPage.xaml</DependentUpon>
@@ -56,6 +60,7 @@
       <DependentUpon>userInfoPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)userSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderPage.xaml">
@@ -95,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderEligiblePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
