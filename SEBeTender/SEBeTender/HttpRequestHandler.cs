@@ -50,10 +50,11 @@ namespace SEBeTender
             try
             {                                                                                                                                                                                                                         
                 var response = await client.PostAsync(uri, parameters);
-
-                if(response.StatusCode == System.Net.HttpStatusCode.Found)
+                Console.WriteLine("Response code: " + response.StatusCode);
+                if(response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     result = await response.Content.ReadAsStringAsync();
+                    
                 }
             }catch (Exception ex)
             {

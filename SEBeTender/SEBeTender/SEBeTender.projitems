@@ -39,8 +39,8 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)registrationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)rootPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)searchPage.xaml.cs">
-      <DependentUpon>searchPage.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)searchTenderPage.xaml.cs">
+      <DependentUpon>searchTenderPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)tenderDetailPage.xaml.cs">
@@ -52,6 +52,10 @@
       <DependentUpon>tenderPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)tenderSearchResultPage.xaml.cs">
+      <DependentUpon>tenderSearchResultPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)userInfoPage.xaml.cs">
       <DependentUpon>userInfoPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -59,12 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)searchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -95,6 +93,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)searchTenderPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderSearchResultPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             x:Class="SEBeTender.searchPage" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.searchTenderPage" Title="Sarawak Energy e-Tender">
     <ContentPage.Content>
         <ScrollView VerticalOptions="FillAndExpand" Padding="10">
             <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
@@ -52,11 +52,11 @@
 
                 <Label Text="From:" Grid.Row="5" Grid.Column="0" FontSize="Micro"/>
                 <Label Text="To:" Grid.Row="5" Grid.Column="1" FontSize="Micro"/>
-                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="6" Grid.Column="0">
+                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="6" Grid.Column="0" x:Name="closingdateFrom">
                     <DatePicker.Format>dd-MM-yyyy</DatePicker.Format>
                 </DatePicker>
 
-                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="6" Grid.Column="1">
+                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="6" Grid.Column="1" x:Name="closingdateTo">
                     <DatePicker.Format>dd-MM-yyyy</DatePicker.Format>
                 </DatePicker>
 
@@ -65,16 +65,16 @@
                 <Label Text="From:" Grid.Row="8" Grid.Column="0" FontSize="Micro"/>
                 <Label Text="To:" Grid.Row="8" Grid.Column="1" FontSize="Micro"/>
 
-                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="9" Grid.Column="0">
+                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="9" Grid.Column="0" x:Name="bidclosingdateFrom">
                     <DatePicker.Format>dd-MM-yyyy</DatePicker.Format>
                 </DatePicker>
 
-                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="9" Grid.Column="1">
+                <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="9" Grid.Column="1" x:Name="bidclosingdateTo">
                     <DatePicker.Format>dd-MM-yyyy</DatePicker.Format>
                 </DatePicker>
 
-                <Button Text="Search" x:name="searchButton" VerticalOptions="End" Grid.Row="10" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-                <Button Text="Clear"  x:name="clearButton" VerticalOptions="Start" Grid.Row="10" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+                <Button Text="Search" x:Name="searchButton" VerticalOptions="End" Grid.Row="10" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
+                <Button Text="Clear"  x:Name="clearButton" VerticalOptions="Start" Grid.Row="10" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

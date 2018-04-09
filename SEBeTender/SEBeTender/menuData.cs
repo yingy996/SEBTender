@@ -26,7 +26,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "Search",
-                TargetType = typeof(searchPage)
+                TargetType = typeof(searchTenderPage)
             });
 
             this.Add(new menuItem()
