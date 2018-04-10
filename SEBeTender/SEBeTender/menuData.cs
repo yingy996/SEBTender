@@ -14,7 +14,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "Announcement",
-                TargetType = typeof(MainPage)
+                TargetType = typeof(announcementPage)
             });
 
             this.Add(new menuItem() {
@@ -82,7 +82,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "Announcement",
-                TargetType = typeof(MainPage)
+                TargetType = typeof(announcementPage)
             });
 
             this.Add(new menuItem()
@@ -94,13 +94,13 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "Search",
-                TargetType = typeof(searchPage)
+                TargetType = typeof(searchTenderPage)
             });
 
             this.Add(new menuItem()
             {
                 Title = "Purchased Tender Document",
-                TargetType = typeof(MainPage)
+                TargetType = typeof(purchasedTendersPage)
             });
 
             this.Add(new menuItem()

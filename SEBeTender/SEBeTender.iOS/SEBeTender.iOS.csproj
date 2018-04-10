@@ -149,6 +149,9 @@
   <ItemGroup>
     <BundleResource Include="Resources\cart.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\bid.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\SEBeTender\SEBeTender.projitems" Label="Shared" />
 </Project>

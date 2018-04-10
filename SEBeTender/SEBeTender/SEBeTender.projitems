@@ -13,6 +13,10 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)announcementPage.xaml.cs">
+      <DependentUpon>announcementPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -33,6 +37,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)menuItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)purchasedTendersPage.xaml.cs">
+      <DependentUpon>purchasedTendersPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -116,6 +124,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderEligiblePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)announcementPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)purchasedTendersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
