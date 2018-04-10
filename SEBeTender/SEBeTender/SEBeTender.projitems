@@ -13,12 +13,12 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)announcementPage.xaml.cs">
+      <DependentUpon>announcementPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)checkoutPage.xaml.cs">
-      <DependentUpon>checkoutPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DataExtraction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)editContactPage.xaml.cs">
@@ -37,14 +37,26 @@
     <Compile Include="$(MSBuildThisFileDirectory)menuItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)purchasedTendersPage.xaml.cs">
+      <DependentUpon>purchasedTendersPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)registrationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)rootPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)searchPage.xaml.cs">
-      <DependentUpon>searchPage.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)searchTenderPage.xaml.cs">
+      <DependentUpon>searchTenderPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)tenderDetailPage.xaml.cs">
+      <DependentUpon>tenderDetailPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)tenderEligiblePage.xaml.cs">
+      <DependentUpon>tenderEligiblePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)tenderItem.cs" />
@@ -52,23 +64,18 @@
       <DependentUpon>tenderPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)tenderSearchResultPage.xaml.cs">
+      <DependentUpon>tenderSearchResultPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)userInfoPage.xaml.cs">
       <DependentUpon>userInfoPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)viewCart.xaml.cs">
-      <DependentUpon>viewCart.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)userSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)searchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -98,13 +105,37 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)viewCart.xaml">
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)checkoutPage.xaml">
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)searchTenderPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderSearchResultPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderEligiblePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)announcementPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)purchasedTendersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
