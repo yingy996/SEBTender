@@ -11,21 +11,85 @@ using HtmlAgilityPack;
 namespace SEBeTender
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class tenderPage : ContentPage
+	public partial class tenderSearchResultPage : ContentPage
 	{
         private string nextUrl;
         private string previousUrl;
         private bool isPreviousAvailable = false;
         private bool isNextAvailable = false;
-		public tenderPage ()
+
+        public tenderSearchResultPage ()
 		{
+
+        }
+
+        public tenderSearchResultPage(string searchTenderResult)
+        {
+            //BindingContext = this;
+            var label = new Label { Text = "text" };
+            //StackLayout stackLayout = new StackLayout();
+            //var childToRaise = stackLayout.Children.First();
+
+            InitializeComponent();
+
+            //Set "Previous" and "Next" hyperlink label. 
+            var previousLblTapRecognizer = new TapGestureRecognizer();
+            previousLblTapRecognizer.Tapped += onPreviousPageTapped;
+            previousPage.GestureRecognizers.Add(previousLblTapRecognizer);
+            previousPage.IsVisible = false;  //"Previous" label is set to invisible for first page
+
+            var nextLblTapRecognizer = new TapGestureRecognizer();
+            nextLblTapRecognizer.Tapped += onNextPageTapped;
+            nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
+            nextPage.IsVisible = false;
+
+            //Sending HTTP request to obtain the tender page data
+            var httpResult = searchTenderResult;
+
+            //Small data extraction to get "Next" and "Previous" page hyperlinks
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(httpResult);
+            var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
+            if (aNodes != null)
+            {
+                foreach (var aNode in aNodes)
+                {
+                    if (aNode.InnerHtml == "Previous")
+                    {
+                        previousUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
+                        isPreviousAvailable = true;
+                        previousPage.IsVisible = true;
+                    }
+                    else if (aNode.InnerHtml == "Next")
+                    {
+                        nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
+                        isNextAvailable = true;
+                        nextPage.IsVisible = true;
+                    }
+                }
+            }
+
+
+            //Extract tender data from the response
+            var tenders = DataExtraction.getWebData(httpResult, "tender");
+            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
+            if(tenderItems.Count > 0 ) {
+                Console.WriteLine("Tender list item no.1 ref: " + tenderItems.First().Title);
+            } else {
+                Console.WriteLine("No item returned!!");
+            }
+            
+            listView.ItemsSource = tenderItems;
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
+            /*Console.WriteLine("testing");
             BindingContext = this;
             var label = new Label { Text = "text" };
             //StackLayout stackLayout = new StackLayout();
             //var childToRaise = stackLayout.Children.First();
 
-            InitializeComponent ();
-            
+            InitializeComponent();
+
             //Set "Previous" and "Next" hyperlink label. 
             var previousLblTapRecognizer = new TapGestureRecognizer();
             previousLblTapRecognizer.Tapped += onPreviousPageTapped;
@@ -36,9 +100,8 @@ namespace SEBeTender
             nextLblTapRecognizer.Tapped += onNextPageTapped;
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
 
-            //Sending HTTP request to obtain the tender page data
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice.jsp"));
-            var httpResult = httpTask.Result.ToString();
+            //Retrieve string search result passed from searchTenderPage
+            var httpResult = searchTenderResult;
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
             var htmlDoc = new HtmlDocument();
@@ -60,21 +123,21 @@ namespace SEBeTender
                     }
                 }
             }
-            
+
 
             //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "tender");
+            var tenders = DataExtraction.getWebData(httpResult, "searchtenderpage");
             List<tenderItem> tenderItems = (List<tenderItem>)tenders;
 
             listView.ItemsSource = tenderItems;
             listView.SeparatorVisibility = SeparatorVisibility.None;
-            listView.ItemSelected += onItemSelected;
+            listView.ItemSelected += onItemSelected;*/
         }
 
         async void onItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as tenderItem;
-            
+
             if (item != null)
             {
                 listView.SelectedItem = null;
@@ -90,7 +153,7 @@ namespace SEBeTender
         }
 
         async void onNextPageTapped(object sender, EventArgs eventArgs)
-        {                       
+        {
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
             //Sending HTTP request to obtain the second tender page data
@@ -129,7 +192,8 @@ namespace SEBeTender
             if (isPreviousAvailable)
             {
                 previousPage.IsVisible = true;
-            } else
+            }
+            else
             {
                 previousPage.IsVisible = false;
             }
@@ -206,3 +270,4 @@ namespace SEBeTender
         }
     }
 }
+
