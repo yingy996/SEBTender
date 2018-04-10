@@ -15,16 +15,37 @@ namespace SEBeTender
         public logoutPage ()
 		{
 			InitializeComponent ();
-            LogoutUser();
+            LogoutUserAsync();
 		}
 
-        void LogoutUser()
+        async void LogoutUserAsync()
         {
-            var httpTask = HttpRequestHandler.PostUserLogout();
-            var httpResult = httpTask.ToString();
+            logoutStatus.Text = "";
 
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
+
+            var httpTask = await Task.Run<string>(() => HttpRequestHandler.PostUserLogout());
+            var httpResult = httpTask.ToString();
+
+            if (httpResult == "Success")
+            {
+                logoutStatus.Text = "You have successfully logout! You will be redirected to tender page shortly.";
+                logoutStatus.TextColor = Color.Default;
+                logoutStatus.FontAttributes = FontAttributes.None;
+                await Task.Delay(500);
+
+                App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderPage()) };
+            }
+            else
+            {
+                logoutStatus.TextColor = Color.Red;
+                logoutStatus.FontAttributes = FontAttributes.None;
+                logoutStatus.Text = "Error: Logout Unsuccessful, " + httpResult;
+            }
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
             
         }
     }

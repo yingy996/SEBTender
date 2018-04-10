@@ -13,13 +13,13 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="0" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Label Text="Logout" FontSize="20" FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Center"/>
 
-                <Label Text="You have logged out of eTender System." Grid.Row="1" FontSize="Default" FontAttributes="None" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                <Label Text="Thank you for using this system." Grid.Row="2" FontSize="Default" FontAttributes="None" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                <Label x:Name="logoutStatus" Text="" Grid.Row="1" FontSize="Default" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="2" Color="#2acc4a" 
+                                   VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,20,0,0"/>
 
             </Grid>
-
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

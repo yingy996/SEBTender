@@ -76,6 +76,7 @@ namespace SEBeTender
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    userSession.userLoginCookie = "";
                     Console.WriteLine("Logout Successfully");
 
                 } else
@@ -83,8 +84,7 @@ namespace SEBeTender
                     Console.WriteLine("Error: " + response.StatusCode);
                 }
 
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
