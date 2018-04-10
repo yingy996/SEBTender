@@ -41,6 +41,7 @@ namespace SEBeTender
             var nextLblTapRecognizer = new TapGestureRecognizer();
             nextLblTapRecognizer.Tapped += onNextPageTapped;
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
+            nextPage.IsVisible = false;
 
             //Sending HTTP request to obtain the tender page data
             var httpResult = searchTenderResult;
@@ -57,11 +58,13 @@ namespace SEBeTender
                     {
                         previousUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
                         isPreviousAvailable = true;
+                        previousPage.IsVisible = true;
                     }
                     else if (aNode.InnerHtml == "Next")
                     {
                         nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
                         isNextAvailable = true;
+                        nextPage.IsVisible = true;
                     }
                 }
             }
@@ -70,7 +73,12 @@ namespace SEBeTender
             //Extract tender data from the response
             var tenders = DataExtraction.getWebData(httpResult, "tender");
             List<tenderItem> tenderItems = (List<tenderItem>)tenders;
-
+            if(tenderItems.Count > 0 ) {
+                Console.WriteLine("Tender list item no.1 ref: " + tenderItems.First().Title);
+            } else {
+                Console.WriteLine("No item returned!!");
+            }
+            
             listView.ItemsSource = tenderItems;
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
