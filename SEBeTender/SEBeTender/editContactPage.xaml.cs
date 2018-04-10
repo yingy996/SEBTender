@@ -16,5 +16,10 @@ namespace SEBeTender
 		{
 			InitializeComponent ();
 		}
+
+        async void onUpdateBtnClicked(object sender, EventArgs eventArgs)
+        {
+            var answer = await DisplayAlert("Confirm update?", "Confirm update contact person details?", "Yes", "No");
+        }
 	}
 }
