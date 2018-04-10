@@ -26,6 +26,7 @@ namespace SEBeTender
         public tenderSearchResultPage(string searchTenderResult)
         {
             //BindingContext = this;
+            Console.WriteLine(searchTenderResult);
             var label = new Label { Text = "text" };
             //StackLayout stackLayout = new StackLayout();
             //var childToRaise = stackLayout.Children.First();
