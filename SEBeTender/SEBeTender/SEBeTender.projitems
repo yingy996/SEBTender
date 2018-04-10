@@ -20,6 +20,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)checkoutPage.xaml.cs">
+      <DependentUpon>checkoutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DataExtraction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)editContactPage.xaml.cs">
       <DependentUpon>editContactPage.xaml</DependentUpon>
@@ -73,6 +76,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)userSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)viewCart.xaml.cs">
+      <DependentUpon>viewCart.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderPage.xaml">
@@ -138,6 +144,17 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)purchasedTendersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)checkoutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)viewCart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

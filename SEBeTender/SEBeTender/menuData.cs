@@ -45,7 +45,7 @@ namespace SEBeTender
                 Title = "Download list",
                 TargetType = typeof(MainPage)
             });
-
+            
             this.Add(new menuItem()
             {
                 Title = "View Cart",
@@ -118,7 +118,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "View Cart",
-                TargetType = typeof(MainPage)
+                TargetType = typeof(viewCart)
             });
 
             this.Add(new menuItem()
