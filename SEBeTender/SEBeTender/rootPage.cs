@@ -19,7 +19,22 @@ namespace SEBeTender
             Detail = new NavigationPage(displayPage);   
             
             menuPage.menu.ItemSelected += onItemSelected;
+            
 		}
+
+        public rootPage (bool isLoggedIn)
+        {
+            //set the menu list items for logged in user
+            menuData data = new menuData(true);
+            menuPage = new menuPage();
+            menuPage.menu.ItemsSource = data;
+
+            Master = menuPage;
+            var displayPage = new tenderEligiblePage();
+            Detail = new NavigationPage(displayPage);
+
+            menuPage.menu.ItemSelected += onItemSelected;
+        }
 
         void onItemSelected (object sender, SelectedItemChangedEventArgs e)
         {

@@ -53,11 +53,12 @@ namespace SEBeTender
                     errorLbl.TextColor = Color.Green;
 
                     errorLbl.Text = "Login success! You will be redirected soon";
-                    await Task.Delay(3000);
+                    await Task.Delay(1000);
                     errorLbl.TextColor = Color.Red;
                     errorLbl.Text = "";
                     //await Navigation.PushAsync(new tenderPage());
-                    App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderPage()) };
+                    //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderEligiblePage()) };
+                    App.Current.MainPage = new rootPage(true);
                     //rootPage.changeDetailPage(typeof(tenderPage));
                     
                 } else
