@@ -50,7 +50,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "View Cart",
-                TargetType = typeof(viewCart)
+                TargetType = typeof(MainPage)
             });
 
             this.Add(new menuItem()
