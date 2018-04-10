@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace SEBeTender
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class searchPage : ContentPage
+	public partial class checkoutPage : ContentPage
 	{
-		public searchPage ()
+		public checkoutPage ()
 		{
 			InitializeComponent ();
 		}

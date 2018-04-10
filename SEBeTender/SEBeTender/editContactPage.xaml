@@ -27,28 +27,28 @@
 
                 <Label Text="Name:" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
                 <Frame CornerRadius="5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
-                    <Entry />
+                    <Entry Placeholder="Samantha Lee"/>
                 </Frame> 
                 
                 <Label Text="Telephone No:" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
                 <Frame CornerRadius="5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
-                    <Entry Keyboard="Telephone" />
+                    <Entry Keyboard="Telephone" Placeholder="0123456789"/>
                 </Frame>
                 
 
                 <Label Text="Fax No:" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
                 <Frame CornerRadius="5" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
-                    <Entry Keyboard="Telephone" />
+                    <Entry Keyboard="Telephone" Placeholder="082294855"/>
                 </Frame>
 
                 <Label Text="Email Address:" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"/>
                 <Frame CornerRadius="5" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
-                    <Entry Keyboard="Email" />
+                    <Entry Keyboard="Email" Placeholder="slee@yahoo.com"/>
                 </Frame>
 
 
-                <Button Text="Update" VerticalOptions="End" Grid.Row="9" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-                <Button Text="Cancel"  VerticalOptions="Start" Grid.Row="9" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+                <Button Text="Update" VerticalOptions="End" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#2acc4a" TextColor="White" Clicked="onUpdateBtnClicked"/>
+                <!--<Button Text="Cancel"  VerticalOptions="Start" Grid.Row="9" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>-->
             </Grid>
         </ScrollView>
     </ContentPage.Content>

@@ -31,6 +31,42 @@ namespace SEBeTender
             return result;
         }
 
+
+        public static async Task<string> SearchPostRequest(string url, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingClosingDateFrom, string biddingClosingDateTo)
+        {
+            HttpClient client = new HttpClient();
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("SchReferno", tenderReference),
+                new KeyValuePair<string,string>("SchTendertitle", tenderTitle),
+                new KeyValuePair<string,string>("SchStation", originatingStation),
+                new KeyValuePair<string,string>("SchFromClosedate", closingDateFrom),
+                new KeyValuePair<string,string>("SchToClosedate", closingDateTo),
+                new KeyValuePair<string,string>("SchFromEbidClosedate", biddingClosingDateFrom),
+                new KeyValuePair<string,string>("SchToEbidClosedate", biddingClosingDateTo)
+
+
+            });
+
+            var uri = new Uri(string.Format(url, string.Empty));
+            try
+            {                                                                                                                                                                                                                         
+                var response = await client.PostAsync(uri, parameters);
+                Console.WriteLine("Response code: " + response.StatusCode);
+                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                    
+                }
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return result;
+         }
+
         public static async Task<string> PostUserLogin(string username, string password)
         {
             string cookieResult = "";
@@ -61,6 +97,7 @@ namespace SEBeTender
                 Console.WriteLine(ex);
             }
             return "Success";
+
         }
 
         public static async Task<string> PostUserLogout()
