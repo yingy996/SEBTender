@@ -37,11 +37,12 @@ namespace SEBeTender
             var parameters = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string,string>("SchReferno", tenderReference),
-                new KeyValuePair<string,string>("SchTendertitle", tenderReference),
+                new KeyValuePair<string,string>("SchTendertitle", tenderTitle),
                 new KeyValuePair<string,string>("SchStation", originatingStation),
                 new KeyValuePair<string,string>("SchFromClosedate", closingDateFrom),
                 new KeyValuePair<string,string>("SchToClosedate", closingDateTo),
-                new KeyValuePair<string,string>("SchReferno", tenderReference),
+                new KeyValuePair<string,string>("SchFromEbidClosedate", biddingClosingDateFrom),
+                new KeyValuePair<string,string>("SchToEbidClosedate", biddingClosingDateTo)
 
 
             });
