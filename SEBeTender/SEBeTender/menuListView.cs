@@ -13,7 +13,6 @@ namespace SEBeTender
 		{
             List<menuItem> data = new menuData();
             ItemsSource = data;
-            
             BackgroundColor = Color.FromHex("#3C83B8");
             VerticalOptions = LayoutOptions.FillAndExpand;
             this.SeparatorVisibility = SeparatorVisibility.None;

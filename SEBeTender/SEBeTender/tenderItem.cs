@@ -4,10 +4,9 @@ using System.Text;
 
 namespace SEBeTender
 {
-    public class tenderItem
+    class tenderItem
     {
-        private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass, name, officePhone, extension, mobilePhone, email, fax;
-        private Dictionary<string, string> fileLinks = new Dictionary<string, string>();
+        private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass;
 
         public string Reference
         {
@@ -61,48 +60,6 @@ namespace SEBeTender
         {
             get { return tendererClass; }
             set { tendererClass = value; }
-        }
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public string OffinePhone
-        {
-            get { return officePhone; }
-            set { officePhone = value; }
-        }
-
-        public string Extension
-        {
-            get { return extension; }
-            set { extension = value; }
-        }
-
-        public string MobilePhone
-        {
-            get { return mobilePhone; }
-            set { mobilePhone = value; }
-        }
-
-        public string Email
-        {
-            get { return email; }
-            set { email = value; }
-        }
-
-        public string Fax
-        {
-            get { return fax; }
-            set { fax = value; }
-        }
-
-        public Dictionary<string, string> FileLinks
-        {
-            get { return fileLinks; }
-            set { fileLinks = value; }
         }
     }
 }
