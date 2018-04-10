@@ -100,7 +100,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "Purchased Tender Document",
-                TargetType = typeof(MainPage)
+                TargetType = typeof(purchasedTendersPage)
             });
 
             this.Add(new menuItem()
