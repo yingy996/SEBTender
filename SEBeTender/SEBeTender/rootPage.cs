@@ -10,6 +10,7 @@ namespace SEBeTender
 	public class rootPage : MasterDetailPage
 	{
         menuPage menuPage;
+         
 		public rootPage ()
 		{
             menuPage = new menuPage();
@@ -30,5 +31,6 @@ namespace SEBeTender
                 IsPresented = false;
             }
         }
+
 	}
 }
