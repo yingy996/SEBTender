@@ -13,8 +13,7 @@ namespace SEBeTender
 		{
 			InitializeComponent();
 
-            MainPage = new SEBeTender.rootPage();
-            //MainPage = new MainPage();
+			MainPage = new SEBeTender.rootPage();
 		}
 
 		protected override void OnStart ()
