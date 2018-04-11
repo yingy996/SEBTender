@@ -22,12 +22,18 @@ namespace SEBeTender
                 var output = getTenderTask.Result;
                 //var output = getTenderPage(htmlDocument);
                 return output;
-            } else if(page == "searchtenderpage")
+            } else if (page == "searchtenderpage")
             {
                 Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
                 var output = getTenderTask.Result;
                 return output;
+            } else if (page == "cartpage")
+            {
+                Task<Object> getCartTask = Task.Run<Object>(() => getCartItem(htmlDocument));
+                var output = getCartTask.Result;
+                return output;
             }
+
             return "No result";
         }
 
@@ -194,7 +200,78 @@ namespace SEBeTender
             return tenderItems;
         }
 
+        public static async Task<Object> getCartItem(HtmlDocument htmlDocument)
+        {
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//tbody/tr");
+            int rowCount = 0;
 
+            //Create list to store cart items
+            List<cartItem> cartItems = new List<cartItem>();
+
+            //Loop through the cart items to get the individual cart item's data
+            foreach (var trNode in htmlNodes)
+            {
+                //If the row is not the first row, create new cartItem object
+                if (rowCount > 0)
+                {
+                    //Traverse from /tr to /td to retrieve cart item detail
+                    var tdNodes = trNode.ChildNodes;
+                    //var tdNodeCount = tdNodes.Count;
+                    int count = 0;
+
+                    cartItem item = new cartItem();
+
+                    foreach (var tdNode in tdNodes)
+                    {
+                        if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
+                        {
+                            switch (count)
+                            {
+                                case 0:
+                                    item.Reference = tdNode.FirstChild.InnerHtml;
+                                    Console.WriteLine(item.Reference);
+                                    break;
+                                case 1:
+                                    item.Title = tdNode.FirstChild.InnerHtml;
+                                    Console.WriteLine(item.Title);
+                                    break;
+                                case 2:
+                                    item.Quantity = tdNode.FirstChild.InnerHtml;
+                                    Console.WriteLine(item.Quantity);
+                                    break;
+                                case 3:
+                                    item.DocFee = tdNode.FirstChild.InnerHtml;
+                                    Console.WriteLine(item.DocFee);
+                                    break;
+                                case 4:
+                                    item.TotalDocFee = tdNode.FirstChild.InnerHtml;
+                                    Console.WriteLine(item.TotalDocFee);
+                                    break;
+                                case 5:
+                                    string aNodeString = tdNode.InnerHtml.Trim();
+                                    var htmlDoc = new HtmlDocument();
+                                    htmlDoc.LoadHtml(aNodeString);
+                                    var aNode = htmlDoc.DocumentNode.SelectSingleNode("//a");
+
+                                    item.DeleteItemLink = aNode.InnerHtml;
+                                    Console.WriteLine(item.DeleteItemLink);
+                                    break;
+                            }
+
+                            count++;
+                        }
+                    }
+
+                    rowCount++;
+                }
+                else
+                {
+                    rowCount++;
+                }
+            }
+
+            return cartItems;
+        }
 
         /*public static async Task<Object> getSearchTenderPage(HtmlDocument htmlDocument)
         {

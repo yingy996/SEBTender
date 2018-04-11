@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)cartItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)checkoutPage.xaml.cs">
       <DependentUpon>checkoutPage.xaml</DependentUpon>
     </Compile>
