@@ -22,7 +22,7 @@ namespace SEBeTender
             InitializeComponent();
 
             //Send Http request to retrieve search page originating station drop down
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp"));
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
             var httpResult = httpTask.Result.ToString();
 
             //Small data extraction to extract Station dropdown selects/options to fill Picker

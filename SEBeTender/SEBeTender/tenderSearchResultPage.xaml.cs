@@ -149,7 +149,7 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
             //Sending HTTP request to obtain the second tender page data
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(nextUrl));
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(nextUrl, false));
             var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
@@ -208,7 +208,7 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
             //Sending HTTP request to obtain the second tender page data
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(previousUrl));
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(previousUrl, false));
             var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
