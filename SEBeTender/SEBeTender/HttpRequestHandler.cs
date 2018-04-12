@@ -4,16 +4,32 @@ using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace SEBeTender
 {
     class HttpRequestHandler
     {
-        public static async Task<string> GetRequest(string url)
+        public static async Task<string> GetRequest(string url, bool isLoggedIn)
         {
-            HttpClient client = new HttpClient();
+            CookieContainer cookieContainer = new CookieContainer();
+            var httpClientHandler = new HttpClientHandler() { CookieContainer = cookieContainer };
+
+            HttpClient client = new HttpClient(httpClientHandler);
             string result = "";
             var uri = new Uri(string.Format(url, string.Empty));
+            
+            //Add user cookie if account is logged in
+            if (isLoggedIn)
+            {
+                string[] cookieWords = Regex.Split(userSession.userLoginCookie, "=");
+                string cookieName = cookieWords[0];
+                string[] cookieValues = Regex.Split(cookieWords[1], "; ");
+                string cookieValue = cookieValues[0];
+                cookieContainer.Add(uri, new Cookie(cookieName, cookieValue));
+                //client.DefaultRequestHeaders.Add("Cookie", userSession.userLoginCookie);
+            }
             
             try
             {

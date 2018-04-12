@@ -26,16 +26,16 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Text="GPI50/18" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding Reference}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
                                         <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-                                        <Label Text="SUPPLY OF YANMAR ENGINE SPARE PARTS MODEL: YAN6N330L FOR LIMBANG POWER STATION" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                        <Label Text="{Binding Title}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
 
                                         <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-                                        <Label Text="Doc. Fee: 50.00" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                        <Label Text="Quantity: 1" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding DocFee}" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding Quantity}" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                                        <Label Text="Total Doc. Fee: 120.00" Grid.Row="5" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding TotalDocFee}" Grid.Row="5" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
                                         <Button Image="trashicon.png" Grid.Row="5" Grid.Column="1" HorizontalOptions="End" WidthRequest="38"/>
                                     </Grid>
                                 </Frame>

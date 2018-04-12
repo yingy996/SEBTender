@@ -22,7 +22,7 @@ namespace SEBeTender
             InitializeComponent();
 
             //Send Http request to retrieve search page originating station drop down
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp"));
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
             var httpResult = httpTask.Result.ToString();
 
             //--------Station Picker Control Section---------------------------------------------
@@ -115,7 +115,7 @@ namespace SEBeTender
                     if(String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedStation == "" && closingdatefrom == "" && closingdateto == ""
                         && bidclosingdatefrom == "" && bidclosingdateto == "")
                     {
-                         DisplayAlert("Error", "Please enter at least one search field", "Okay");
+                        await DisplayAlert("Error", "Please enter at least one search field", "Okay");
 
                     }
                     else

@@ -7,5 +7,6 @@ namespace SEBeTender
     public static class userSession
     {
         public static string userLoginCookie = "";
+        
     }
 }

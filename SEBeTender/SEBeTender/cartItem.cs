@@ -45,7 +45,7 @@ namespace SEBeTender
             set { deleteItemLink = value; }
         }
     }
-
+    /*
     public class cartPriceSummary
     {
         private string noOfItems, docFeeAmount, gst, totalAmount;
@@ -73,5 +73,5 @@ namespace SEBeTender
             get { return totalAmount; }
             set { totalAmount = value; }
         }
-    }
+    }*/
 }

@@ -37,7 +37,7 @@ namespace SEBeTender
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
 
             //Sending HTTP request to obtain the tender page data
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice.jsp"));
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice.jsp", false));
             var httpResult = httpTask.Result.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
@@ -94,7 +94,7 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
             //Sending HTTP request to obtain the second tender page data
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(nextUrl));
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(nextUrl, false));
             var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
@@ -152,7 +152,7 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
             //Sending HTTP request to obtain the second tender page data
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(previousUrl));
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(previousUrl, false));
             var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
