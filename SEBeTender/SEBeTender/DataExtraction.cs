@@ -267,12 +267,17 @@ namespace SEBeTender
                 string inputValue = inputNode.Attributes["value"].Value;
                 if (inputValue != "1")
                 {
-                    string[] inputValueWords = Regex.Split(inputValue, "|");
+
+                    //string[] inputValueWords = Regex.Split(inputValue, "|");
+                    string[] inputValueWords = inputValue.Split('|');
+                    
                     foreach (var item in tenderItems)
                     {
                         if (inputValueWords[0].Trim() == item.Reference)
                         {
-                            item.CheckedValue = inputValue;
+                            var index = tenderItems.IndexOf(item);
+                            tenderItems[index].CheckedValue = inputValue;
+                            //item.CheckedValue = inputValue;
                         }
                     }
                     //Console.WriteLine("Node: " + inputValue);
