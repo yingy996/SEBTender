@@ -21,7 +21,7 @@ namespace SEBeTender
             //Sending HTTP request to obtain the tender page data
             Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
             var httpResult = httpTask.Result.ToString();
-            Console.WriteLine(httpResult);
+            
             //Extract tender data from the response
             var tenders = DataExtraction.getWebData(httpResult, "eligibelTenderPage");
             List<tenderItem> tenderItems = (List<tenderItem>)tenders;
@@ -36,7 +36,7 @@ namespace SEBeTender
         {
             
             var item = e.SelectedItem as tenderItem;
-            Console.WriteLine("Item clicked here");
+            
             if (item != null)
             {
                 listView.SelectedItem = null;
@@ -60,7 +60,8 @@ namespace SEBeTender
         {
             var tenderSelected = ((TappedEventArgs)args).Parameter;
             tenderItem tender = (tenderItem)tenderSelected;
-            DisplayAlert("Success", tender.AddToCartQuantity + " Item " + tender.Reference + " has been successfully added to cart", "OK");
+
+            DisplayAlert("Success", tender.AddToCartQuantity + " Item " + tender.Reference + " has been successfully added to cart ", "OK");
         }
 
         void onQuantityChanged(object sender, EventArgs args)
