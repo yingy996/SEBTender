@@ -1,0 +1,65 @@
+/*Default background: #42bbb1
+  Active background: #b2dfdd
+  Default color: #ecf0f1
+  Active color: #2f8e86
+*/
+
+/*--- Custom Navigation bar ---*/
+.navbar-default {
+    background-color: #a4b62c;
+    border-color: #b2dfdd;
+}
+
+/*Navigation bar brand*/
+.navbar-default .navbar-brand {
+    color: #ecf0f1;
+}
+
+/*Navigation bar navigation items*/
+.navbar-default .navbar-nav > li > a {
+    color: #ecf0f1;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #2f8e86;
+}
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    color: #2f8e86;
+    background-color: #b2dfdd;
+}
+
+/*Navigation bar icon in xs devices*/
+.navbar-default .navbar-toggle {
+    border-color: #b2dfdd;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: #b2dfdd;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #ecf0f1;
+}
+
+.navbar-default .navbar-collapse {
+    border-color: #ecf0f1;
+}
+
+.navbar-default .navbar-link:hover {
+    color: #2f8e86;
+}
+
+
+
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+} 
