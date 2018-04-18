@@ -63,9 +63,9 @@
                                 </div>
                                 
                                 <div class="col-md-12 text-right" style="padding-bottom:7px;">
-                                <form action="editAnnouncementPage.php" method="post">
+                                <form action="editAnnouncementPage.php" method="get">
                                     <input type="hidden" id ="edit_postID" name="edit_postID" value="' . $announcementID . '"/>
-                                    <input type="submit" id="editButton" name="editButton" class="btn btn-success" value="Edit" style="font-size:10px"/>
+                                    <input type="submit" id="editButton" class="btn btn-success" value="Edit" style="font-size:10px"/>
                                         
                                     
                                 </form>

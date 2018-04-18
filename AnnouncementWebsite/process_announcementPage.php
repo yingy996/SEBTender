@@ -9,10 +9,8 @@
 
     if(!empty($_POST["editButton"])){
         $editID = $_POST["edit_postID"];
-        $_SESSION["editID"] = "$editID";
-        
+        //$_SESSION["editID"] = "$editID";
     }
 
-    
 
 ?>
