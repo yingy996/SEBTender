@@ -9,6 +9,8 @@ namespace SEBeTender
 {
 	public partial class App : Application
 	{
+        static tenderItemDatabase database;
+
 		public App ()
 		{
 			InitializeComponent();
@@ -16,6 +18,22 @@ namespace SEBeTender
             MainPage = new SEBeTender.rootPage();
             //MainPage = new MainPage();
 		}
+
+        public static tenderItemDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new tenderItemDatabase(DependencyService.Get<IFileHelper>().getLocalFilePath("tenderSQLite.db3"));
+                    Console.WriteLine("Database: " + database.getTenderItems());
+                } else
+                {
+                    Console.WriteLine("My database isn't null!");
+                }
+                return database;
+            }
+        }
 
 		protected override void OnStart ()
 		{

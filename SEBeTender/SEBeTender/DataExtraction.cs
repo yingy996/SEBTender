@@ -119,6 +119,7 @@ namespace SEBeTender
                         var htmlDoc = new HtmlDocument();
                         htmlDoc.LoadHtml(httpResult);
                         var originatorTrNodes = htmlDoc.DocumentNode.SelectNodes("//table/tr/td/table/tr");
+
                         int originatorTrRowCount = 0;
 
                         foreach (var originatorTrNode in originatorTrNodes)

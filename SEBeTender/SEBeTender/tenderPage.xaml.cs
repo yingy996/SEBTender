@@ -17,7 +17,8 @@ namespace SEBeTender
         private string previousUrl;
         private bool isPreviousAvailable = false;
         private bool isNextAvailable = false;
-		public tenderPage ()
+
+        public tenderPage ()
 		{
             BindingContext = this;
             var label = new Label { Text = "text" };
@@ -69,6 +70,18 @@ namespace SEBeTender
             listView.ItemsSource = tenderItems;
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            //var database = App.Database;
+            //List<tenderItem> tenderItems = await App.Database.getTenderItems();
+            //if (tenderItems.Count > 0)
+            //{
+            //    listView.ItemsSource = await App.Database.getTenderItems();
+            //}
+            
         }
 
         async void onItemSelected(object sender, SelectedItemChangedEventArgs e)

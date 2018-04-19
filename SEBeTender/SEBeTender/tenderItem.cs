@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using SQLite;
 namespace SEBeTender
 {
     public class tenderItem
     {
-        private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass, name, officePhone, extension, mobilePhone, email, fax, checkedValue, addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
+        
+        private string reference;
+        private string title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass, name, officePhone, extension, mobilePhone, email, fax, checkedValue, addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
         private Dictionary<string, string> fileLinks = new Dictionary<string, string>();
+
+        [PrimaryKey, AutoIncrement]
+        public int ID { get; set; }
 
         public string Reference
         {
