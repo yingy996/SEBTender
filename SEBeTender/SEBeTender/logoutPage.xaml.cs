@@ -35,7 +35,8 @@ namespace SEBeTender
                 logoutStatus.FontAttributes = FontAttributes.None;
                 await Task.Delay(500);
 
-                App.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) };
+                Application.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) };
+
             }
             else
             {
