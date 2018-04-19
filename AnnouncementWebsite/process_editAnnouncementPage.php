@@ -11,7 +11,7 @@ $oriannouncementTitle = $oriannouncementContent = "";
 if (isset($_GET["edit_postID"])) {
     $editID = $_GET["edit_postID"];
 } else {
-    header("location: announcementPage.php");
+    header("location: index.php");
 }
 //echo $_SESSION["user_login"];
 if (!isset($_SESSION["user_login"])) {
@@ -80,7 +80,7 @@ if (!empty($_GET["edit_postID"])) {
                 $error_message = "";
                 $success_message = "You have succesfully edited your announcement!";	
                 unset($_POST);
-                header("refresh:3, announcementPage.php");
+                header("refresh:3, index.php");
             } else {
                 $error_message = "Problem in editing announcement. Try Again!";	
             }
@@ -91,6 +91,6 @@ if (!empty($_GET["edit_postID"])) {
 
     } 
 } else {
-    header("Location: announcementPage.php");
+    header("Location: index.php");
 }   
 ?>
