@@ -9,7 +9,9 @@ namespace SEBeTender
 {
 	public partial class App : Application
 	{
-		public App ()
+        public static string AppName = "SEBeTender";
+
+        public App ()
 		{
 			InitializeComponent();
 

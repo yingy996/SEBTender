@@ -13,6 +13,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)adminAuthentication.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)announcementPage.xaml.cs">
       <DependentUpon>announcementPage.xaml</DependentUpon>
       <SubType>Code</SubType>
