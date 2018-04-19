@@ -39,6 +39,8 @@
             </div>
         </nav>
         
-        <div class="col-xs-12 text-center square">
+        <div>
             <img class="sescobanner" src="images/banner.jpg"/>
-        </div>';
+        </div>
+            
+        ';

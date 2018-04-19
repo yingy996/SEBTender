@@ -21,9 +21,14 @@
         ?>
 
         <!-- Body content -->
-        <div class="container container-fluid">
+        <div class="container">
             <!-- Sort and filter list -->
-            <h1>Announcements</h1>
+            <div class="row">
+                <div class="col-md-12">
+                <h1>Announcements</h1>
+                </div>
+            </div>
+            
             <hr/>
             <?php 
             $index = 0;	
@@ -46,7 +51,7 @@
                         $edited = "";
                     }
                     echo
-                        '<div class="col-md-10 col-md-offset-1">
+                        '<div class="col-md-12">
                         <div class="row" style="border:1px solid #cecece;">
                             <div class="col-xs-12">
                                 <div class="col-md-12"><h3>' . $announcement["announcementTitle"] . '</h3>

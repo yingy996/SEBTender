@@ -19,10 +19,11 @@
             <div class="row">
                 <div class='col-xs-10 col-xs-offset-1' style="background-color:;">
                     <div class='col-md-12'>
-                        <?php echo "<br/><p>Announcement Post ID: " .$_GET["edit_postID"]."</p>"; ?>
+                        <br/>
                         <form name="editAnnouncement" method="post" action="" novalidate role="form" >
                         <fieldset>
                             <legend>Edit an announcement</legend>
+                            <?php echo "<p>Announcement Post ID: " .$_GET["edit_postID"]."</p><br/>"; ?>
                             <?php if(!empty($success_message)) { ?>	
                             <div class="alert alert-success">
                                 <?php if(isset($success_message)) echo $success_message; ?></div>
