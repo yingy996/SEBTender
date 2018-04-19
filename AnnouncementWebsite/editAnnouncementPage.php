@@ -60,8 +60,7 @@
                             <p>
                                 <input type="submit" class="btn btn-default" value="Edit Announcement" name="submitEdit"/>
                             </p>
-
-
+                            
                         </fieldset>
 
                     </form>
