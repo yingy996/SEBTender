@@ -34,13 +34,13 @@ namespace SEBeTender
         async void onItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             listView.SelectedItem = null;
-            var item = e.SelectedItem as tenderItem;
+            /*var item = e.SelectedItem as tenderItem;
 
             if (item != null)
             {
                 listView.SelectedItem = null;
                 await Navigation.PushAsync(new tenderDetailPage(item));
-            }
+            }*/
         }
     }
 }

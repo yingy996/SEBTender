@@ -56,8 +56,6 @@ namespace SEBeTender
                     await Task.Delay(1000);
                     errorLbl.TextColor = Color.Red;
                     errorLbl.Text = "";
-                    Console.WriteLine("My cookie: " + httpResult);
-                    Console.WriteLine("Cookie result: " + userSession.userLoginCookie);
                     //await Navigation.PushAsync(new tenderPage());
                     //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderEligiblePage()) };
                     App.Current.MainPage = new rootPage(true);
@@ -68,7 +66,8 @@ namespace SEBeTender
                     //Display error message
                     errorLbl.Text = httpResult;
                 }
-                
+                Console.WriteLine("My cookie: " + httpResult);
+                Console.WriteLine("Cookie result: " + userSession.userLoginCookie);
             }
 
         }
