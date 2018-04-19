@@ -30,12 +30,12 @@
                 //takes plain text password and hashed string password from database user_account table as arguments, log in if matches
                 if(password_verify($password, $result2)){
                     if (session_status() == PHP_SESSION_NONE) {
-                        session_start();
+                        @session_start();
                     }
 
                     $_SESSION["user_login"] = $username;
 
-                    header("refresh:3; url=announcementPage.php");
+                    header("refresh:2;url=index.php");
                     $resultMsg = "Login successfully! You will be redirected soon.";
                 } else {
                     $errorMsg = "Invalid password. Please try again!";
@@ -67,6 +67,4 @@
             $errorMsg = "Your username or password is invalid. Please try again.";
         }*/
     }
-
-    
 ?>

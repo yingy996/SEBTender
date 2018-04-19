@@ -1,3 +1,8 @@
+<?php 
+    include("header.php");
+    include("process_login.php");
+?>
+    
 <!DOCTYPE html>
 <html data-ng-app="">
 <head>
@@ -10,32 +15,6 @@
     
 </head>
 <body id="loginpg"> <!--full page background img -->
-    <?php 
-		include("header.php");
-        include("process_login.php");
-    
-    
-    
-    /*require_once("dbcontroller.php");
-    $db_handle = new DBController();
-    
-    $username = "admintest123";
-    $password = password_hash("admintest132", PASSWORD_DEFAULT);
-    $adminname = "Upshur";
-    $adminemail = "upshur@yahoo.com";
-    $query = $db_handle->getConn()->prepare("INSERT INTO administrator (administratorID, username, password, administratorName, administratorEmail) VALUES (NULL, :username, :password, :adminname, :adminemail)");
-    
-            $query->bindParam(":username", $username);
-            $query->bindParam(":password", $password);
-            $query->bindParam(":adminname", $adminname);
-            $query->bindParam(":adminemail", $adminemail);
-            
-
-
-            $result = $query->execute();*/
-    ?>
-    <!-- Navigation Bar -->
-    
 
     <div class="container-fluid">
         <div class="row">
