@@ -13,12 +13,14 @@ if (isset($_GET["edit_postID"])) {
 } else {
     header("location: announcementPage.php");
 }
- echo $_SESSION["user_login"];
+//echo $_SESSION["user_login"];
+if (!isset($_SESSION["user_login"])) {
+    header("location: login.php");
+}
+
 if (!empty($_GET["edit_postID"])) {
-
-    echo $_GET["edit_postID"];
+    
     $editID = $_GET["edit_postID"];
-
     //$editID = $_SESSION["editID"];
 
     $query = $db_handle->getConn()->prepare("SELECT announcementTitle, announcementContent FROM announcement WHERE announcementID = " . $editID);
@@ -48,7 +50,7 @@ if (!empty($_GET["edit_postID"])) {
             $errorpresence = true;
         }
 
-        echo $announcement_titleerr." ".$announcement_contenterr;
+        //echo $announcement_titleerr." ".$announcement_contenterr;
 
         if($error_message == "" && $errorpresence == false) {
 
@@ -63,7 +65,7 @@ if (!empty($_GET["edit_postID"])) {
             $login_user = $_SESSION["user_login"];
             $editID = $_GET["edit_postID"];
             
-            echo $announcement_title." ".$announcement_content." ".$login_user." ".$editID;
+            //echo $announcement_title." ".$announcement_content." ".$login_user." ".$editID;
             
             $query = $db_handle->getConn()->prepare("UPDATE announcement SET announcementTitle = '$announcement_title', announcementContent = '$announcement_content', editedDate = NOW(), editedBy = '$login_user' WHERE announcementID = $editID");
             //$query->bindParam(":announcement_title", $announcement_title);
@@ -78,7 +80,7 @@ if (!empty($_GET["edit_postID"])) {
                 $error_message = "";
                 $success_message = "You have succesfully edited your announcement!";	
                 unset($_POST);
-                header("refresh:3");
+                header("refresh:3, announcementPage.php");
             } else {
                 $error_message = "Problem in editing announcement. Try Again!";	
             }

@@ -15,10 +15,12 @@
         include("process_editAnnouncementPage.php")
         ?>
 
-        <div class="container-fluid">
+        <div class="container container-fluid">
             <div class="row">
-                <div class="col-xs-4 col-xs-offset-4">
-                    <form name="editAnnouncement" method="post" action="" novalidate role="form">
+                <div class='col-xs-10 col-xs-offset-1' style="background-color:;">
+                    <div class='col-md-12'>
+                        <?php echo "<br/><p>Announcement Post ID: " .$_GET["edit_postID"]."</p>"; ?>
+                        <form name="editAnnouncement" method="post" action="" novalidate role="form" >
                         <fieldset>
                             <legend>Edit an announcement</legend>
                             <?php if(!empty($success_message)) { ?>	
@@ -63,6 +65,7 @@
                         </fieldset>
 
                     </form>
+                    </div>
                 </div>
             </div>
         </div>

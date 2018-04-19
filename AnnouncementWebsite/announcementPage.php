@@ -21,7 +21,7 @@
     ?>
     
     <!-- Body content -->
-    <div class="container-fluid">
+    <div class="container container-fluid">
         <!-- Sort and filter list -->
         <h1>Announcements</h1>
         <hr/>
