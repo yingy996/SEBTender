@@ -14,14 +14,14 @@ class DBController {
         
         try{
             $opt = array(PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION);
-            $conn = new PDO("mysql:host=localhost;dbname=sarawaktenderapplication_db;charset=utf8mb4", "root", "", $opt);
+            $conn = new PDO("mysql:host=". $this->host . ";dbname=" . $this->database . ";charset=utf8mb4", $this->user, $this->password, $opt);
             error_reporting(E_ALL);
             ini_set("display_errors",1);
 
             #$conn = mysqli_connect($this->host,$this->user,$this->password,$this->database);
             return $conn;
         }catch(PDOException $e){
-            echo $e->getMessage();
+            //echo $e->getMessage();
         }
 	}
 	

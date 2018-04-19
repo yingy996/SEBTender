@@ -19,7 +19,7 @@
 
                 <div class="collapse navbar-collapse" id="navbar-to-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="announcementPage.php">Announcements</a></li>
+                        <li><a href="index.php">Announcements</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                 
                 //display if adminnistrator logged in
