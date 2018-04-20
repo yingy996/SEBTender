@@ -36,7 +36,8 @@
                 <BoxView Grid.Row="6" Grid.Column="0" BackgroundColor="DarkGray" HeightRequest="0.5" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
 
                 <!--<Label Text="Admin? Login here" FontAttributes="Italic" Grid.Row="5" Grid.Column="0" TextColor="DarkGray" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>-->
-                <Button Text="Admin? Login here" FontAttributes="Italic" BackgroundColor="Transparent" TextColor="#4295d1" Grid.Row="7" Grid.Column="0" HorizontalOptions="CenterAndExpand" Margin="0,30,0,0"/>
+                <!--<Button Text="Admin? Login here" FontAttributes="Italic" BackgroundColor="Transparent" TextColor="#4295d1" Grid.Row="7" Grid.Column="0" HorizontalOptions="CenterAndExpand" Margin="0,30,0,0"/>-->
+                <Label x:Name="adminLoginLbl" Text="Admin? Login here" FontAttributes="Italic" TextColor="DodgerBlue" Grid.Row="7" Grid.Column="0" HorizontalOptions="CenterAndExpand" Margin="0,30,0,0"/>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

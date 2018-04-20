@@ -56,6 +56,4 @@ if(!empty($_POST["postAnnouncementbutton"])) {
         $error_message = "Failed to submit";
     }
 }
-
-
 ?>

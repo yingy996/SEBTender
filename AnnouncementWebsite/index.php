@@ -67,13 +67,24 @@
                                 <p>' . $announcement["announcementContent"] . '</p>
                                 </div>
 
-                                <div class="col-md-12 text-right" style="padding-bottom:7px;">';
+                                <div class="col-md-12 text-right" style="padding-bottom:10px;  padding-top:3px;">';
 
                         if (isset($_SESSION["user_login"])) {
+                            // Edit button for logged in account
                             echo 
-                                '<form action="editAnnouncementPage.php" method="get">
-                                        <input type="hidden" id ="edit_postID" name="edit_postID" value="' . $announcementID . '"/>
-                                        <input type="submit" id="editButton" class="btn btn-success" value="Edit" style="font-size:10px"/>           
+                                '<div class="col-md-11 text-right" style="padding-bottom:7px;">
+                                    <form action="editAnnouncementPage.php" method="get">
+                                            <input type="hidden" id ="edit_postID" name="edit_postID" value="' . $announcementID . '"/>
+                                            <input type="submit" id="editButton" class="btn btn-success" value="Edit" style="font-size:10px"/>           
+                                    </form>
+                                </div>';
+                            
+                            // Delete button for logged in account
+                            echo 
+                                '<form action="process_deleteAnnouncementPage.php" method="post">
+                                        <input type="hidden" id ="delete_postID" name="delete_postID" value="' . $announcementID . '"/>
+                                        <input type="hidden" name="login_user" value="' . $login_user . '"/>
+                                        <input type="submit" id="deleteButton" class="btn btn-danger" value="Delete" style="font-size:10px" onclick="return confirm(\'Are you sure you want to delete this announcement post?\');"/>           
                                     </form>';
                         }
                     

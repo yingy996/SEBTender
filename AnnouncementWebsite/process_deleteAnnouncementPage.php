@@ -1,41 +1,50 @@
 <?php
 require_once("dbcontroller.php");
+$db_handle = new DBController();
 
-$announcement_title = $announcement_content = "";
-$announcement_titleerr = $announcement_contenterr = "";
-$errorpresence = false;
-$error_message = "";
-$editID = "";
-$oriannouncementTitle = $oriannouncementContent = "";
-
-if (isset($_GET["edit_postID"])) {
-    $editID = $_GET["edit_postID"];
+if (isset($_POST["delete_postID"])) {
+    $deleteID = $_POST["delete_postID"];
+    //echo $deleteID;
 } else {
     header("location: index.php");
 }
-//echo $_SESSION["user_login"];
-if (!isset($_SESSION["user_login"])) {
+
+if (!isset($_POST["login_user"])) {
     header("location: login.php");
+} else {
+    $login_user = $_POST["login_user"];
 }
 
-if (!empty($_GET["edit_postID"])) {
-    
-    $editID = $_GET["edit_postID"];
-    //$editID = $_SESSION["editID"];
+if (!empty($_POST["delete_postID"])) {
 
-    $query = $db_handle->getConn()->prepare("SELECT announcementTitle, announcementContent FROM announcement WHERE announcementID = " . $editID);
+    $deleteID = $_POST["delete_postID"];
+
+    $query = $db_handle->getConn()->prepare("SELECT * FROM announcement WHERE announcementID = " . $deleteID);
     $query->execute();
     $oriAnnouncementResult = $query->fetchAll();
 
     if($oriAnnouncementResult[0][0] != "")
     {
-        $oriannouncementTitle = $oriAnnouncementResult[0]["announcementTitle"];
-        $oriannouncementContent = $oriAnnouncementResult[0]["announcementContent"];
+        
+        $query = $db_handle->getConn()->prepare("UPDATE announcement SET postDeleted = true, editedDate = NOW(), editedBy = '$login_user' WHERE announcementID = ". $deleteID);
+        $result = $query->execute();
+
+        if($result = true) {
+            //unset($_POST);
+            echo "<script type='text/javascript'>alert('Announcement post has been successfully deleted.');</script>";
+            header("refresh:0, index.php");
+        } else {
+            echo "<script type='text/javascript'>alert('Error occured while trying to delete announcement post. Please try again.');</script>";
+            header("refresh:0, index.php");
+            //$error_message = "Problem in editing announcement. Try Again!";	
+        }
 
     } else {
-        echo "CANNOT FIND ".$_GET["edit_postID"];
+        echo "CANNOT FIND ".$_POST["delete_postID"];
     }
+}
 
+    /*
     if(!empty($_POST["submitEdit"])) {
 
         //Announcement title Validation
@@ -63,17 +72,17 @@ if (!empty($_GET["edit_postID"])) {
             $announcement_title = sanitizeInput($_POST["title"]);
             $announcement_content = sanitizeInput($_POST["content"]);
             $login_user = $_SESSION["user_login"];
-            $editID = $_GET["edit_postID"];
-            
-            //echo $announcement_title." ".$announcement_content." ".$login_user." ".$editID;
-            
-            $query = $db_handle->getConn()->prepare("UPDATE announcement SET announcementTitle = '$announcement_title', announcementContent = '$announcement_content', editedDate = NOW(), editedBy = '$login_user' WHERE announcementID = $editID");
+            $deleteID = $_POST["delete_postID"];
+
+            //echo $announcement_title." ".$announcement_content." ".$login_user." ".$deleteID;
+
+            $query = $db_handle->getConn()->prepare("UPDATE announcement SET announcementTitle = '$announcement_title', announcementContent = '$announcement_content', editedDate = NOW(), editedBy = '$login_user' WHERE announcementID = $deleteID");
             //$query->bindParam(":announcement_title", $announcement_title);
             //$query->bindParam(":announcement_content", $announcement_content);
             //$query->bindParam(":login_user", $login_user);
-            //$query->bindParam(":editID", $editID);
+            //$query->bindParam(":deleteID", $deleteID);
 
-            
+
 
             $result = $query->execute();
             if($result = true) {
@@ -92,5 +101,6 @@ if (!empty($_GET["edit_postID"])) {
     } 
 } else {
     header("Location: index.php");
-}   
+}*/
+
 ?>

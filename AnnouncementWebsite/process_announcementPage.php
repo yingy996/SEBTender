@@ -3,7 +3,7 @@
 	require_once("dbcontroller.php");
 	$db_handle = new DBController();
 
-    $query = $db_handle->getConn()->prepare("SELECT announcementID, announcementTitle, announcementContent, publishedDate, editedDate, editedBy, postedBy FROM announcement ORDER BY publishedDate DESC");
+    $query = $db_handle->getConn()->prepare("SELECT announcementID, announcementTitle, announcementContent, publishedDate, editedDate, editedBy, postedBy FROM announcement WHERE postDeleted = false ORDER BY publishedDate DESC");
     $query->execute();
     $results = $query->fetchAll();
 
