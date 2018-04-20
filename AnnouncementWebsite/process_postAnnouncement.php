@@ -7,7 +7,6 @@ $error_message = "";
 
 if(!empty($_POST["postAnnouncementbutton"])) {
 
-
     /* Announcement title Validation */
     if(empty($_POST["title"])){
         $announcement_titleerr = "Please enter an announcement title";
@@ -44,7 +43,7 @@ if(!empty($_POST["postAnnouncementbutton"])) {
 
 
         $result = $query->execute();
-        if($result = true) {
+        if($result == true) {
             $error_message = "";
             $success_message = "You have succesfully posted your announcement!";	
             unset($_POST);
@@ -57,6 +56,4 @@ if(!empty($_POST["postAnnouncementbutton"])) {
         $error_message = "Failed to submit";
     }
 }
-
-
 ?>
