@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.announcementDetailPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10,10,10,10">
+                <Grid VerticalOptions="FillAndExpand" x:Name="displayGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Announcement Details" FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                    <!--<Label Text="Title" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" Margin="0,5,0,0" HorizontalTextAlignment="Center"/>-->
+                    <StackLayout Grid.Row="1" Grid.Column="0" Margin="0,10,0,0" Grid.ColumnSpan="2">
+                        <Label  x:Name="announcementTitlelbl" HorizontalTextAlignment="Center"  FontAttributes="Bold"/>
+                    </StackLayout>
+
+
+                    <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                    <!--<Label Text="Details" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" Margin="0,5,0,0" HorizontalTextAlignment="Center"/>-->
+                    <StackLayout Grid.Row="3" Grid.Column="0" Margin="0,10,0,0" Grid.ColumnSpan="2">
+                        <Label  x:Name="announcementContentlbl" HorizontalTextAlignment="Center" />
+                    </StackLayout>
+
+                    <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                    <Label Text="DatePosted: " Grid.Row="5" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <StackLayout Grid.Row="5" Grid.Column="1" Margin="0,5,0,0">
+                        <Label x:Name="publishedDatelbl"/>
+                    </StackLayout>
+
+                    <BoxView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                    <Label Text="PostedBy: " Grid.Row="7" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <StackLayout Grid.Row="7" Grid.Column="1" Margin="0,5,0,0">
+                        <Label x:Name="postedBylbl"/>
+                    </StackLayout>
+
+
+                    <BoxView Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                    <Label Text="Edited Date: " Grid.Row="9" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <StackLayout Grid.Row="9" Grid.Column="1" Margin="0,5,0,0">
+                        <Label x:Name="editedDatelbl"/>
+                    </StackLayout>
+
+
+                    <BoxView Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                    <Label Text="Edited By: " Grid.Row="11" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <Label Grid.Row="11" Grid.Column="1" x:Name="editedBylbl" Margin="0,5,0,0"/>
+
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+
+    </ContentPage.Content>
+</ContentPage>
