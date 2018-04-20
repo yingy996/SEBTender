@@ -25,7 +25,7 @@
                         <legend>Welcome Administrator</legend>
                         <p>Login to your account now.</p>
                         
-                        <p class="text-success"><?php echo $resultMsg; ?></p>
+                        <p id="isSuccess" class="text-success"><?php echo $resultMsg; ?></p>
                         <p class="text-danger"><?php echo $errorMsg; ?></p>
                         <div class="form-group">
                             <label for="username">Username:</label>
