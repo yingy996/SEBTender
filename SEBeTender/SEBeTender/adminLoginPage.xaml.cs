@@ -3,36 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace SEBeTender
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class loginPage : ContentPage
+	public partial class adminLoginPage : ContentPage
 	{
-		public loginPage ()
+		public adminLoginPage ()
 		{
 			InitializeComponent ();
-
-            //Set admin login hyperlink label
-            var adminLoginLblTapRecognizer = new TapGestureRecognizer();
-            adminLoginLblTapRecognizer.Tapped += onAdminLoginClicked;
-            adminLoginLbl.GestureRecognizers.Add(adminLoginLblTapRecognizer);
-        }
+		}
 
         async void onLoginBtnClicked(object sender, EventArgs e)
-        {                    
+        {
             errorLbl.Text = "";
             bool isInputsValid = true;
             string username = "", password = "";
             if (String.IsNullOrEmpty(userIdEntry.Text) || String.IsNullOrWhiteSpace(userIdEntry.Text))
             {
-                
+
                 errorLbl.Text += "Please enter User Id. ";
                 isInputsValid = false;
-            } 
+            }
 
             if (String.IsNullOrEmpty(passwordEntry.Text) || String.IsNullOrWhiteSpace(passwordEntry.Text))
             {
@@ -48,12 +43,20 @@ namespace SEBeTender
                 password = passwordEntry.Text;
 
                 //Send HTTP request to log user in 
-                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostUserLogin(username, password));
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostAdminLogin(username, password));
                 var httpResult = httpTask.ToString();
+
+                //Data extraction to get admin login status from HTTP response
+                var status = DataExtraction.getWebData(httpResult, "adminLoginPage");
+
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
-                if (httpResult == "Success")
+
+                //if login success, save the user account with Xamarin.Auth
+                if (status.ToString() == "success")
                 {
+                    adminAuth.saveCredentials(username, password);
+                    Console.WriteLine("Admin login: " + adminAuth.Username);
                     //Navigate to tender page
                     errorLbl.TextColor = Color.Green;
 
@@ -61,26 +64,18 @@ namespace SEBeTender
                     await Task.Delay(1000);
                     errorLbl.TextColor = Color.Red;
                     errorLbl.Text = "";
-                    Console.WriteLine("My cookie: " + httpResult);
-                    Console.WriteLine("Cookie result: " + userSession.userLoginCookie);
+
                     //await Navigation.PushAsync(new tenderPage());
                     //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderEligiblePage()) };
-                    App.Current.MainPage = new rootPage(true);
+                    App.Current.MainPage = new rootPage(false);
                     //rootPage.changeDetailPage(typeof(tenderPage));
-                    
-                } else
-                {
-                    //Display error message
-                    errorLbl.Text = httpResult;
                 }
-                
+                else
+                {
+                    errorLbl.Text = "Login failed! Please try again.";
+                }
             }
 
         }
-
-        async void onAdminLoginClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new adminLoginPage());
-        }
-	}
+    }
 }
