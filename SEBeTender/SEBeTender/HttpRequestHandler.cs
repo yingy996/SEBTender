@@ -47,6 +47,10 @@ namespace SEBeTender
             return result;
         }
 
+        internal static Task GetAsync(string v)
+        {
+            throw new NotImplementedException();
+        }
 
         public static async Task<string> SearchPostRequest(string url, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingClosingDateFrom, string biddingClosingDateTo)
         {
@@ -169,4 +173,27 @@ namespace SEBeTender
             return "Success";
         }
     }
+    /*
+    public static async Task<string> getEditAnnouncementPage(string announcementid)
+    {
+        string result = "";
+        //var parameters = new FormUrlEncodedContent(new[] {
+        //        new KeyValuePair<string,string>("announcementid", announcementid)
+         //   });
+
+        HttpClient httpClient = new HttpClient();
+        try
+        {
+            var response = await httpClient.GetAsync("http://sebannouncement.000webhostapp.com/getEditPageMobile.php?announcementid=" + announcementid);
+
+            result = response.Content.ReadAsStringAsync().Result;
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+        return result;
+    }*/
 }
