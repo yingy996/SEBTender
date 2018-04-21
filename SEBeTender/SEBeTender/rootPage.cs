@@ -22,18 +22,33 @@ namespace SEBeTender
             
 		}
 
-        public rootPage (bool isLoggedIn)
+        public rootPage (bool isUserLoggedIn)
         {
-            //set the menu list items for logged in user
-            menuData data = new menuData(true);
-            menuPage = new menuPage();
-            menuPage.menu.ItemsSource = data;
+            if (isUserLoggedIn)
+            {
+                //set the menu list items for logged in user
+                menuData data = new menuData(true);
+                menuPage = new menuPage();
+                menuPage.menu.ItemsSource = data;
 
-            Master = menuPage;
-            var displayPage = new tenderEligiblePage();
-            Detail = new NavigationPage(displayPage);
+                Master = menuPage;
+                var displayPage = new tenderEligiblePage();
+                Detail = new NavigationPage(displayPage);
 
-            menuPage.menu.ItemSelected += onItemSelected;
+                menuPage.menu.ItemSelected += onItemSelected;
+            } else
+            {
+                //Admin is logged in
+                //set the menu list items for logged in admin
+                menuData data = new menuData(false);
+                menuPage = new menuPage();
+                menuPage.menu.ItemsSource = data;
+
+                Master = menuPage;
+                var displayPage = new announcementPage();
+                Detail = new NavigationPage(displayPage);
+            }
+            
         }
 
         void onItemSelected (object sender, SelectedItemChangedEventArgs e)
