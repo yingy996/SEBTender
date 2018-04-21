@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Json;
+//using JsonSystemAlias = System.Json;
+//using Xamarin.Auth;
 using Newtonsoft.Json;
 
 namespace SEBeTender
@@ -64,7 +65,7 @@ namespace SEBeTender
         }
 
 
-        async Task<JsonValue> getAnnouncementsResult()
+        async Task<string> getAnnouncementsResult()
         {
             try
             {
