@@ -96,7 +96,7 @@ namespace SEBeTender
                 this.Add(new menuItem()
                 {
                     Title = "Logout",
-                    TargetType = typeof(MainPage)
+                    TargetType = typeof(logoutPage)
                 });
             } else
             {
@@ -110,7 +110,7 @@ namespace SEBeTender
                 this.Add(new menuItem()
                 {
                     Title = "Add Announcement",
-                    TargetType = typeof(announcementPage)
+                    TargetType = typeof(adminPostAnnouncement)
                 });
 
 

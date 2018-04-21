@@ -201,17 +201,42 @@ namespace SEBeTender
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("password", password)
             });
-
+                                                       
             HttpClient httpClient = new HttpClient();
             try
             {
                 var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/checkAccountExists.php", parameters);
-                
-                
                 result = response.Content.ReadAsStringAsync().Result;
 
-                
                 return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<string> PostAddAnnouncement(string username, string password, string title, string content)
+
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password),
+                new KeyValuePair<string,string>("title", title),
+                new KeyValuePair<string,string>("content", content)
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appPostAnnouncement.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
             }
             catch (Exception ex)
             {

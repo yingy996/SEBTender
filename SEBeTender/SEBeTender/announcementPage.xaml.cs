@@ -57,6 +57,7 @@ namespace SEBeTender
                 await Navigation.PushAsync(new announcementDetailPage(item));
             }
         }
+        
     }
 
     public class RootObject

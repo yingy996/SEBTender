@@ -136,25 +136,25 @@ namespace SEBeTender
             }
 
 
-                 void OnClearButtonClicked(object sender, EventArgs e)
+            void OnClearButtonClicked(object sender, EventArgs e)
+            {
+                if (sender == clearButton)
                 {
-                    if (sender == clearButton)
-                    {
-                        tenderReferenceInput.Text = "";
-                        tenderTitleInput.Text = "";
-                        stationPicker.SelectedIndex = 0;
-                        selectedStation = "";
-                        closingdatefrom = "";
-                        closingdateto = "";
-                        bidclosingdatefrom = "";
-                        bidclosingdateto = "";
-                        closingdateFrom.TextColor = Color.LightGray;
-                        closingdateTo.TextColor = Color.LightGray;
-                        bidclosingdateFrom.TextColor = Color.LightGray;
-                        bidclosingdateTo.TextColor = Color.LightGray;
+                    tenderReferenceInput.Text = "";
+                    tenderTitleInput.Text = "";
+                    stationPicker.SelectedIndex = 0;
+                    selectedStation = "";
+                    closingdatefrom = "";
+                    closingdateto = "";
+                    bidclosingdatefrom = "";
+                    bidclosingdateto = "";
+                    closingdateFrom.TextColor = Color.LightGray;
+                    closingdateTo.TextColor = Color.LightGray;
+                    bidclosingdateFrom.TextColor = Color.LightGray;
+                    bidclosingdateTo.TextColor = Color.LightGray;
 
-                    }
                 }
             }
+        }
     }
 }
