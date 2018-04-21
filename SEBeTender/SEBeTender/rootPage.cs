@@ -47,8 +47,9 @@ namespace SEBeTender
                 Master = menuPage;
                 var displayPage = new announcementPage();
                 Detail = new NavigationPage(displayPage);
-            }
-            
+
+                menuPage.menu.ItemSelected += onItemSelected;
+            }           
         }
 
         void onItemSelected (object sender, SelectedItemChangedEventArgs e)
@@ -60,6 +61,11 @@ namespace SEBeTender
                 menuPage.menu.SelectedItem = null;
                 IsPresented = false;
             }
+        }
+
+        public void changePage(Page page)
+        {
+            Detail = new NavigationPage(page);
         }
 
 	}

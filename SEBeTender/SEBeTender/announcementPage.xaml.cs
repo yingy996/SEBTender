@@ -33,12 +33,6 @@ namespace SEBeTender
 
             List<RootObject> announcementItem = JsonConvert.DeserializeObject<List<RootObject>>(httpTask.Result);
 
-
-
-
-
-
-
             listView.ItemsSource = announcementItem;
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
@@ -86,8 +80,6 @@ namespace SEBeTender
                 await DisplayAlert("Error", ex.ToString(), "Ok");
                 return null;
             }
-
-
         }
 
     }
