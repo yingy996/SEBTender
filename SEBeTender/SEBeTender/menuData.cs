@@ -27,49 +27,13 @@ namespace SEBeTender
                 Title = "Search",
                 TargetType = typeof(searchTenderPage)
             });
-            /*
-            this.Add(new menuItem()
-            {
-                Title = "Purchased Tender Document",
-                TargetType = typeof(MainPage)
-            });
-
-            this.Add(new menuItem()
-            {
-                Title = "Payment",
-                TargetType = typeof(MainPage)
-            });
-
-            this.Add(new menuItem()
-            {
-                Title = "Download list",
-                TargetType = typeof(MainPage)
-            });
-
-            this.Add(new menuItem()
-            {
-                Title = "View Cart",
-                TargetType = typeof(viewCart)
-            });
-            */
+            
             this.Add(new menuItem()
             {
                 Title = "Login",
                 TargetType = typeof(loginPage)
             });
-            /*
-            this.Add(new menuItem()
-            {
-                Title = "User Info",
-                TargetType = typeof(userInfoPage)
-            });
 
-            this.Add(new menuItem()
-            {
-                Title = "Logout",
-                TargetType = typeof(logoutPage)
-            });
-            */
             this.Add(new menuItem()
             {
                 Title = "Registration",
@@ -77,61 +41,92 @@ namespace SEBeTender
             });
         }
 
-        public menuData(bool isLoggedIn)
+        public menuData(bool isUserLoggedIn)
         {
-            this.Add(new menuItem()
+            if (isUserLoggedIn)
             {
-                Title = "Announcement",
-                TargetType = typeof(announcementPage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "Announcement",
+                    TargetType = typeof(announcementPage)
+                });
 
-            this.Add(new menuItem()
-            {
-                Title = "Tender Document",
-                TargetType = typeof(tenderEligiblePage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "Tender Document",
+                    TargetType = typeof(tenderEligiblePage)
+                });
 
-            this.Add(new menuItem()
-            {
-                Title = "Search",
-                TargetType = typeof(searchTenderPage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "Search",
+                    TargetType = typeof(searchTenderPage)
+                });
 
-            this.Add(new menuItem()
-            {
-                Title = "Purchased Tender Document",
-                TargetType = typeof(purchasedTendersPage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "Purchased Tender Document",
+                    TargetType = typeof(purchasedTendersPage)
+                });
 
-            this.Add(new menuItem()
-            {
-                Title = "Payment",
-                TargetType = typeof(MainPage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "Payment",
+                    TargetType = typeof(MainPage)
+                });
 
-            this.Add(new menuItem()
-            {
-                Title = "Download list",
-                TargetType = typeof(MainPage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "Download list",
+                    TargetType = typeof(MainPage)
+                });
 
-            this.Add(new menuItem()
-            {
-                Title = "View Cart",
-                TargetType = typeof(MainPage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "View Cart",
+                    TargetType = typeof(MainPage)
+                });
 
-            this.Add(new menuItem()
-            {
-                Title = "User Info",
-                TargetType = typeof(userInfoPage)
-            });
+                this.Add(new menuItem()
+                {
+                    Title = "User Info",
+                    TargetType = typeof(userInfoPage)
+                });
 
-            this.Add(new menuItem()
+                this.Add(new menuItem()
+                {
+                    Title = "Logout",
+                    TargetType = typeof(MainPage)
+                });
+            } else
             {
-                Title = "Logout",
-                TargetType = typeof(logoutPage)
-            });
+                //Admin is logged in
+                this.Add(new menuItem()
+                {
+                    Title = "View Announcement",
+                    TargetType = typeof(announcementPage)
+                });
+
+                this.Add(new menuItem()
+                {
+                    Title = "Add Announcement",
+                    TargetType = typeof(announcementPage)
+                });
+
+
+                this.Add(new menuItem()
+                {
+                    Title = "Edit Announcement",
+                    TargetType = typeof(announcementPage)
+                });
+
+                this.Add(new menuItem()
+                {
+                    Title = "Logout",
+                    TargetType = typeof(announcementPage)
+                });
+            }
         }
+
     }
 }

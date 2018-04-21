@@ -28,19 +28,19 @@
                 <Label Text="Search Tender Notices" FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
 
                 <Label Text="Tender Reference:" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
-                <Frame CornerRadius="5" Grid.Row="1" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2">
+                <Frame CornerRadius="5" Grid.Row="1" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
                     <Entry x:Name="tenderReferenceInput"/>
                 </Frame>
 
 
                 <Label Text="Tender Title:" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
-                <Frame CornerRadius="5" Grid.Row="2" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2">
+                <Frame CornerRadius="5" Grid.Row="2" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
                     <Entry x:Name="tenderTitleInput"/>
                 </Frame>
 
 
                 <Label Text="Originating Station:" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center"/>
-                <Frame CornerRadius="5" Grid.Row="3" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2">
+                <Frame CornerRadius="5" Grid.Row="3" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
                     <Picker x:Name="stationPicker">
                         <Picker.Items>
                         </Picker.Items>

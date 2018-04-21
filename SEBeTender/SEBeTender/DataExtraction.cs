@@ -32,6 +32,10 @@ namespace SEBeTender
                 Task<Object> getEligibleTenderTask = Task.Run<Object>(() => getEligibleTenderPage(htmlDocument));
                 var output = getEligibleTenderTask.Result;
                 return output;
+            } else if (page == "adminLoginPage")
+            {
+                var output = getAdminLoginStatus(htmlDocument);
+                return output;
             }
             return "No result";
         }
@@ -44,163 +48,166 @@ namespace SEBeTender
             //List to store tender items
             List<tenderItem> tenderItems = new List<tenderItem>();
 
-            //Loop through the tender items to get the tender details for each of the tenders
-            foreach (var trNode in htmlNodes)
+            if (htmlNodes != null)
             {
-
-                //If the row is not the first row, create the tender item
-                if (rowCount > 0)
+                //Loop through the tender items to get the tender details for each of the tenders
+                foreach (var trNode in htmlNodes)
                 {
-                    //Get contact details of the tender 
-                    var tdNodes = trNode.ChildNodes;
-                    var tdNodeCount = tdNodes.Count;
-                    int count = 0;
 
-                    tenderItem tender = new tenderItem();
-
-                    foreach (var tdNode in tdNodes)
+                    //If the row is not the first row, create the tender item
+                    if (rowCount > 0)
                     {
+                        //Get contact details of the tender 
+                        var tdNodes = trNode.ChildNodes;
+                        var tdNodeCount = tdNodes.Count;
+                        int count = 0;
+
+                        tenderItem tender = new tenderItem();
+
+                        foreach (var tdNode in tdNodes)
+                        {
+                            if (tdNodeCount > 3)
+                            {
+                                if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
+                                {
+                                    switch (count)
+                                    {
+                                        case 0:
+                                            string aNodeString = tdNode.InnerHtml.Trim();
+                                            var htmlDoc = new HtmlDocument();
+                                            htmlDoc.LoadHtml(aNodeString);
+                                            var aNode = htmlDoc.DocumentNode.SelectSingleNode("//a");
+
+                                            tender.Reference = aNode.InnerHtml;
+                                            break;
+                                        case 1:
+                                            tender.Title = tdNode.FirstChild.InnerHtml;
+                                            break;
+                                        case 2:
+                                            tender.OriginatingStation = tdNode.InnerHtml;
+                                            break;
+                                        case 3:
+                                            tender.ClosingDate = "Closing date: " + tdNode.InnerHtml;
+                                            break;
+                                        case 4:
+                                            tender.BidClosingDate = tdNode.InnerHtml;
+                                            break;
+                                        case 5:
+                                            tender.FeeBeforeGST = tdNode.InnerHtml;
+                                            break;
+                                        case 6:
+                                            tender.FeeGST = tdNode.InnerHtml;
+                                            break;
+                                        case 7:
+                                            tender.FeeAfterGST = tdNode.InnerHtml;
+                                            break;
+                                    }
+                                    count++;
+                                }
+                            }
+                            else
+                            {
+                                if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
+                                {
+                                    tender.TendererClass = tdNode.InnerHtml;
+                                }
+                            }
+                        }
+
                         if (tdNodeCount > 3)
                         {
-                            if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
+                            //Get the ORIGINATOR details of the tender item
+                            string url = "http://www2.sesco.com.my/etender/notice/notice_originator.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
+
+                            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url, false));
+                            var httpResult = httpTask.ToString();
+
+                            var htmlDoc = new HtmlDocument();
+                            htmlDoc.LoadHtml(httpResult);
+                            var originatorTrNodes = htmlDoc.DocumentNode.SelectNodes("//table/tr/td/table/tr");
+                            int originatorTrRowCount = 0;
+
+                            if (originatorTrNodes != null)
                             {
-                                switch (count)
+                                foreach (var originatorTrNode in originatorTrNodes)
                                 {
-                                    case 0:
-                                        string aNodeString = tdNode.InnerHtml.Trim();
-                                        var htmlDoc = new HtmlDocument();
-                                        htmlDoc.LoadHtml(aNodeString);
-                                        var aNode = htmlDoc.DocumentNode.SelectSingleNode("//a");
-
-                                        tender.Reference = aNode.InnerHtml;
-                                        break;
-                                    case 1:
-                                        tender.Title = tdNode.FirstChild.InnerHtml;
-                                        break;
-                                    case 2:
-                                        tender.OriginatingStation = tdNode.InnerHtml;
-                                        break;
-                                    case 3:
-                                        tender.ClosingDate = "Closing date: " + tdNode.InnerHtml;
-                                        break;
-                                    case 4:
-                                        tender.BidClosingDate = tdNode.InnerHtml;
-                                        break;
-                                    case 5:
-                                        tender.FeeBeforeGST = tdNode.InnerHtml;
-                                        break;
-                                    case 6:
-                                        tender.FeeGST = tdNode.InnerHtml;
-                                        break;
-                                    case 7:
-                                        tender.FeeAfterGST = tdNode.InnerHtml;
-                                        break;
-                                }
-                                count++;
-                            }
-                        }
-                        else
-                        {
-                            if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
-                            {
-                                tender.TendererClass = tdNode.InnerHtml;
-                            }
-                        }
-                    }
-
-                    if (tdNodeCount > 3)
-                    {
-                        //Get the ORIGINATOR details of the tender item
-                        string url = "http://www2.sesco.com.my/etender/notice/notice_originator.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
-
-                        string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url, false));
-                        var httpResult = httpTask.ToString();
-
-                        var htmlDoc = new HtmlDocument();
-                        htmlDoc.LoadHtml(httpResult);
-                        var originatorTrNodes = htmlDoc.DocumentNode.SelectNodes("//table/tr/td/table/tr");
-                        int originatorTrRowCount = 0;
-
-                        if (originatorTrNodes != null)
-                        {
-                            foreach (var originatorTrNode in originatorTrNodes)
-                            {
-                                var originatorTdNodes = originatorTrNode.ChildNodes;
-                                foreach (var originatorTdNode in originatorTdNodes)
-                                {
-                                    if (!String.IsNullOrWhiteSpace(originatorTdNode.InnerHtml) && !originatorTdNode.FirstChild.HasChildNodes)
+                                    var originatorTdNodes = originatorTrNode.ChildNodes;
+                                    foreach (var originatorTdNode in originatorTdNodes)
                                     {
-
-                                        //The originator info starts on row 3, thus row 0,1,2 are skipped
-                                        switch (originatorTrRowCount)
+                                        if (!String.IsNullOrWhiteSpace(originatorTdNode.InnerHtml) && !originatorTdNode.FirstChild.HasChildNodes)
                                         {
-                                            case 3:
-                                                tender.Name = originatorTdNode.InnerHtml;
-                                                break;
-                                            case 4:
-                                                tender.OffinePhone = originatorTdNode.InnerHtml;
-                                                break;
-                                            case 5:
-                                                tender.Extension = originatorTdNode.InnerHtml;
-                                                break;
-                                            case 6:
-                                                tender.MobilePhone = originatorTdNode.InnerHtml;
-                                                break;
-                                            case 7:
-                                                tender.Email = originatorTdNode.InnerHtml;
-                                                break;
-                                            case 8:
-                                                tender.Fax = originatorTdNode.InnerHtml;
-                                                break;
-                                            default:
-                                                break;
+
+                                            //The originator info starts on row 3, thus row 0,1,2 are skipped
+                                            switch (originatorTrRowCount)
+                                            {
+                                                case 3:
+                                                    tender.Name = originatorTdNode.InnerHtml;
+                                                    break;
+                                                case 4:
+                                                    tender.OffinePhone = originatorTdNode.InnerHtml;
+                                                    break;
+                                                case 5:
+                                                    tender.Extension = originatorTdNode.InnerHtml;
+                                                    break;
+                                                case 6:
+                                                    tender.MobilePhone = originatorTdNode.InnerHtml;
+                                                    break;
+                                                case 7:
+                                                    tender.Email = originatorTdNode.InnerHtml;
+                                                    break;
+                                                case 8:
+                                                    tender.Fax = originatorTdNode.InnerHtml;
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
                                         }
                                     }
+                                    originatorTrRowCount++;
                                 }
-                                originatorTrRowCount++;
                             }
-                        }
-                        
-
-                        //Get the downloadable files of the tender item
-                        string url2 = "http://www2.sesco.com.my/etender/notice/notice_tender.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
-
-                        string httpTask2 = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url2,false));
-                        var httpResult2 = httpTask2.ToString();
-
-                        var htmlDoc2 = new HtmlDocument();
-                        htmlDoc2.LoadHtml(httpResult2);
-
-                        var filesTdNodes = htmlDoc2.DocumentNode.SelectNodes("//table/tr/td");
-
-                        if (filesTdNodes != null)
-                        {
-                            var fileLinkNodes = filesTdNodes.Elements("a");
 
 
-                            foreach (var fileLinkNode in fileLinkNodes)
+                            //Get the downloadable files of the tender item
+                            string url2 = "http://www2.sesco.com.my/etender/notice/notice_tender.jsp?Referno=" + WebUtility.UrlEncode(tender.Reference);
+
+                            string httpTask2 = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url2, false));
+                            var httpResult2 = httpTask2.ToString();
+
+                            var htmlDoc2 = new HtmlDocument();
+                            htmlDoc2.LoadHtml(httpResult2);
+
+                            var filesTdNodes = htmlDoc2.DocumentNode.SelectNodes("//table/tr/td");
+
+                            if (filesTdNodes != null)
                             {
-                                if (fileLinkNode.NodeType == HtmlNodeType.Element)
+                                var fileLinkNodes = filesTdNodes.Elements("a");
+
+
+                                foreach (var fileLinkNode in fileLinkNodes)
                                 {
-                                    string fileName = fileLinkNode.InnerHtml;
-                                    string fileLink = fileLinkNode.Attributes["href"].Value;
-                                    string[] linkSplit = Regex.Split(fileLink, "noticeDoc/");
-                                    string link = "http://www2.sesco.com.my/noticeDoc/" + Uri.EscapeUriString(linkSplit[1]);
-                                    tender.FileLinks[fileName] = link;
+                                    if (fileLinkNode.NodeType == HtmlNodeType.Element)
+                                    {
+                                        string fileName = fileLinkNode.InnerHtml;
+                                        string fileLink = fileLinkNode.Attributes["href"].Value;
+                                        string[] linkSplit = Regex.Split(fileLink, "noticeDoc/");
+                                        string link = "http://www2.sesco.com.my/noticeDoc/" + Uri.EscapeUriString(linkSplit[1]);
+                                        tender.FileLinks[fileName] = link;
+                                    }
                                 }
                             }
+
+                            tenderItems.Add(tender);
                         }
 
-                        tenderItems.Add(tender);
+                        rowCount++;
+                    }
+                    else
+                    {
+                        rowCount++;
                     }
 
-                    rowCount++;
                 }
-                else
-                {
-                    rowCount++;
-                }
-
             }
 
             return tenderItems;
@@ -294,5 +301,17 @@ namespace SEBeTender
             return tenderItems;
         }
 
+        private static string getAdminLoginStatus(HtmlDocument htmlDocument)
+        {
+            string isLoginSuccess = htmlDocument.GetElementbyId("isSuccess").InnerHtml;
+
+            if (!String.IsNullOrEmpty(isLoginSuccess))
+            {
+                return "success";
+            } else
+            {
+                return "fail";
+            }
+        }
     }
 }
