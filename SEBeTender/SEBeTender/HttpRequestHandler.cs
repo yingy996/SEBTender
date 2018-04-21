@@ -245,20 +245,22 @@ namespace SEBeTender
             return result;
         }
 
-        public static async Task<string> deleteAnnouncement(string announcementid)
+        public static async Task<string> deleteAnnouncement(string announcementid, string username)
         {
             string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string,string>("announcementid", announcementid)
+                new KeyValuePair<string,string>("announcementid", announcementid),
+                new KeyValuePair<string,string>("username", username)
             });
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/checkAccountExists.php", parameters);
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/deleteAnnouncement.php", parameters);
 
 
-                result = response.Content.ReadAsStringAsync().Result;
-
+                result = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Heyaaaa");
+                Console.WriteLine(result);
 
                 return result;
             }
