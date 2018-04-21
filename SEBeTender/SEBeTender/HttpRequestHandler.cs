@@ -168,5 +168,80 @@ namespace SEBeTender
 
             return "Success";
         }
+
+        public static async Task<string> getAnnouncementsResult()
+        {
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                //client.BaseAddress = new Uri("https://sebannouncement.000webhostapp.com/");
+
+                var response = await client.GetAsync("https://sebannouncement.000webhostapp.com/getAnnouncementMobile.php");
+
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+
+
+        }
+
+        public static async Task<string> PostadminloginCheck(string username, string password)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password)
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/checkAccountExists.php", parameters);
+                
+                
+                result = response.Content.ReadAsStringAsync().Result;
+
+                
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<string> deleteAnnouncement(string announcementid)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("announcementid", announcementid)
+            });
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/checkAccountExists.php", parameters);
+
+
+                result = response.Content.ReadAsStringAsync().Result;
+
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
     }
 }
