@@ -49,15 +49,15 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Text="Sarawak Energy Celebrates International Women's Day" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding announcementTitle}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
                                         <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-                                        <Label Text="KUCHING, 29TH MARCH 2018, THURSDAY: Sarawak Energy marked International Women's Day yesterday in appreciation of the contribution of its women workforce as well as..." Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                        <Label Text="{Binding announcementContent}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
 
                                         <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
 
-                                        <Label Text="03.04.2018" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
-                                        
+                                        <Label Text="{Binding publishedDate}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
                                     </Grid>
                                 </Frame>
                             </ViewCell>

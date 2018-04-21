@@ -33,7 +33,7 @@ namespace SEBeTender
                 Title = "Login",
                 TargetType = typeof(loginPage)
             });
-            
+
             this.Add(new menuItem()
             {
                 Title = "Registration",
