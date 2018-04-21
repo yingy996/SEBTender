@@ -31,6 +31,10 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Cart.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataExtraction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)editAnnouncement.xaml.cs">
+      <DependentUpon>editAnnouncement.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)editContactPage.xaml.cs">
       <DependentUpon>editContactPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -167,6 +171,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)announcementDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)editAnnouncement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
