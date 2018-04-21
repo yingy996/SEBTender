@@ -23,12 +23,12 @@ namespace SEBeTender
             InitializeComponent();
             previousPage.IsVisible = false;
 
-            Console.WriteLine(getAnnouncementsResult());
+            Console.WriteLine(HttpRequestHandler.getAnnouncementsResult());
 
             var items = Enumerable.Range(0, 10);
 
 
-            Task<string> httpTask = Task.Run<string>(() => getAnnouncementsResult().Result);
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.getAnnouncementsResult().Result);
             Console.WriteLine(httpTask.Result);
 
             List<RootObject> announcementItem = JsonConvert.DeserializeObject<List<RootObject>>(httpTask.Result);
@@ -57,31 +57,7 @@ namespace SEBeTender
                 await Navigation.PushAsync(new announcementDetailPage(item));
             }
         }
-
-
-        async Task<string> getAnnouncementsResult()
-        {
-            try
-            {
-
-                HttpClient client = new HttpClient();
-
-                //client.BaseAddress = new Uri("https://sebannouncement.000webhostapp.com/");
-
-                var response = await client.GetAsync("https://sebannouncement.000webhostapp.com/getAnnouncementMobile.php");
-
-                string result = response.Content.ReadAsStringAsync().Result;
-
-                return result;
-
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Error", ex.ToString(), "Ok");
-                return null;
-            }
-        }
-
+        
     }
 
     public class RootObject
