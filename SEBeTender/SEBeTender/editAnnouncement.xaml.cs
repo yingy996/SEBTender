@@ -88,7 +88,7 @@ namespace SEBeTender
             //var page = App.Current.MainPage as rootPage;
             //var announcementPage = new announcementPage();
             //page.changePage(announcementPage);
-            App.Current.MainPage = new rootPage { Detail = new NavigationPage(new announcementDetailPage(editID)) };
+            Application.Current.MainPage.Navigation.PopAsync();
         }
 
         async void onUpdateBtnClick(object sender, EventArgs e)
