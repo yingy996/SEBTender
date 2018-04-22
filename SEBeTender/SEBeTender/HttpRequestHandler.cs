@@ -172,28 +172,33 @@ namespace SEBeTender
 
             return "Success";
         }
-    }
-    /*
-    public static async Task<string> getEditAnnouncementPage(string announcementid)
-    {
-        string result = "";
-        //var parameters = new FormUrlEncodedContent(new[] {
-        //        new KeyValuePair<string,string>("announcementid", announcementid)
-         //   });
 
-        HttpClient httpClient = new HttpClient();
-        try
+        public static async Task<string> PostEditAnnouncement(string username, string password, string editID, string title, string content)
         {
-            var response = await httpClient.GetAsync("http://sebannouncement.000webhostapp.com/getEditPageMobile.php?announcementid=" + announcementid);
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password),
+                new KeyValuePair<string,string>("editID", editID),
+                new KeyValuePair<string,string>("title", title),
+                new KeyValuePair<string,string>("content", content)
+            });
 
-            result = response.Content.ReadAsStringAsync().Result;
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appEditAnnouncement.php", parameters);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
             return result;
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
-        return result;
-    }*/
+    }
 }
