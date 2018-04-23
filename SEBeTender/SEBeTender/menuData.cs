@@ -54,6 +54,12 @@ namespace SEBeTender
                 this.Add(new menuItem()
                 {
                     Title = "Tender Document",
+                    TargetType = typeof(tenderPage)
+                });
+
+                this.Add(new menuItem()
+                {
+                    Title = "Available Tender Document",
                     TargetType = typeof(tenderEligiblePage)
                 });
 
@@ -61,6 +67,12 @@ namespace SEBeTender
                 {
                     Title = "Search",
                     TargetType = typeof(searchTenderPage)
+                });
+
+                this.Add(new menuItem()
+                {
+                    Title = "Tender Bookmark",
+                    TargetType = typeof(tenderBookmarkPage)
                 });
 
                 this.Add(new menuItem()

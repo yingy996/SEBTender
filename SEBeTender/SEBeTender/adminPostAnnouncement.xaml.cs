@@ -38,7 +38,8 @@ namespace SEBeTender
             {
                 Console.WriteLine("No PASSWORD");
             }
-               if (adminAuth.Username != null && adminAuth.Password != null)
+
+            if (adminAuth.Username != null && adminAuth.Password != null)
             {
                 activityIndicator.IsVisible = true;
                 activityIndicator.IsRunning = true;

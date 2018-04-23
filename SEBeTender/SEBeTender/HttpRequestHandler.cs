@@ -47,7 +47,6 @@ namespace SEBeTender
             return result;
         }
 
-
         public static async Task<string> SearchPostRequest(string url, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingClosingDateFrom, string biddingClosingDateTo)
         {
             HttpClient client = new HttpClient();
@@ -102,6 +101,7 @@ namespace SEBeTender
                 {                   
                     cookieResult = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
                     userSession.userLoginCookie = cookieResult;
+                    userSession.username = username;
                     
                 } else
                 {
@@ -296,6 +296,104 @@ namespace SEBeTender
             {
                 Console.WriteLine(ex);
             }
+            return result;
+        }
+
+        public static async Task<string> PostTenderBookmark(string username)
+        {
+            string result = "";
+
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username)
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_getUserBookmark.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return result;
+        }
+
+        public static async Task<string> PostManageTenderBookmark(string username, tenderItem tender, string action)
+        {
+            string result = "";
+
+            //default add tender bookmark action
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("tenderReferenceNumber", tender.Reference),
+                new KeyValuePair<string,string>("tenderTitle", tender.Title)
+                });
+
+            if (action == "delete")
+            {
+                parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("tenderReferenceNumber", tender.Reference),
+                new KeyValuePair<string,string>("isDelete", "1"),
+                });
+            }
+            
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_manageTenderBookmark.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return result;
+        }
+
+        public static async Task<string> PostGetBookmarkDetails(string tenderRefNo)
+        {
+            HttpClient client = new HttpClient();
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("SchReferno", tenderRefNo),
+                new KeyValuePair<string,string>("SchTendertitle", ""),
+                new KeyValuePair<string,string>("SchStation", ""),
+                new KeyValuePair<string,string>("SchFromClosedate", ""),
+                new KeyValuePair<string,string>("SchToClosedate", ""),
+                new KeyValuePair<string,string>("SchFromEbidClosedate", ""),
+                new KeyValuePair<string,string>("SchToEbidClosedate", "")
+            });
+
+            var uri = new Uri(string.Format("http://www2.sesco.com.my/etender/notice/notice.jsp", string.Empty));
+            try
+            {
+                var response = await client.PostAsync(uri, parameters);
+                Console.WriteLine("Response code: " + response.StatusCode);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
             return result;
         }
     }
