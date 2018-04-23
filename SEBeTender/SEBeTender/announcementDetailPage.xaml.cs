@@ -52,7 +52,22 @@ namespace SEBeTender
 
         }
 
-        async void OnDeleteButtonClicked(object sender, EventArgs e)
+        async void OnEditButtonClicked(object sender, EventArgs e)
+        {
+            if (announcementid == "")
+            {
+                Console.WriteLine(announcementid + "invalid");
+            }
+            else
+            {
+                var page = App.Current.MainPage as rootPage;
+                var editAnnouncementPage = new editAnnouncement(announcementid);
+                page.changePage(editAnnouncementPage);
+            }
+
+        }
+
+            async void OnDeleteButtonClicked(object sender, EventArgs e)
         {
             string username = "";
             username = adminAuth.Username;

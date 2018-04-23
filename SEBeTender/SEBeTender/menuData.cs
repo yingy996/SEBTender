@@ -113,13 +113,6 @@ namespace SEBeTender
                     TargetType = typeof(adminPostAnnouncement)
                 });
 
-
-                this.Add(new menuItem()
-                {
-                    Title = "Edit Announcement",
-                    TargetType = typeof(announcementPage)
-                });
-
                 this.Add(new menuItem()
                 {
                     Title = "Logout",
