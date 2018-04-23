@@ -42,9 +42,9 @@ namespace SEBeTender
 
                     adminAuth.DeleteCredentials();
 
-                    await Task.Delay(1000);
                     activityIndicator.IsVisible = false;
                     activityIndicator.IsRunning = false;
+                    await Task.Delay(1000);
 
                     App.Current.MainPage = new rootPage();
                     var page = App.Current.MainPage as rootPage;
@@ -62,9 +62,9 @@ namespace SEBeTender
                     logoutStatus.FontAttributes = FontAttributes.None;
                     logoutStatus.Text = "Error: Logout Unsuccessful please try again.";
 
-                    await Task.Delay(1000);
                     activityIndicator.IsVisible = false;
                     activityIndicator.IsRunning = false;
+                    await Task.Delay(1000);
 
                     var page = App.Current.MainPage as rootPage;
                     var announcementPage = new announcementPage();

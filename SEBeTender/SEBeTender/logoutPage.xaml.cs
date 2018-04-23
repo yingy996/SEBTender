@@ -33,7 +33,7 @@ namespace SEBeTender
                 //Clear user session 
                 userSession.userLoginCookie = "";
 
-                logoutStatus.Text = "You have successfully logout! You will be redirected to tender page shortly.";
+                logoutStatus.Text = "You have successfully logout! You will be redirected to login page shortly.";
                 logoutStatus.TextColor = Color.Default;
                 logoutStatus.FontAttributes = FontAttributes.None;
 
