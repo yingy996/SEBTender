@@ -7,6 +7,7 @@ namespace SEBeTender
     public static class userSession
     {
         public static string userLoginCookie = "";
+        public static string username = "";
         private static Cart cart = new Cart();
 
         public static Cart UserCart {

@@ -7,6 +7,7 @@ namespace SEBeTender
     public class tenderItem
     {
         private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass, name, officePhone, extension, mobilePhone, email, fax, checkedValue, addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
+        private string bookmarkImage = "bookmark.png";
         private Dictionary<string, string> fileLinks = new Dictionary<string, string>();
 
         public string Reference
@@ -110,10 +111,17 @@ namespace SEBeTender
             get { return checkedValue; }
             set { checkedValue = value; }
         }
+
         public string AddToCartQuantity
         {
             get { return addToCartQuantity; }
             set { addToCartQuantity = value; }
+        }
+
+        public string BookmarkImage
+        {
+            get { return bookmarkImage; }
+            set { bookmarkImage = value; }
         }
     }
 }
