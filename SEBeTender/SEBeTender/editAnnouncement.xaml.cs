@@ -6,9 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-//using JsonSystemAlias = System.Json;
-//using Xamarin.Auth;
 using Newtonsoft.Json;
+
 namespace SEBeTender
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -85,10 +84,10 @@ namespace SEBeTender
 
         private void onCancelBtnClick(object sender, EventArgs e)
         {
-            //var page = App.Current.MainPage as rootPage;
-            //var announcementPage = new announcementPage();
-            //page.changePage(announcementPage);
-            Application.Current.MainPage.Navigation.PopAsync();
+            var page = App.Current.MainPage as rootPage;
+            var announcementPage = new announcementPage();
+            page.changePage(announcementPage);
+            //Application.Current.MainPage.Navigation.PopAsync();
         }
 
         async void onUpdateBtnClick(object sender, EventArgs e)
@@ -134,9 +133,9 @@ namespace SEBeTender
                     if (httpResult == "You have succesfully edited the announcement post!")
                     {
                         await DisplayAlert("Success", httpResult, "OK");
-                        //var page = App.Current.MainPage as rootPage;
-                        //var announcementPage = new announcementPage();
-                        //page.changePage(announcementPage);
+                        var page = App.Current.MainPage as rootPage;
+                        var announcementPage = new announcementPage();
+                        page.changePage(announcementPage);
 
                     }
                     else

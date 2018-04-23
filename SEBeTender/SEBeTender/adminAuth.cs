@@ -57,5 +57,19 @@ namespace SEBeTender
                 } 
             }
         }
+
+        public static void DeleteCredentials()
+        {
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                adminUsername = null;
+                adminPassword = null;
+            }
+            var account = AccountStore.Create().FindAccountsForService(App.AppName).FirstOrDefault();
+            if (account != null)
+            {
+                AccountStore.Create().Delete(account, App.AppName);
+            }
+        }
     }
 }

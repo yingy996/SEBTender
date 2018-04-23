@@ -47,10 +47,6 @@ namespace SEBeTender
             return result;
         }
 
-        internal static Task GetAsync(string v)
-        {
-            throw new NotImplementedException();
-        }
 
         public static async Task<string> SearchPostRequest(string url, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingClosingDateFrom, string biddingClosingDateTo)
         {
@@ -173,6 +169,82 @@ namespace SEBeTender
             return "Success";
         }
 
+        public static async Task<string> getAnnouncementsResult()
+        {
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                //client.BaseAddress = new Uri("https://sebannouncement.000webhostapp.com/");
+
+                var response = await client.GetAsync("https://sebannouncement.000webhostapp.com/getAnnouncementMobile.php");
+
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+
+
+        }
+
+        public static async Task<string> PostadminloginCheck(string username, string password)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password)
+            });
+                                                       
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/checkAccountExists.php", parameters);
+                result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<string> PostAddAnnouncement(string username, string password, string title, string content)
+
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password),
+                new KeyValuePair<string,string>("title", title),
+                new KeyValuePair<string,string>("content", content)
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appPostAnnouncement.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
         public static async Task<string> PostEditAnnouncement(string username, string password, string editID, string title, string content)
         {
             string result = "";
@@ -193,6 +265,32 @@ namespace SEBeTender
                 {
                     result = await response.Content.ReadAsStringAsync();
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<string> deleteAnnouncement(string announcementid, string username)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("announcementid", announcementid),
+                new KeyValuePair<string,string>("username", username)
+            });
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/deleteAnnouncement.php", parameters);
+
+
+                result = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Heyaaaa");
+                Console.WriteLine(result);
+
+                return result;
             }
             catch (Exception ex)
             {

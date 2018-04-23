@@ -21,7 +21,8 @@ namespace SEBeTender
 
 		protected override void OnStart ()
 		{
-			// Handle when your app starts
+            // Handle when your app starts
+            adminAuth.DeleteCredentials();
 		}
 
 		protected override void OnSleep ()

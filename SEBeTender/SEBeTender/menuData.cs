@@ -110,14 +110,7 @@ namespace SEBeTender
                 this.Add(new menuItem()
                 {
                     Title = "Add Announcement",
-                    TargetType = typeof(announcementPage)
-                });
-
-
-                this.Add(new menuItem()
-                {
-                    Title = "Edit Announcement",
-                    TargetType = typeof(announcementPage)
+                    TargetType = typeof(adminPostAnnouncement)
                 });
 
                 this.Add(new menuItem()
