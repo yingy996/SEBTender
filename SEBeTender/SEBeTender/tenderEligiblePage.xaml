@@ -60,11 +60,20 @@
                                             </Frame>
                                         </StackLayout>
 
-                                        <Image Source="cart.png" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="End" VerticalOptions="Center" Margin="0,20,10,0">
-                                            <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Tapped="OnCartTapped" CommandParameter="{Binding .}" />
-                                            </Image.GestureRecognizers>
-                                        </Image>
+                                        <StackLayout Orientation="Horizontal" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2">
+                                            <Image Source="{Binding BookmarkImage}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0,20,10,0">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnBookmarkTapped" CommandParameter="{Binding .}" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+
+                                            <Image Source="cart.png" HorizontalOptions="End" VerticalOptions="Center" Margin="0,20,10,0">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnCartTapped" CommandParameter="{Binding .}" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                        </StackLayout>
+                                        
                                     </Grid>
                                 </Frame>
                             </ViewCell>

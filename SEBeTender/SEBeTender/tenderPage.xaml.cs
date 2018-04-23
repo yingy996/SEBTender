@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using HtmlAgilityPack;
@@ -20,9 +20,6 @@ namespace SEBeTender
 		public tenderPage ()
 		{
             BindingContext = this;
-            var label = new Label { Text = "text" };
-            //StackLayout stackLayout = new StackLayout();
-            //var childToRaise = stackLayout.Children.First();
 
             InitializeComponent ();
             
@@ -37,13 +34,72 @@ namespace SEBeTender
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
 
             //Sending HTTP request to obtain the tender page data
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice.jsp", false));
+            Task<string> httpTask = Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
             var httpResult = httpTask.Result.ToString();
+            //Task<string> httpTask = getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp");
+            //string httpTask = getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp").Result;
+
+            //var httpResult = httpTask.ToString();
+
+            //Extract tender data from the response
+            var tenders = DataExtraction.getWebData(httpResult, "tender");
+            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
+
+            //Get bookmark details from database
+            if (userSession.username != "")
+            {
+                Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.Result.ToList();
+                if (tenderBookmarks.Count > 0)
+                {
+                    foreach (var tenderItem in tenderItems)
+                    {
+                        foreach (var tenderBookmark in tenderBookmarks)
+                        {
+                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                            {
+                                tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                break;
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            listView.ItemsSource = tenderItems;
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
+        }
+
+        async Task<List<tenderBookmark>> retrieveBookmark()
+        {
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostTenderBookmark(userSession.username));
+            var httpResult = httpTask;
+            List<tenderBookmark> tenderBookmarks = new List<tenderBookmark>();
+            if (httpResult != null)
+            {
+                if (httpResult != "No bookmark found")
+                {
+                    tenderBookmarks = JsonConvert.DeserializeObject<List<tenderBookmark>>(httpResult);
+                }
+            }
+            return tenderBookmarks;
+        }
+
+        async Task<string> getPageData(string url)
+        {
+
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url, false));
+            var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(httpResult);
             var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
+            isNextAvailable = false;
+            isPreviousAvailable = false;
+
             if (aNodes != null)
             {
                 foreach (var aNode in aNodes)
@@ -60,15 +116,8 @@ namespace SEBeTender
                     }
                 }
             }
-            
 
-            //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "tender");
-            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
-
-            listView.ItemsSource = tenderItems;
-            listView.SeparatorVisibility = SeparatorVisibility.None;
-            listView.ItemSelected += onItemSelected;
+            return httpResult;
         }
 
         async void onItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -93,14 +142,18 @@ namespace SEBeTender
         {                       
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
+
             //Sending HTTP request to obtain the second tender page data
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(nextUrl, false));
+            string httpTask = await Task.Run<string>(() => getPageData(nextUrl));
+            //Task<string> httpTask = Task.Run<string>(() => getPageData(nextUrl));
             var httpResult = httpTask.ToString();
+            //string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(nextUrl, false));
+            //var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(httpResult);
-            var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
+            /*var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
             isNextAvailable = false;
             isPreviousAvailable = false;
 
@@ -117,7 +170,7 @@ namespace SEBeTender
                     isNextAvailable = true;
                 }
             }
-
+            */
             //Extract tender data from the response
             var tenderItems = await Task.Run<Object>(() => DataExtraction.getTenderPage(htmlDoc));
             //var tenders = DataExtraction.getWebData(httpResult, "tender");
@@ -152,29 +205,12 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
             //Sending HTTP request to obtain the second tender page data
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(previousUrl, false));
+            string httpTask = await Task.Run<string>(() => getPageData(previousUrl));
             var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(httpResult);
-            var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
-            isNextAvailable = false;
-            isPreviousAvailable = false;
-
-            foreach (var aNode in aNodes)
-            {
-                if (aNode.InnerHtml == "Previous")
-                {
-                    previousUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                    isPreviousAvailable = true;
-                }
-                else if (aNode.InnerHtml == "Next")
-                {
-                    nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                    isNextAvailable = true;
-                }
-            }
 
             //Extract tender data from the response
             var tenderItems = await Task.Run<Object>(() => DataExtraction.getTenderPage(htmlDoc));
@@ -203,6 +239,65 @@ namespace SEBeTender
             }
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
+        }
+
+        async void OnBookmarkTapped(object sender, EventArgs eventArgs)
+        {
+            //check if user is logged in
+            if (userSession.userLoginCookie == "")
+            {
+                DisplayAlert("Login required", "Please login first to bookmark this item.", "OK");
+            } else
+            {
+                var tenderSelected = ((TappedEventArgs)eventArgs).Parameter;
+                tenderItem tender = (tenderItem)tenderSelected;
+                //var image = sender as Image;
+                Console.WriteLine("Image now is: " + ((Image)sender).Source.ToString());
+
+                if (((Image)sender).Source.ToString() == "File: bookmarkfilled.png")
+                {
+                    ((Image)sender).Source = "bookmark.png";
+                    DisplayAlert("Cancel bookmark", "Tender '" + tender.Reference + "' has been removed from bookmark!", "OK");
+
+                    string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageTenderBookmark(userSession.username, tender, "delete"));
+                    var httpResult = httpTask.ToString();
+                    Console.WriteLine(httpResult);
+                    int count = 0;
+
+                    while (count <3 && httpResult != "Success")
+                    {
+                        Console.WriteLine("Looping for failure delete");
+                        httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageTenderBookmark(userSession.username, tender, "delete"));
+                        httpResult = httpTask.ToString();
+                        count++;
+                    } 
+                    
+                }
+                else
+                {
+                    ((Image)sender).Source = "bookmarkfilled.png";
+                    DisplayAlert("Add bookmark", "Tender '" + tender.Reference + "' has been successfully added to bookmark!", "OK");
+
+                    string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageTenderBookmark(userSession.username, tender, "add"));
+                    var httpResult = httpTask.ToString();
+                    Console.WriteLine(httpResult);
+                    int count = 0;
+
+                    while (count < 3 && httpResult != "Success")
+                    {
+                        Console.WriteLine("Looping for failure add");
+                        httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageTenderBookmark(userSession.username, tender, "add"));
+                        httpResult = httpTask.ToString();
+                        count++;
+                    }
+                }
+            }
+            
+
+            //Display tender list with or without bookmark
+
+            //send request to database everyone user tap on bookmark 
+            
         }
     }
 }
