@@ -30,13 +30,23 @@ namespace SEBeTender
 
             if (httpResult == "Success")
             {
-                //await Task.Delay(500);
                 //Clear user session 
                 userSession.userLoginCookie = "";
-                Application.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) };
+
                 logoutStatus.Text = "You have successfully logout! You will be redirected to tender page shortly.";
                 logoutStatus.TextColor = Color.Default;
                 logoutStatus.FontAttributes = FontAttributes.None;
+
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+                await Task.Delay(1000);
+
+                //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) 
+                App.Current.MainPage = new rootPage();
+                var page = App.Current.MainPage as rootPage;
+                var loginPage = new loginPage();
+                page.changePage(loginPage);
+
             }
             else
             {

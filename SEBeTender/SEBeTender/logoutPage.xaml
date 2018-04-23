@@ -13,7 +13,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Text="Logout" FontSize="20" FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Center"/>
+                <Label Text="Logging out..." FontSize="20" FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Center"/>
 
                 <Label x:Name="logoutStatus" Text="" Grid.Row="1" FontSize="Default" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
                 <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="2" Color="#2acc4a" 
