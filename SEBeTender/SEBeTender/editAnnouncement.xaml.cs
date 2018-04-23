@@ -59,7 +59,6 @@ namespace SEBeTender
         {
             if (!String.IsNullOrWhiteSpace(editTitle.Text))
             {
-                updatedTitle = editTitle.Text;
                 updateTitleError = false;
             }
             else
@@ -71,9 +70,9 @@ namespace SEBeTender
 
         private void editContent_Completed(object sender, EventArgs e)
         {
+
             if (!String.IsNullOrWhiteSpace(editContent.Text))
             {
-                updatedContent = editContent.Text;
                 updateContentError = false;
             }
             else
@@ -104,6 +103,9 @@ namespace SEBeTender
 
             if (updateTitleError == false && updateContentError == false)
             {
+                updatedTitle = editTitle.Text;
+                updatedContent = editContent.Text;
+
                 if (adminAuth.Username == null)
                 {
                     Console.WriteLine("No username");

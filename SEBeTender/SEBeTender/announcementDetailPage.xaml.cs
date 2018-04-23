@@ -52,11 +52,11 @@ namespace SEBeTender
 
         }
 
-        async void OnEditButtonClicked(object sender, EventArgs e)
+        void OnEditButtonClicked(object sender, EventArgs e)
         {
             if (announcementid == "")
             {
-                Console.WriteLine(announcementid + "invalid");
+                Console.WriteLine("Invalid announcement ID: " + announcementid );
             }
             else
             {
@@ -67,7 +67,7 @@ namespace SEBeTender
 
         }
 
-            async void OnDeleteButtonClicked(object sender, EventArgs e)
+        async void OnDeleteButtonClicked(object sender, EventArgs e)
         {
             string username = "";
             username = adminAuth.Username;
