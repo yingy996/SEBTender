@@ -72,6 +72,11 @@
       <DependentUpon>searchTenderPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)tenderBookmark.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)tenderBookmarkPage.xaml.cs">
+      <DependentUpon>tenderBookmarkPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)tenderDetailPage.xaml.cs">
       <DependentUpon>tenderDetailPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -181,6 +186,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)adminPostAnnouncement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)tenderBookmarkPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
