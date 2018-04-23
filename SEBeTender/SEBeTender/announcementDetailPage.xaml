@@ -71,7 +71,7 @@
 
                     <BoxView Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
 
-                    <Button Text="Edit Announcement" Grid.Row="12" Grid.Column="0" x:Name="editButton"  FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <Button Text="Edit Announcement" Grid.Row="12" Grid.Column="0" x:Name="editButton"  FontAttributes="Bold" Margin="0,5,0,0" Clicked="OnEditButtonClicked"/>
                     <Button Text="Delete Announcement" Grid.Row="12" Grid.Column="1" x:Name="deleteButton" FontAttributes="Bold" Margin="0,5,0,0"/>
 
                 </Grid>

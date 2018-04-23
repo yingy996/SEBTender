@@ -245,20 +245,50 @@ namespace SEBeTender
             return result;
         }
 
-        public static async Task<string> deleteAnnouncement(string announcementid)
+        public static async Task<string> PostEditAnnouncement(string username, string password, string editID, string title, string content)
         {
             string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string,string>("announcementid", announcementid)
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password),
+                new KeyValuePair<string,string>("editID", editID),
+                new KeyValuePair<string,string>("title", title),
+                new KeyValuePair<string,string>("content", content)
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appEditAnnouncement.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<string> deleteAnnouncement(string announcementid, string username)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("announcementid", announcementid),
+                new KeyValuePair<string,string>("username", username)
             });
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/checkAccountExists.php", parameters);
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/deleteAnnouncement.php", parameters);
 
 
-                result = response.Content.ReadAsStringAsync().Result;
-
+                result = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Heyaaaa");
+                Console.WriteLine(result);
 
                 return result;
             }

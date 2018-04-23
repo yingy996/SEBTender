@@ -23,11 +23,12 @@ namespace SEBeTender
             string username = "", password = "";
             editButton.IsVisible = false;
             deleteButton.IsVisible = false;
+            
             username = adminAuth.Username;
             password = adminAuth.Password;
 
             //Send HTTP request to check user exists
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostadminloginCheck(username, password).Result);
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostadminloginCheck(username, password));
             var httpResult = httpTask.Result;
 
             //Console.WriteLine(httpResult);
@@ -37,7 +38,7 @@ namespace SEBeTender
                 editButton.IsVisible = true;
                 deleteButton.IsVisible = true;
 
-                deleteButton.Clicked += OnButtonClicked;
+                deleteButton.Clicked += OnDeleteButtonClicked;
             }
 
             announcementTitlelbl.Text = announcementItem.announcementTitle;
@@ -51,15 +52,39 @@ namespace SEBeTender
 
         }
 
-        void OnButtonClicked(object sender, EventArgs e)
+        async void OnEditButtonClicked(object sender, EventArgs e)
         {
+            if (announcementid == "")
+            {
+                Console.WriteLine(announcementid + "invalid");
+            }
+            else
+            {
+                var page = App.Current.MainPage as rootPage;
+                var editAnnouncementPage = new editAnnouncement(announcementid);
+                page.changePage(editAnnouncementPage);
+            }
+
+        }
+
+            async void OnDeleteButtonClicked(object sender, EventArgs e)
+        {
+            string username = "";
+            username = adminAuth.Username;
             //Send HTTP request to check user exists
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.deleteAnnouncement(announcementid).Result);
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.deleteAnnouncement(announcementid, username));
             var httpResult = httpTask.Result;
 
             if(httpResult == "deletesuccess")
             {
-                Console.WriteLine("CHANGE TO ANNOUNCEMENT LIST PAGE UHUH LOOK AT MY DANCE, I GOT A NICE PIGU");
+
+                var answer = await DisplayAlert("Exit", "Are you sure you want to delete the announcement?", "Yes", "No");
+                if (answer)
+                {
+                    var page = App.Current.MainPage as rootPage;
+                    var announcementPage = new announcementPage();
+                    page.changePage(announcementPage);
+                }
             }
 
         }

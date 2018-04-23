@@ -58,7 +58,7 @@ namespace SEBeTender
             }
         }
 
-        public void DeleteCredentials()
+        public static void DeleteCredentials()
         {
             if (Device.RuntimePlatform == Device.iOS)
             {
