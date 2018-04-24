@@ -128,7 +128,7 @@ namespace SEBeTender
                 this.Add(new menuItem()
                 {
                     Title = "Logout",
-                    TargetType = typeof(announcementPage)
+                    TargetType = typeof(adminLogoutPage)
                 });
             }
         }
