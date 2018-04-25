@@ -77,6 +77,12 @@ namespace SEBeTender
 
                 this.Add(new menuItem()
                 {
+                    Title = "Custom Searches",
+                    TargetType = typeof(customSearchPage)
+                });
+
+                this.Add(new menuItem()
+                {
                     Title = "Purchased Tender Document",
                     TargetType = typeof(purchasedTendersPage)
                 });
