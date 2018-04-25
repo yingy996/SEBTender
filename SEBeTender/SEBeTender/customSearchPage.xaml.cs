@@ -87,7 +87,7 @@ namespace SEBeTender
             customSearchesItem customSearches = (customSearchesItem)customSearchesSelected;
             List<customSearchesItem> tempcustomSearches = (List<customSearchesItem>)listView.ItemsSource;
 
-            var answer = await DisplayAlert("Remove Custom Search", "Are you sure you want to remove custom search '" + customSearches.tenderReference + "'?", "YES", "NO");
+            var answer = await DisplayAlert("Remove Custom Search", "Are you sure you want to remove custom search '" + customSearches.identifier + "'?", "YES", "NO");
 
             if (answer)
             {
