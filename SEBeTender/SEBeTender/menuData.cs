@@ -75,11 +75,11 @@ namespace SEBeTender
                     TargetType = typeof(tenderBookmarkPage)
                 });
 
-                /*this.Add(new menuItem()
+                this.Add(new menuItem()
                 {
                     Title = "Custom Searches",
                     TargetType = typeof(customSearchPage)
-                });*/
+                });
 
                 this.Add(new menuItem()
                 {
