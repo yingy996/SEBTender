@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SEBeTender
 {
-    class customSearchesItem
+    public class customSearchesItem
     {
         public string searchID { get; set; }
 

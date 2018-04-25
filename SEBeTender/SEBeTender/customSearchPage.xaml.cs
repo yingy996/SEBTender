@@ -28,7 +28,8 @@ namespace SEBeTender
                 errorMsg.IsVisible = true;
             }
 
-
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
         }
 
         async void retrieveCustomSearches()
@@ -67,6 +68,17 @@ namespace SEBeTender
             //Move to the top of the list when user click on the "Up" button
             var topItem = listView.ItemsSource.Cast<object>().FirstOrDefault();
             listView.ScrollTo(topItem, ScrollToPosition.Start, true);
+        }
+
+        async void onItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            var item = e.SelectedItem as customSearchesItem;
+
+            if (item != null)
+            {
+                listView.SelectedItem = null;
+                await Navigation.PushAsync(new searchTenderPage(item));
+            }
         }
 
         async void onDeleteTapped(object sender, EventArgs args)
