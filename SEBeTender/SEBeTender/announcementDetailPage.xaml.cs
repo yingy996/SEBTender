@@ -67,7 +67,7 @@ namespace SEBeTender
 
         }
 
-            async void OnDeleteButtonClicked(object sender, EventArgs e)
+        async void OnDeleteButtonClicked(object sender, EventArgs e)
         {
             string username = "";
             username = adminAuth.Username;
