@@ -328,12 +328,13 @@ namespace SEBeTender
         public static async Task<string> PostManageTenderBookmark(string username, tenderItem tender, string action)
         {
             string result = "";
-            //CultureInfo MyCultureInfo = new CultureInfo("fr-FR");
 
             string tenderClosingDate = tender.ClosingDate;
-            tenderClosingDate = tenderClosingDate.Replace("Closing date: ", "");
-            tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
-            //tenderClosingDate = DateTime.ParseExact(tenderClosingDate, "dd-MM-yy hh:mm", MyCultureInfo).ToString("yyyy-MM-dd HH:mm:ss");
+            if (action != "delete")
+            {
+                tenderClosingDate = tenderClosingDate.Replace("Closing date: ", "");
+                tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
+            }
 
             //default add tender bookmark action
             var parameters = new FormUrlEncodedContent(new[] {
