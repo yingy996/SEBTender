@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SEBeTender" 
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfCalendar.XForms;assembly=Syncfusion.SfCalendar.XForms"
+             x:Class="SEBeTender.userCalendar" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <StackLayout>
+            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+            <syncfusion:SfCalendar x:Name="calendar" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

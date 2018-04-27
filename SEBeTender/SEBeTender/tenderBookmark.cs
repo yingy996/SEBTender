@@ -18,5 +18,6 @@ namespace SEBeTender
 
         public string bookmarkDate { get; set; }
 
+        public string closingDate { get; set; }
     }
 }

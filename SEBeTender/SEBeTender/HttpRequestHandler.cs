@@ -329,11 +329,20 @@ namespace SEBeTender
         {
             string result = "";
 
+            string tenderClosingDate = tender.ClosingDate;
+            if (action != "delete")
+            {
+                tenderClosingDate = tenderClosingDate.Replace("Closing date: ", "");
+                tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
+            }
+
             //default add tender bookmark action
             var parameters = new FormUrlEncodedContent(new[] {
+
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("tenderReferenceNumber", tender.Reference),
-                new KeyValuePair<string,string>("tenderTitle", tender.Title)
+                new KeyValuePair<string,string>("tenderTitle", tender.Title),
+                new KeyValuePair<string,string>("closingDate", tenderClosingDate)
                 });
 
             if (action == "delete")
