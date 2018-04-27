@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SEBeTender.Droid</RootNamespace>
     <AssemblyName>SEBeTender.Android</AssemblyName>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -71,6 +71,9 @@
     </PackageReference>
     <PackageReference Include="Selenium.WebDriver">
       <Version>3.11.1</Version>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfCalendar">
+      <Version>16.1.0.37</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.3.3</Version>
