@@ -32,7 +32,7 @@ namespace SEBeTender
             //string closingdate = "2018-04-30 00:00:00";   //working date format
             //string closingdate = "30-05-2018 at 3:00 PM"; //not working *ORIGINAL TEXT FROM SESCO TENDER WEBSITE
             //string closingdate = "30-05-2018 3:00 PM"; //working
-            string closingdate = "30-05-2018 3:00 PM";
+            string closingdate = "30-05-2018  3:00 PM";
 
             //CultureInfo MyCultureInfo = CultureInfo.CurrentCulture; //not working
             CultureInfo MyCultureInfo = new CultureInfo("fr-FR");
@@ -50,7 +50,7 @@ namespace SEBeTender
 
             this.Content = calendar;
 
-            Console.WriteLine(DateTime.Parse(closingdate,MyCultureInfo));
+            Console.WriteLine("CLOSING DATE!!!! CLOSING DATE!!!! CLOSING DATE!!!!:" + DateTime.Parse(closingdate,MyCultureInfo));
         }
 
     }
