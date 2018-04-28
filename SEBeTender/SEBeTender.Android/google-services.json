@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "86005728568",
+    "firebase_url": "https://sebpushnotification.firebaseio.com",
+    "project_id": "sebpushnotification",
+    "storage_bucket": "sebpushnotification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86005728568:android:afe7e655764e136e",
+        "android_client_info": {
+          "package_name": "com.companyname.SEBeTender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86005728568-dgfq95ep4onevmb7g9m0vnt26dvdueuf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmuYNETHUY6MoQH_r5RJCPIivTURRPLT4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

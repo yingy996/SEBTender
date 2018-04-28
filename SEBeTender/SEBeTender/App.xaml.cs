@@ -2,28 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Plugin.FirebasePushNotification;
 using Xamarin.Forms;
 
 namespace SEBeTender
 {
-	public partial class App : Application
-	{
+    public partial class App : Application
+    {
+        SEBeTender.MainPage mPage;
         public static string AppName = "SEBeTender";
 
-        public App ()
-		{
-			InitializeComponent();
+        public App()
+        {
+            InitializeComponent();
 
             MainPage = new SEBeTender.rootPage();
             //MainPage = new MainPage();
-		}
+
+        }
+
+        public static string NotificationSettings {
+            get { return Settings.NotificationSettings; } 
+            set { Settings.NotificationSettings = value; }
+        }
 
 		protected override void OnStart ()
 		{
             // Handle when your app starts
             adminAuth.DeleteCredentials();
-		}
+        }
 
 		protected override void OnSleep ()
 		{

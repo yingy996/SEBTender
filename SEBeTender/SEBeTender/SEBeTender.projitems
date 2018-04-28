@@ -48,6 +48,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)HttpRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INotificationSubscription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)loginPage.xaml.cs">
       <DependentUpon>loginPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -76,6 +77,7 @@
       <DependentUpon>searchTenderPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tenderBookmark.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tenderBookmarkPage.xaml.cs">
       <DependentUpon>tenderBookmarkPage.xaml</DependentUpon>
