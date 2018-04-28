@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 using SQLite;
-
 namespace SEBeTender
 {
-    public class tenderItem
+     public class dbtenderItem
     {
         private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass, name, officePhone, extension, mobilePhone, email, fax, checkedValue, addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
         private string bookmarkImage = "bookmark.png";
-        private Dictionary<string, string> fileLinks = new Dictionary<string, string>();
         
+        private string jsonfilelinks = "";
 
+        [PrimaryKey]
         public string Reference
         {
             get { return reference; }
-            set { reference = value; }   
+            set { reference = value; }
         }
 
         public string Title
@@ -102,10 +102,10 @@ namespace SEBeTender
             set { fax = value; }
         }
 
-        public Dictionary<string, string> FileLinks
+        public string jsonfileLinks
         {
-            get { return fileLinks; }
-            set { fileLinks = value; }
+            get { return jsonfileLinks; }
+            set { jsonfilelinks = value; }
         }
 
         public string CheckedValue

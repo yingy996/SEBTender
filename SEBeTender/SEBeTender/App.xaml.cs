@@ -10,14 +10,32 @@ namespace SEBeTender
 	public partial class App : Application
 	{
         public static string AppName = "SEBeTender";
-
+        static tenderDatabase database;
         public App ()
 		{
-			InitializeComponent();
-
+            /*if (database != null)
+            {
+                database.deleteTendersAsync();
+            }*/
             MainPage = new SEBeTender.rootPage();
+            InitializeComponent();
+            
             //MainPage = new MainPage();
 		}
+
+        public static tenderDatabase Database
+        {
+            get
+            {
+                if(database == null)
+                {
+                    database = new tenderDatabase(DependencyService.Get<ILocalFileHelper>().getLocalFilePath("TenderDB.db3"));
+
+                }
+
+                return database;
+            }
+        }
 
 		protected override void OnStart ()
 		{

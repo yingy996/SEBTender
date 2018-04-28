@@ -8,11 +8,14 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using HtmlAgilityPack;
 
+using Plugin.Connectivity;
+
 namespace SEBeTender
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class tenderPage : ContentPage
 	{
+        
         private string nextUrl;
         private string previousUrl;
         private bool isPreviousAvailable = false;
@@ -22,7 +25,12 @@ namespace SEBeTender
             BindingContext = this;
 
             InitializeComponent ();
-            
+
+            if(CrossConnectivity.Current.IsConnected == false)
+            {
+                DisplayAlert("No connection","Please ensure that you have an internet connection to receive the latest tenders.","Okay");
+            }
+
             //Set "Previous" and "Next" hyperlink label. 
             var previousLblTapRecognizer = new TapGestureRecognizer();
             previousLblTapRecognizer.Tapped += onPreviousPageTapped;
@@ -32,6 +40,7 @@ namespace SEBeTender
             var nextLblTapRecognizer = new TapGestureRecognizer();
             nextLblTapRecognizer.Tapped += onNextPageTapped;
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
+
 
             //Sending HTTP request to obtain the tender page data
             Task<string> httpTask = Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
@@ -67,10 +76,105 @@ namespace SEBeTender
                 }
             }
 
-            listView.ItemsSource = tenderItems;
+            //Initialize list of dbtenders which is almost similar to tenderitem but stores file links in json instead of dictionary so that the tenders can be inserted into database
+            List<dbtenderItem> dbTenders = new List<dbtenderItem>();
+            dbTenders = Task.Run<List<dbtenderItem>>(() => saveTenderToDatabase(tenderItems, dbTenders)).Result;
+
+
+
+
+            /*if (App.Database == null)
+            {
+                listView.ItemsSource = tenderItems;
+            }
+            else
+            {*/
+                listView.ItemsSource = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase()).Result;
+            //}
+                
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
         }
+
+        async Task<List<dbtenderItem>> saveTenderToDatabase(List<tenderItem> tenderitems, List<dbtenderItem> dbtenderitems)
+        {
+            
+            List<dbtenderItem> dbTenderItems = dbtenderitems;
+            foreach (var item in tenderitems)
+            {
+                string jsonFileLink = JsonConvert.SerializeObject(item.FileLinks).ToString();
+                dbtenderItem dbTender = new dbtenderItem();
+                dbTender.Reference = item.Reference;
+                dbTender.Title = item.Title;
+                dbTender.OriginatingStation = item.OriginatingStation;
+                dbTender.ClosingDate = item.ClosingDate;
+                dbTender.BidClosingDate = item.BidClosingDate;
+                dbTender.FeeBeforeGST = item.FeeBeforeGST;
+                dbTender.FeeAfterGST = item.FeeAfterGST;
+                dbTender.FeeGST = item.FeeGST;
+                dbTender.TendererClass = item.TendererClass;
+                dbTender.Name = item.Name;
+                dbTender.OffinePhone = item.OffinePhone;
+                dbTender.Extension = item.Extension;
+                dbTender.MobilePhone = item.MobilePhone;
+                dbTender.Email = item.Email;
+                dbTender.Fax = item.Fax;
+                dbTender.jsonfileLinks = jsonFileLink;
+                dbTender.CheckedValue = item.CheckedValue;
+                dbTender.AddToCartQuantity = item.AddToCartQuantity;
+                dbTender.BookmarkImage = item.BookmarkImage;
+
+                dbTenderItems.Add(dbTender);
+            }
+
+            App.Database.saveTendersAsync(dbTenderItems);
+
+            return dbTenderItems;
+        }
+
+        async Task<List<tenderItem>> retrieveTenderFromDatabase()
+        {
+            List<tenderItem> tenderItems = new List<tenderItem>();
+            List<dbtenderItem> dbTenderItems = Task.Run<List<dbtenderItem>>(() => App.Database.getTendersAsync()).Result;
+            foreach (var item in dbTenderItems)
+            {
+                Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.jsonfileLinks);
+                tenderItem tenderitem = new tenderItem();
+                tenderitem.Reference = item.Reference;
+                tenderitem.Title = item.Title;
+                tenderitem.OriginatingStation = item.OriginatingStation;
+                tenderitem.ClosingDate = item.ClosingDate;
+                tenderitem.BidClosingDate = item.BidClosingDate;
+                tenderitem.FeeBeforeGST = item.FeeBeforeGST;
+                tenderitem.FeeAfterGST = item.FeeAfterGST;
+                tenderitem.FeeGST = item.FeeGST;
+                tenderitem.TendererClass = item.TendererClass;
+                tenderitem.Name = item.Name;
+                tenderitem.OffinePhone = item.OffinePhone;
+                tenderitem.Extension = item.Extension;
+                tenderitem.MobilePhone = item.MobilePhone;
+                tenderitem.Email = item.Email;
+                tenderitem.Fax = item.Fax;
+                tenderitem.FileLinks = fileLinks;
+                tenderitem.CheckedValue = item.CheckedValue;
+                tenderitem.AddToCartQuantity = item.AddToCartQuantity;
+                tenderitem.BookmarkImage = item.BookmarkImage;
+
+                tenderItems.Add(tenderitem);
+            }
+
+            return tenderItems;
+        }
+
+        
+        
+
+        /*async Task<List<tenderItem>> getTendersFromDatabase()
+        {
+            return await App.Database.getTendersAsync();
+        }*/
+
+        
 
         async Task<List<tenderBookmark>> retrieveBookmark()
         {
@@ -299,5 +403,7 @@ namespace SEBeTender
             //send request to database everyone user tap on bookmark 
             
         }
+
+        
     }
 }

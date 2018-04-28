@@ -39,6 +39,7 @@ namespace SEBeTender
                 {
                     result = await response.Content.ReadAsStringAsync();
                 }
+                
             }
             catch (Exception ex)
             {
