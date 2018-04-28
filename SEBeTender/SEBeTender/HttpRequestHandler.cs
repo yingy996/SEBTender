@@ -329,11 +329,20 @@ namespace SEBeTender
         {
             string result = "";
 
+            string tenderClosingDate = tender.ClosingDate;
+            if (action != "delete")
+            {
+                tenderClosingDate = tenderClosingDate.Replace("Closing date: ", "");
+                tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
+            }
+
             //default add tender bookmark action
             var parameters = new FormUrlEncodedContent(new[] {
+
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("tenderReferenceNumber", tender.Reference),
-                new KeyValuePair<string,string>("tenderTitle", tender.Title)
+                new KeyValuePair<string,string>("tenderTitle", tender.Title),
+                new KeyValuePair<string,string>("closingDate", tenderClosingDate)
                 });
 
             if (action == "delete")
@@ -387,6 +396,85 @@ namespace SEBeTender
                 {
                     result = await response.Content.ReadAsStringAsync();
 
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return result;
+        }
+
+        public static async Task<string> PostManageSearchBookmark(string searchID, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingclosingDateFrom, string biddingclosingDateTo, string username, string identifier, string action)
+        {
+            string result = "";
+
+            //default add tender bookmark action
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("searchID", searchID),
+                new KeyValuePair<string,string>("tenderReference", tenderReference),
+                new KeyValuePair<string,string>("tenderTitle", tenderTitle),
+                new KeyValuePair<string,string>("originatingStation", originatingStation),
+                new KeyValuePair<string,string>("closingDateFrom", closingDateFrom),
+                new KeyValuePair<string,string>("closingDateTo", closingDateTo),
+                new KeyValuePair<string,string>("biddingclosingDateFrom", biddingclosingDateFrom),
+                new KeyValuePair<string,string>("biddingclosingDateTo", biddingclosingDateTo),
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("identifier", identifier)
+                });
+
+            if (action == "delete")
+            {
+                parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("searchID", searchID),
+                new KeyValuePair<string,string>("tenderReference", tenderReference),
+                new KeyValuePair<string,string>("tenderTitle", tenderTitle),
+                new KeyValuePair<string,string>("originatingStation", originatingStation),
+                new KeyValuePair<string,string>("closingDateFrom", closingDateFrom),
+                new KeyValuePair<string,string>("closingDateTo", closingDateTo),
+                new KeyValuePair<string,string>("biddingclosingDateFrom", biddingclosingDateFrom),
+                new KeyValuePair<string,string>("biddingclosingDateTo", biddingclosingDateTo),
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("identifier", identifier),
+                new KeyValuePair<string,string>("isDelete", "1")
+                });
+            }
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_manageCustomSearch.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return result;
+        }
+
+        public static async Task<string> PostCustomSearches(string username)
+        {
+            string result = "";
+
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username)
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_getuserCustomSearches.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
                 }
             }
             catch (Exception ex)

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SEBeTender.Droid</RootNamespace>
     <AssemblyName>SEBeTender.Android</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -133,6 +133,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\bid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\bookmarkfilled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\bookmark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\delete.png" />
   </ItemGroup>
   <Import Project="..\SEBeTender\SEBeTender.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

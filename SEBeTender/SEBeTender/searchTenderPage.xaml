@@ -25,7 +25,16 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Search Tender Notices" FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+
+                    <Label Text="Search Tender Notices" FontSize="20" FontAttributes="Bold"  Margin="0,20,10,0" />
+                    <!--<Grid>-->
+                        <Image Source="bookmark.png" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0,20,10,0" x:Name="bookmarkImg">
+
+                        </Image>
+                        <!--<Button Grid.Row="0" Grid.Column="0" BackgroundColor ="Transparent" BorderColor="Transparent" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="imagebutton" 
+                    </Grid>/>-->
+                </StackLayout>
 
                 <Label Text="Tender Reference:" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
                 <Frame CornerRadius="5" Grid.Row="1" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">

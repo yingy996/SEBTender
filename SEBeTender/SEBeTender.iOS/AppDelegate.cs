@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using Syncfusion.SfCalendar.XForms.iOS;
 using UIKit;
 
 namespace SEBeTender.iOS
@@ -24,6 +25,7 @@ namespace SEBeTender.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             global::Xamarin.Auth.Presenters.XamarinIOS.AuthenticationConfiguration.Init();
+            new SfCalendarRenderer();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
