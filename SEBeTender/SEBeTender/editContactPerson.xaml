@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.editContactPerson" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <StackLayout>
+            <ScrollView VerticalOptions="FillAndExpand" Padding="10">
+                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Contact Person" FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                    <Label Text="Name:" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Frame CornerRadius="5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
+                        <Entry x:Name="name" Text="{Binding Name}" Placeholder="John Doe"/>
+                    </Frame>
+
+                    <Label Text="Telephone No.:" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Frame CornerRadius="5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
+                        <Entry x:Name="telephoneNo" Text="{Binding TelephoneNo}" Keyboard="Telephone" Placeholder="0123456789"/>
+                    </Frame>
+
+
+                    <Label Text="Fax No.:" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Frame CornerRadius="5" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
+                        <Entry x:Name="faxNo" Text="{Binding FaxNo}" Keyboard="Telephone" Placeholder="082123456"/>
+                    </Frame>
+
+                    <Label Text="Email Address:" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Frame CornerRadius="5" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2">
+                        <Entry x:Name="emailAddress" Text="{Binding EmailAddress}" Keyboard="Email" Placeholder="johndoe@mail.com"/>
+                    </Frame>
+
+                    <Button Text="Update" VerticalOptions="End" Grid.Row="9" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
+                    <Button Text="Cancel"  VerticalOptions="Start" Grid.Row="9" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+                </Grid>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -36,6 +36,11 @@ namespace SEBeTender
             {
                 var output = getAdminLoginStatus(htmlDocument);
                 return output;
+            } else if (page == "userCompanyProfile")
+            {
+                Task<Object> getCompanyProfile = Task.Run<Object>(() => getCompanyProfilePage(htmlDocument));
+                var output = getCompanyProfile.Result;
+                return output;
             }
             return "No result";
         }
@@ -312,6 +317,17 @@ namespace SEBeTender
             {
                 return "fail";
             }
+        }
+
+        private static async Task<Object> getCompanyProfilePage(HtmlDocument htmlDocument)
+        {
+            CompanyProfile profile = new CompanyProfile();
+            profile.CompanyName = htmlDocument.DocumentNode.SelectSingleNode("//input[@type='hidden' and @name='VenName']").Attributes["value"].Value;
+            profile.CompanyRegistreationNo = htmlDocument.DocumentNode.SelectSingleNode("//input[@type='hidden' and @name='VenComReg']").Attributes["value"].Value;
+            profile.MailingAddress = htmlDocument.DocumentNode.SelectSingleNode("//textarea[@name='VenAdd']").InnerHtml;
+            profile.Country = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenCouCode']").Attributes["value"].Value;
+
+            return profile;
         }
     }
 }
