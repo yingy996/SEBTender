@@ -126,16 +126,16 @@ namespace SEBeTender
                 }
                 else
                 {
-                    tenderReferenceInput.Text = aCustomSearchItem.tenderReference;
+                    tenderTitleInput.Text = aCustomSearchItem.tenderTitle;
                 }
 
                 if (aCustomSearchItem.tenderReference == "NULL")
                 {
-                    tenderTitleInput.Text = "";
+                    tenderReferenceInput.Text = "";
                 }
                 else
                 {
-                    tenderTitleInput.Text = aCustomSearchItem.tenderTitle;
+                    tenderReferenceInput.Text = aCustomSearchItem.tenderReference;
 
                 }
 
