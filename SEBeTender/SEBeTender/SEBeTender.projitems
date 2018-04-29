@@ -38,6 +38,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Cart.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)customSearchesItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)customSearchPage.xaml.cs">
+      <DependentUpon>customSearchPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DataExtraction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)editAnnouncement.xaml.cs">
       <DependentUpon>editAnnouncement.xaml</DependentUpon>
@@ -98,6 +103,10 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)tenderSearchResultPage.xaml.cs">
       <DependentUpon>tenderSearchResultPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)userCalendar.xaml.cs">
+      <DependentUpon>userCalendar.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)userInfoPage.xaml.cs">
@@ -209,7 +218,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)customSearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)adminLogoutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)userCalendar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
