@@ -47,8 +47,8 @@
                         <Entry x:Name="emailAddress" Text="{Binding EmailAddress}" Keyboard="Email" Placeholder="johndoe@mail.com"/>
                     </Frame>
 
-                    <Button Text="Update" VerticalOptions="End" Grid.Row="9" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-                    <Button Text="Cancel"  VerticalOptions="Start" Grid.Row="9" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+                    <Button Text="Update" VerticalOptions="End" Grid.Row="9" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White" Clicked="onUpdateBtnClicked"/>
+                    <Button Text="Cancel"  VerticalOptions="Start" Grid.Row="9" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White" Clicked="onCancelBtnClicked"/>
                 </Grid>
             </ScrollView>
         </StackLayout>

@@ -41,7 +41,22 @@ namespace SEBeTender
                 Task<Object> getCompanyProfile = Task.Run<Object>(() => getCompanyProfilePage(htmlDocument));
                 var output = getCompanyProfile.Result;
                 return output;
-            }
+            } else if (page == "userContactPerson")
+            {
+                Task<Object> getContactPerson = Task.Run<Object>(() => getContactPersonPage(htmlDocument));
+                var output = getContactPerson.Result;
+                return output;
+            } /*else if (page == "userUPKLicense")
+            {
+                Task<Object> getUPKLicense = Task.Run<Object>(() => getUPKLicensePage(htmlDocument));
+                var output = getUPKLicense.Result;
+                return output;
+            } else if (page == "userCIDB")
+            {
+                Task<Object> getCIDB = Task.Run<Object>(() => getCIDBPage(htmlDocument));
+                var output = getCIDB.Result;
+                return output;
+            }*/
             return "No result";
         }
 
@@ -326,6 +341,17 @@ namespace SEBeTender
             profile.CompanyRegistreationNo = htmlDocument.DocumentNode.SelectSingleNode("//input[@type='hidden' and @name='VenComReg']").Attributes["value"].Value;
             profile.MailingAddress = htmlDocument.DocumentNode.SelectSingleNode("//textarea[@name='VenAdd']").InnerHtml;
             profile.Country = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenCouCode']").Attributes["value"].Value;
+
+            return profile;
+        }
+
+        private static async Task<Object> getContactPersonPage(HtmlDocument htmlDocument)
+        {
+            ContactPerson profile = new ContactPerson();
+            profile.Name = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenContactPerson']").Attributes["value"].Value;
+            profile.TelephoneNo = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenTelNo']").Attributes["value"].Value;
+            profile.FaxNo = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenFaxNo']").Attributes["value"].Value;
+            profile.EmailAddress = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenEmail']").Attributes["value"].Value;
 
             return profile;
         }

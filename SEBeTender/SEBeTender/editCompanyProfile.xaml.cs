@@ -30,6 +30,23 @@ namespace SEBeTender
             mailingAddress.Text = profile.MailingAddress;
             country.Text = profile.Country;
         }
+
+        private void onUpdateBtnClicked(object sender, EventArgs e)
+        {
+
+
+            var page = App.Current.MainPage as rootPage;
+            var userInfoPage = new userInfoPage();
+            page.changePage(userInfoPage);
+            //Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        private void onCancelBtnClicked(object sender, EventArgs e)
+        {
+            var page = App.Current.MainPage as rootPage;
+            var userInfoPage = new userInfoPage();
+            page.changePage(userInfoPage);
+        }
     }
 
     public class CompanyProfile
