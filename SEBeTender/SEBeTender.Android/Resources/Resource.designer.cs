@@ -6269,14 +6269,14 @@ namespace SEBeTender.Droid
 			// aapt resource value: 0x7f0a0010
 			public const int abc_text_size_title_material_toolbar = 2131361808;
 			
-			// aapt resource value: 0x7f080094
-			public const int activity_horizontal_margin = 2131230868;
+			// aapt resource value: 0x7f0a0094
+			public const int activity_horizontal_margin = 2131361940;
 			
-			// aapt resource value: 0x7f080095
-			public const int activity_vertical_margin = 2131230869;
+			// aapt resource value: 0x7f0a0095
+			public const int activity_vertical_margin = 2131361941;
 			
-			// aapt resource value: 0x7f080009
-			public const int cardview_compat_inset_shadow = 2131230729;
+			// aapt resource value: 0x7f0a0009
+			public const int cardview_compat_inset_shadow = 2131361801;
 			
 			// aapt resource value: 0x7f0a000a
 			public const int cardview_default_elevation = 2131361802;
@@ -6284,17 +6284,17 @@ namespace SEBeTender.Droid
 			// aapt resource value: 0x7f0a000b
 			public const int cardview_default_radius = 2131361803;
 			
-			// aapt resource value: 0x7f080096
-			public const int date_text_size = 2131230870;
+			// aapt resource value: 0x7f0a0096
+			public const int date_text_size = 2131361942;
 			
-			// aapt resource value: 0x7f080097
-			public const int date_text_tab_size = 2131230871;
+			// aapt resource value: 0x7f0a0097
+			public const int date_text_tab_size = 2131361943;
 			
-			// aapt resource value: 0x7f08009c
-			public const int default_circle_indicator_radius = 2131230876;
+			// aapt resource value: 0x7f0a009c
+			public const int default_circle_indicator_radius = 2131361948;
 			
-			// aapt resource value: 0x7f08009d
-			public const int default_circle_indicator_stroke_width = 2131230877;
+			// aapt resource value: 0x7f0a009d
+			public const int default_circle_indicator_stroke_width = 2131361949;
 			
 			// aapt resource value: 0x7f0a0076
 			public const int design_appbar_elevation = 2131361910;
@@ -6446,20 +6446,20 @@ namespace SEBeTender.Droid
 			// aapt resource value: 0x7f0a0002
 			public const int item_touch_helper_swipe_escape_velocity = 2131361794;
 			
-			// aapt resource value: 0x7f08009a
-			public const int month_row_size = 2131230874;
+			// aapt resource value: 0x7f0a009a
+			public const int month_row_size = 2131361946;
 			
-			// aapt resource value: 0x7f08009b
-			public const int month_row_tab_size = 2131230875;
+			// aapt resource value: 0x7f0a009b
+			public const int month_row_tab_size = 2131361947;
 			
-			// aapt resource value: 0x7f080098
-			public const int month_text_size = 2131230872;
+			// aapt resource value: 0x7f0a0098
+			public const int month_text_size = 2131361944;
 			
-			// aapt resource value: 0x7f080099
-			public const int month_text_tab_size = 2131230873;
+			// aapt resource value: 0x7f0a0099
+			public const int month_text_tab_size = 2131361945;
 			
-			// aapt resource value: 0x7f080003
-			public const int mr_controller_volume_group_list_item_height = 2131230723;
+			// aapt resource value: 0x7f0a0003
+			public const int mr_controller_volume_group_list_item_height = 2131361795;
 			
 			// aapt resource value: 0x7f0a0004
 			public const int mr_controller_volume_group_list_item_icon_size = 2131361796;
@@ -8493,13 +8493,10 @@ namespace SEBeTender.Droid
 			public const int bottom_sheet_behavior = 2131230793;
 			
 			// aapt resource value: 0x7f08004a
-			public const int character_counter_pattern = 2131230794;			
-
+			public const int character_counter_pattern = 2131230794;
+			
 			// aapt resource value: 0x7f080000
 			public const int common_google_play_services_enable_button = 2131230720;
-
-			// aapt resource value: 0x7f070041
-			public const int library_name = 2131165249;
 			
 			// aapt resource value: 0x7f080001
 			public const int common_google_play_services_enable_text = 2131230721;
@@ -8549,29 +8546,29 @@ namespace SEBeTender.Droid
 			// aapt resource value: 0x7f08000f
 			public const int common_signin_button_text_long = 2131230735;
 			
-			// aapt resource value: 0x7f080053
-			public const int default_web_client_id = 2131230803;
-			
-			// aapt resource value: 0x7f080054
-			public const int firebase_database_url = 2131230804;
-			
-			// aapt resource value: 0x7f080051
-			public const int gcm_defaultSenderId = 2131230801;
-			
 			// aapt resource value: 0x7f080055
-			public const int google_api_key = 2131230805;
-			
-			// aapt resource value: 0x7f080052
-			public const int google_app_id = 2131230802;
+			public const int default_web_client_id = 2131230805;
 			
 			// aapt resource value: 0x7f080056
-			public const int google_crash_reporting_api_key = 2131230806;
+			public const int firebase_database_url = 2131230806;
+			
+			// aapt resource value: 0x7f080053
+			public const int gcm_defaultSenderId = 2131230803;
 			
 			// aapt resource value: 0x7f080057
-			public const int google_storage_bucket = 2131230807;
+			public const int google_api_key = 2131230807;
 			
-			// aapt resource value: 0x7f080050
-			public const int library_name = 2131230800;
+			// aapt resource value: 0x7f080054
+			public const int google_app_id = 2131230804;
+			
+			// aapt resource value: 0x7f080058
+			public const int google_crash_reporting_api_key = 2131230808;
+			
+			// aapt resource value: 0x7f080059
+			public const int google_storage_bucket = 2131230809;
+			
+			// aapt resource value: 0x7f080052
+			public const int library_name = 2131230802;
 			
 			// aapt resource value: 0x7f080012
 			public const int mr_button_content_description = 2131230738;
@@ -8584,15 +8581,6 @@ namespace SEBeTender.Droid
 			
 			// aapt resource value: 0x7f080015
 			public const int mr_cast_button_disconnected = 2131230741;
-      
-			// aapt resource value: 0x7f070040
-			public const int sfcalendar_inlineviewalldaytext = 2131165248;
-			
-			// aapt resource value: 0x7f07003f
-			public const int sfcalendar_inlineviewnoappointmenttext = 2131165247;
-			
-			// aapt resource value: 0x7f07002a
-			public const int status_bar_notification_info_overflow = 2131165226;
 			
 			// aapt resource value: 0x7f080016
 			public const int mr_chooser_searching = 2131230742;
@@ -8662,6 +8650,12 @@ namespace SEBeTender.Droid
 			
 			// aapt resource value: 0x7f08003a
 			public const int search_menu_title = 2131230778;
+			
+			// aapt resource value: 0x7f080051
+			public const int sfcalendar_inlineviewalldaytext = 2131230801;
+			
+			// aapt resource value: 0x7f080050
+			public const int sfcalendar_inlineviewnoappointmenttext = 2131230800;
 			
 			// aapt resource value: 0x7f08003b
 			public const int status_bar_notification_info_overflow = 2131230779;
