@@ -15,6 +15,8 @@
                     HorizontalOptions="FillAndExpand" Clicked="onEditCIDBBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
             <Button Text="Change Password"
                     HorizontalOptions="FillAndExpand" Clicked="onChangePasswordBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
+            <Button Text="Turn off Notification" x:Name="notificationBtn" IsVisible="False"
+                    HorizontalOptions="FillAndExpand" Clicked="onNotificationBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
