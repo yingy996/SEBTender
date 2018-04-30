@@ -27,6 +27,7 @@ namespace SEBeTender
         public string CheckedValue { get; set; }
         public string AddToCartQuantity { get; set; }
         public string BookmarkImage { get; set; }
+        public string Page { get; set; }
 
     }
 }
