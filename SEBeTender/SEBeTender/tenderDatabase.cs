@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using SQLite;
-
+using Xamarin.Forms;
 
 namespace SEBeTender
 {
@@ -14,7 +14,31 @@ namespace SEBeTender
         public tenderDatabase(string dbPath)
         {
             database = new SQLiteAsyncConnection(dbPath);
+            if (Device.RuntimePlatform == Device.iOS) {
+                deleteTendersAsync();
+                database.CreateTableAsync<dbtenderItem>().Wait();
+            } else
+            {
+                deleteTendersAsync();
+                try
+                {
+                    database.CreateTableAsync<dbtenderItem>().Wait();
+                } catch (Exception ex)
+                {
+                    Console.WriteLine("Create table error: " + ex);
+                }
+                //database.ExecuteAsync("CREATE TABLE dbtenderItem(id integer primary key autoincrement not null, Reference varchar, Title varchar, OriginatingStation varchar, ClosingDate varchar, BidClosingDate varchar, FeeBeforeGST varchar, FeeAfterGST varchar, FeeGST varchar, TendererClass varchar, Name varchar, OffinePhone varchar, Extension varchar, MobilePhone varchar, Email varchar, Fax varchar, jsonfileLinks varchar, CheckedValue varchar, AddToCartQuantity varchar, BookmarkImage varchar)").Wait();
+                //database.CreateTableAsync<dbtenderItem>().Wait();
+            }
             //database.CreateTableAsync<dbtenderItem>().Wait();
+
+
+
+
+        }
+
+        public void createTableAsync()
+        {
             database.CreateTableAsync<dbtenderItem>().Wait();
         }
 
@@ -32,9 +56,11 @@ namespace SEBeTender
         public void saveTendersAsync(List<dbtenderItem> tenders)
         {
             
-            //database.InsertAllAsync(tenders);
+            
             try
             {
+                Console.WriteLine("Im testing here");
+                //database.InsertAllAsync(tenders);
                 foreach (dbtenderItem item in tenders)
                 {
                     if (getTenderAsync(item.Reference).Result != null)
@@ -68,7 +94,8 @@ namespace SEBeTender
                         //database.InsertAsync(item);
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Error occurs while saving tender into db: " + ex);
             }
@@ -78,7 +105,6 @@ namespace SEBeTender
         public void deleteTendersAsync()
         {
             database.DropTableAsync<dbtenderItem>().Wait();
-
         }
 
         

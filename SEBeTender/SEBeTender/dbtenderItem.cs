@@ -6,13 +6,61 @@ namespace SEBeTender
 {
      public class dbtenderItem
     {
-        private string reference, title, originatingStation, closingDate, biddingClosingDate, feeBeforeGST, feeGST, feeAfterGST, tendererClass, name, officePhone, extension, mobilePhone, email, fax, checkedValue, addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
+        //private int ID = 0;
+        private string reference = "1";
+        private string title = "1";
+        private string  originatingStation = "1";
+        private string closingDate = "1";
+        private string biddingClosingDate = "1";
+        private string feeBeforeGST = "1";
+        private string feeGST = "1";
+        private string feeAfterGST = "1";
+        private string tendererClass = "1";
+        private string name = "1";
+        private string officePhone = "1";
+        private string extension = "1";
+        private string mobilePhone = "1";
+        private string email = "1";
+        private string fax = "1";
+        private string checkedValue = "1";
+        private string addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
         private string bookmarkImage = "bookmark.png";
         
         private string jsonfilelinks = "";
 
-        [PrimaryKey, AutoIncrement]
+        public dbtenderItem()
+        {
+          Id = 0;
+          reference = "1";
+          title = "1";
+          originatingStation = "1";
+          closingDate = "1";
+          biddingClosingDate = "1";
+          feeBeforeGST = "1";
+          feeGST = "1";
+          feeAfterGST = "1";
+          tendererClass = "1";
+          name = "1";
+          officePhone = "1";
+          extension = "1";
+          mobilePhone = "1";
+          email = "1";
+          fax = "1";
+          checkedValue = "1";
+          addToCartQuantity = "1";
+          bookmarkImage = "bookmark.png";
+          jsonfilelinks = "";
+        }
+
+        /*[PrimaryKey, AutoIncrement]
         public int id
+        {
+            get { return ID; }
+            set { ID = value; }
+        }*/
+
+        [PrimaryKey, AutoIncrement]
+        public int Id
         {
             get;
             set;
@@ -108,9 +156,9 @@ namespace SEBeTender
             set { fax = value; }
         }
 
-        public string jsonfileLinks
+        public string JsonfileLinks
         {
-            get { return jsonfileLinks; }
+            get { return jsonfilelinks; }
             set { jsonfilelinks = value; }
         }
 

@@ -78,7 +78,8 @@ namespace SEBeTender
 
             //Initialize list of dbtenders which is almost similar to tenderitem but stores file links in json instead of dictionary so that the tenders can be inserted into database
             List<dbtenderItem> dbTenders = new List<dbtenderItem>();
-            dbTenders = Task.Run<List<dbtenderItem>>(() => saveTenderToDatabase(tenderItems)).Result;
+            Task<List<dbtenderItem>> dbTask = Task.Run<List<dbtenderItem>>(() => saveTenderToDatabase(tenderItems));
+            dbTenders = dbTask.Result;
 
             /*if (App.Database == null)
             {
@@ -117,7 +118,7 @@ namespace SEBeTender
                 dbTender.MobilePhone = item.MobilePhone;
                 dbTender.Email = item.Email;
                 dbTender.Fax = item.Fax;
-                dbTender.jsonfileLinks = jsonFileLink;
+                dbTender.JsonfileLinks = jsonFileLink;
                 dbTender.CheckedValue = item.CheckedValue;
                 dbTender.AddToCartQuantity = item.AddToCartQuantity;
                 dbTender.BookmarkImage = item.BookmarkImage;
@@ -149,7 +150,7 @@ namespace SEBeTender
             List<dbtenderItem> dbTenderItems = Task.Run<List<dbtenderItem>>(() => App.Database.getTendersAsync()).Result;
             foreach (var item in dbTenderItems)
             {
-                Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.jsonfileLinks);
+                Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.JsonfileLinks);
                 tenderItem tenderitem = new tenderItem();
                 tenderitem.Reference = item.Reference;
                 tenderitem.Title = item.Title;

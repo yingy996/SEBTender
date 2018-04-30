@@ -12,6 +12,8 @@ using Android.Widget;
 using Xamarin.Forms;
 using SEBeTender.Droid;
 using System.IO;
+using SQLite;
+using SQLitePCL;
 
 [assembly: Dependency(typeof(localFileHelper))]
 namespace SEBeTender.Droid

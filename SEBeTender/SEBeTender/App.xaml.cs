@@ -13,11 +13,15 @@ namespace SEBeTender
         static tenderDatabase database;
         public App ()
 		{
-            if (database != null)
+            /*if (database != null)
             {
                 database.deleteTendersAsync();
                 
-            }
+            }*/
+
+            database = Database;
+            //database.deleteTendersAsync();
+            //database.createTableAsync();
             InitializeComponent();
             MainPage = new SEBeTender.rootPage();
             
