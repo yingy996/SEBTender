@@ -66,10 +66,46 @@ namespace SEBeTender
                     
                 }
             }
+            //Save tender items into database 
+            saveToTenderDb(tenderItems);
 
             listView.ItemsSource = tenderItems;
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
+
+            
+        }
+
+        async void saveToTenderDb(List<tenderItem> tenderItems)
+        {
+            Console.WriteLine("Testing save, is in the method now");
+            dbTenderItem dbTenderItem = new dbTenderItem();
+            foreach (tenderItem item in tenderItems)
+            {
+                dbTenderItem.Reference = item.Reference;
+                dbTenderItem.Title = item.Title;
+                dbTenderItem.OriginatingStation = item.OriginatingStation;
+                dbTenderItem.ClosingDate = item.ClosingDate;
+                dbTenderItem.BidClosingDate = item.BidClosingDate;
+                dbTenderItem.FeeBeforeGST = item.FeeBeforeGST;
+                dbTenderItem.FeeAfterGST = item.FeeAfterGST;
+                dbTenderItem.FeeGST = item.FeeGST;
+                dbTenderItem.TendererClass = item.TendererClass;
+                dbTenderItem.Name = item.Name;
+                dbTenderItem.OffinePhone = item.OffinePhone;
+                dbTenderItem.Extension = item.Extension;
+                dbTenderItem.MobilePhone = item.MobilePhone;
+                dbTenderItem.Email = item.Email;
+                dbTenderItem.Fax = item.Fax;
+                //dbTenderItem.FileLinks = JsonConvert.SerializeObject(item.FileLinks).ToString();
+                dbTenderItem.FileLinks = "";
+                dbTenderItem.CheckedValue = item.CheckedValue;
+                dbTenderItem.AddToCartQuantity = item.AddToCartQuantity;
+                dbTenderItem.BookmarkImage = item.BookmarkImage;
+
+                await App.Database.SaveTenderAsync(dbTenderItem);
+            }
+            Console.WriteLine("Save Process done!");
         }
 
         async Task<List<tenderBookmark>> retrieveBookmark()

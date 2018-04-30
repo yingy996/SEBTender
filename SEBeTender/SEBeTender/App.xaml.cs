@@ -9,6 +9,7 @@ namespace SEBeTender
 {
     public partial class App : Application
     {
+        static tenderDatabase database;
         SEBeTender.MainPage mPage;
         public static string AppName = "SEBeTender";
 
@@ -19,6 +20,18 @@ namespace SEBeTender
             MainPage = new SEBeTender.rootPage();
             //MainPage = new MainPage();
 
+        }
+
+        public static tenderDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new tenderDatabase(DependencyService.Get<ILocalFileHelper>().getLocalFilePath("tenderDb.db3"));
+                }
+                return database;
+            }
         }
 
         public static string NotificationSettings {
