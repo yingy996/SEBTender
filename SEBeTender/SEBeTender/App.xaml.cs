@@ -13,12 +13,14 @@ namespace SEBeTender
         static tenderDatabase database;
         public App ()
 		{
-            /*if (database != null)
+            if (database != null)
             {
                 database.deleteTendersAsync();
-            }*/
-            MainPage = new SEBeTender.rootPage();
+                
+            }
             InitializeComponent();
+            MainPage = new SEBeTender.rootPage();
+            
             
             //MainPage = new MainPage();
 		}
@@ -29,7 +31,11 @@ namespace SEBeTender
             {
                 if(database == null)
                 {
-                    database = new tenderDatabase(DependencyService.Get<ILocalFileHelper>().getLocalFilePath("TenderDB.db3"));
+                    if (DependencyService.Get<ILocalFileHelper>() != null)
+                    {
+                        database = new tenderDatabase(DependencyService.Get<ILocalFileHelper>().getLocalFilePath("TenderDB.db3"));
+                    }
+                    
 
                 }
 

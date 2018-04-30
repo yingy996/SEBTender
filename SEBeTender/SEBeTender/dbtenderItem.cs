@@ -11,7 +11,13 @@ namespace SEBeTender
         
         private string jsonfilelinks = "";
 
-        [PrimaryKey]
+        [PrimaryKey, AutoIncrement]
+        public int id
+        {
+            get;
+            set;
+        }
+
         public string Reference
         {
             get { return reference; }

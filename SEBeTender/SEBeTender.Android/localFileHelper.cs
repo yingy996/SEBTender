@@ -26,7 +26,9 @@ namespace SEBeTender.Droid
             {
                 Directory.CreateDirectory(libFolder);
             }
+
             return Path.Combine(libFolder, fileName);
+            //return Path.Combine(docFolder, fileName);
         }
     }
 }

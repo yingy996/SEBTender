@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite;
 
+
 namespace SEBeTender
 {
     public class tenderDatabase
@@ -13,6 +14,7 @@ namespace SEBeTender
         public tenderDatabase(string dbPath)
         {
             database = new SQLiteAsyncConnection(dbPath);
+            //database.CreateTableAsync<dbtenderItem>().Wait();
             database.CreateTableAsync<dbtenderItem>().Wait();
         }
 
@@ -23,12 +25,54 @@ namespace SEBeTender
 
         public Task<dbtenderItem> getTenderAsync(string reference)
         {
+            
             return database.Table<dbtenderItem>().Where(i => i.Reference == reference).FirstOrDefaultAsync();
         }
 
-        public Task<int> saveTendersAsync(List<dbtenderItem> tenders)
+        public void saveTendersAsync(List<dbtenderItem> tenders)
         {
-            return database.InsertAllAsync(tenders);
+            
+            //database.InsertAllAsync(tenders);
+            try
+            {
+                foreach (dbtenderItem item in tenders)
+                {
+                    if (getTenderAsync(item.Reference).Result != null)
+                    {
+                        Console.WriteLine("Need to update item to db yo");
+                        database.UpdateAsync(item);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Need to insert item to db yo");
+
+                        if (database != null)
+                        {
+                            Console.WriteLine("Database is not null, insert item!");
+                            if (item != null)
+                            {
+                                Console.WriteLine("Item not null! Inserting");
+                                if (database.Table<dbtenderItem>() != null)
+                                {
+                                    Console.WriteLine("table is not null! Inserting");
+                                    database.InsertAsync(item);
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Database is null, not inserting item!");
+                        }
+                        //database.InsertAsync(item);
+                    }
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Error occurs while saving tender into db: " + ex);
+            }
+            
         }
 
         public void deleteTendersAsync()

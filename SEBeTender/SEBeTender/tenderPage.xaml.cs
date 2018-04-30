@@ -78,10 +78,7 @@ namespace SEBeTender
 
             //Initialize list of dbtenders which is almost similar to tenderitem but stores file links in json instead of dictionary so that the tenders can be inserted into database
             List<dbtenderItem> dbTenders = new List<dbtenderItem>();
-            dbTenders = Task.Run<List<dbtenderItem>>(() => saveTenderToDatabase(tenderItems, dbTenders)).Result;
-
-
-
+            dbTenders = Task.Run<List<dbtenderItem>>(() => saveTenderToDatabase(tenderItems)).Result;
 
             /*if (App.Database == null)
             {
@@ -89,17 +86,18 @@ namespace SEBeTender
             }
             else
             {*/
-                listView.ItemsSource = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase()).Result;
+            //listView.ItemsSource = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase()).Result;
             //}
-                
+            listView.ItemsSource = tenderItems;
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
         }
 
-        async Task<List<dbtenderItem>> saveTenderToDatabase(List<tenderItem> tenderitems, List<dbtenderItem> dbtenderitems)
+        async Task<List<dbtenderItem>> saveTenderToDatabase(List<tenderItem> tenderitems)
         {
             
-            List<dbtenderItem> dbTenderItems = dbtenderitems;
+            //List<dbtenderItem> dbTenderItems = dbtenderitems;
+            List<dbtenderItem> dbTenderItems = new List<dbtenderItem>();
             foreach (var item in tenderitems)
             {
                 string jsonFileLink = JsonConvert.SerializeObject(item.FileLinks).ToString();
@@ -126,8 +124,21 @@ namespace SEBeTender
 
                 dbTenderItems.Add(dbTender);
             }
-
-            App.Database.saveTendersAsync(dbTenderItems);
+            
+           /* if (App.Database != null)
+            {*/
+            if (dbTenderItems.Count > 0)
+            {
+                Console.WriteLine("GOT ITEM HERE!");
+                App.Database.saveTendersAsync(dbTenderItems);
+            }
+                
+            /*} else
+            {
+                Console.WriteLine("Tender database is null!");
+            }*/
+            
+            
 
             return dbTenderItems;
         }
