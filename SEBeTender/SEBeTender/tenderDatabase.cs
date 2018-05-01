@@ -16,52 +16,15 @@ namespace SEBeTender
             database.CreateTableAsync<dbTenderItem>().Wait();
         }
 
-        public Task<List<dbTenderItem>> getTendersAsync()
+        public Task<List<dbTenderItem>> getTendersAsync(int page)
         {
-            return database.Table<dbTenderItem>().ToListAsync();
+            return database.Table<dbTenderItem>().Where(i => i.Page == page).ToListAsync();
         }
 
         public Task<dbTenderItem> getTenderAsync(int id)
         {
             return database.Table<dbTenderItem>().Where(i => i.Id == id).FirstOrDefaultAsync();
         }
-
-        /*public Task<int> SaveTenderAsync(dbTenderItem item)
-        {
-            if (item.Id != 0)
-            {
-                return database.UpdateAsync(item);
-            }
-            else
-            {
-                return database.InsertAsync(item);
-            }
-        }*/
-
-        /*public Task<int> SaveTenderAsync(List<dbTenderItem> dbTenderItems)
-        {
-            if (dbTenderItems != null)
-            {
-                foreach (dbTenderItem item in dbTenderItems)
-                {
-                    if (item.Id != 0)
-                    {
-                        return database.UpdateAsync(item);
-                    }
-                    else
-                    {
-                        return database.InsertAsync(item);
-                    }
-                }
-
-            }
-            else
-            {
-                return Task.FromResult(0);
-            }
-
-            return Task.FromResult(0);
-        }*/
 
             public Task<int> SaveTendersasync(List<dbTenderItem> dbTenderItems)
         {

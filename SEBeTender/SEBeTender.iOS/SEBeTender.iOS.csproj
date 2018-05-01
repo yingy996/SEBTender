@@ -101,6 +101,7 @@
     </EnvironmentVariables>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="LocalFileHelper.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="CustomEntitlements.plist" />
