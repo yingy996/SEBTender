@@ -26,16 +26,19 @@ namespace SEBeTender
             return database.Table<dbTenderItem>().Where(i => i.Id == id).FirstOrDefaultAsync();
         }
 
-            public Task<int> SaveTendersasync(List<dbTenderItem> dbTenderItems)
+        public Task<int> SaveTendersasync(List<dbTenderItem> dbTenderItems)
         {
             return database.InsertAllAsync(dbTenderItems);
         }
 
-        
-
         public Task<int> DeleteTenderAsync(dbTenderItem item)
         {
             return database.DeleteAsync(item);
+        }
+
+        public void deleteAllTenders()
+        {
+            database.QueryAsync<dbTenderItem>("DELETE * FROM dbTenderItem");
         }
     }
 }
