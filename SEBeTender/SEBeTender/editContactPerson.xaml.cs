@@ -12,7 +12,7 @@ namespace SEBeTender
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class editContactPerson : ContentPage
 	{
-		public editContactPerson ()
+        public editContactPerson ()
 		{
             BindingContext = this;
             InitializeComponent();
@@ -31,29 +31,36 @@ namespace SEBeTender
             emailAddress.Text = profile.EmailAddress;
         }
 
-        private void onUpdateBtnClicked(object sender, EventArgs e)
+        private async Task onUpdateBtnClicked(object sender, EventArgs e)
         {
             bool updateError = false;
 
             if (String.IsNullOrWhiteSpace(emailAddress.Text))
             {
-                DisplayAlert("Invalid Email", "Email Address is required.", "OK");
+                await DisplayAlert("Invalid Email", "Email Address is required.", "OK");
                 updateError = true;
             } 
-            
-            if (IsValidEmail(emailAddress.Text) == false)
+            else if (IsValidEmail(emailAddress.Text) == false)
             {
-                DisplayAlert("Invalid Email", "Invalid Email Address format.", "OK");
+                await DisplayAlert("Invalid Email", "Invalid Email Address format.", "OK");
                 updateError = true;
             }
 
             if (updateError == false)
-            { 
+            {
+                //Sending HTTP request to update Mailing Address
+                Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.EditContactPersonRequest("http://www2.sesco.com.my/etender/vendor/vendor_contact_editSubmit.jsp", name.Text, telephoneNo.Text, faxNo.Text, emailAddress.Text));
+                var httpTaskResult = httpTask.Result.ToString();
+                Console.WriteLine(httpTaskResult);
+
+                if (httpTaskResult == "OK")
+                {
+                    await DisplayAlert("Success", "Contact person info has been updated.", "OK");
+                }
 
                 var page = App.Current.MainPage as rootPage;
                 var userInfoPage = new userInfoPage();
                 page.changePage(userInfoPage);
-                //Application.Current.MainPage.Navigation.PopAsync();
             }
         }
 

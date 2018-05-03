@@ -338,7 +338,7 @@ namespace SEBeTender
         {
             CompanyProfile profile = new CompanyProfile();
             profile.CompanyName = htmlDocument.DocumentNode.SelectSingleNode("//input[@type='hidden' and @name='VenName']").Attributes["value"].Value;
-            profile.CompanyRegistreationNo = htmlDocument.DocumentNode.SelectSingleNode("//input[@type='hidden' and @name='VenComReg']").Attributes["value"].Value;
+            profile.CompanyRegistrationNo = htmlDocument.DocumentNode.SelectSingleNode("//input[@type='hidden' and @name='VenComReg']").Attributes["value"].Value;
             profile.MailingAddress = htmlDocument.DocumentNode.SelectSingleNode("//textarea[@name='VenAdd']").InnerHtml;
             profile.Country = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenCouCode']").Attributes["value"].Value;
 

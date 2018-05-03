@@ -34,7 +34,7 @@
 
                     <Label Text="Company Registration No.:" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
                     <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Padding="2">
-                        <Label x:Name="companyRegistreationNo" Text="{Binding CompanyRegistreationNo}" FontAttributes="Bold"/>
+                        <Label x:Name="companyRegistrationNo" Text="{Binding CompanyRegistrationNo}" FontAttributes="Bold"/>
                     </Grid>
 
 

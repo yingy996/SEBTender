@@ -9,10 +9,10 @@
                     HorizontalOptions="FillAndExpand" Clicked="onEditCompanyBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
             <Button Text="View / Edit Contact Person"
                     HorizontalOptions="FillAndExpand" Clicked="onEditContactBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
-            <Button Text="View / Edit UPK License No."
+            <!-- <Button Text="View / Edit UPK License No."
                     HorizontalOptions="FillAndExpand" Clicked="onEditLicenseBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
             <Button Text="View / Edit CIDB"
-                    HorizontalOptions="FillAndExpand" Clicked="onEditCIDBBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
+                    HorizontalOptions="FillAndExpand" Clicked="onEditCIDBBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button> -->
             <Button Text="Change Password"
                     HorizontalOptions="FillAndExpand" Clicked="onChangePasswordBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
             <Button Text="Turn off Notification" x:Name="notificationBtn" IsVisible="False"
