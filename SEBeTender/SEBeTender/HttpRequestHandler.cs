@@ -102,7 +102,9 @@ namespace SEBeTender
                     cookieResult = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
                     userSession.userLoginCookie = cookieResult;
                     userSession.username = username;
-                    
+                    //for future automated login (user just need to login for once and will be kept logged in afterward)
+                    Settings.Username = username;
+                    Settings.Password = password;
                 } else
                 {
                     //if login request failed, return error message

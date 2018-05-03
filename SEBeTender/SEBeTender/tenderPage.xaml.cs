@@ -49,22 +49,25 @@ namespace SEBeTender
             if (userSession.username != "")
             {
                 Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
-                List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.Result.ToList();
-                if (tenderBookmarks.Count > 0)
+                if (bookmarkHttpTask.Result != null)
                 {
-                    foreach (var tenderItem in tenderItems)
+                    List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.Result.ToList();
+                    if (tenderBookmarks.Count > 0)
                     {
-                        foreach (var tenderBookmark in tenderBookmarks)
+                        foreach (var tenderItem in tenderItems)
                         {
-                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                            foreach (var tenderBookmark in tenderBookmarks)
                             {
-                                tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                break;
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
                             }
                         }
+
                     }
-                    
-                }
+                }               
             }
 
             listView.ItemsSource = tenderItems;
