@@ -10,7 +10,7 @@
             
             <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="5.5*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -41,6 +41,7 @@
                                         <Label Text="{Binding bookmarkDate}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
                                         <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
                                         <Label Text="{Binding tenderTitle}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
 
                                         <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
