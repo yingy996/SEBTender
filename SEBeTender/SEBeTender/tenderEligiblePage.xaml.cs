@@ -125,13 +125,13 @@ namespace SEBeTender
             listView.ScrollTo(topItem, ScrollToPosition.Start, true);
         }
 
-        void OnCartTapped(object sender, EventArgs args)
+        /*void OnCartTapped(object sender, EventArgs args)
         {
             var tenderSelected = ((TappedEventArgs)args).Parameter;
             tenderItem tender = (tenderItem)tenderSelected;
 
             DisplayAlert("Success", tender.AddToCartQuantity + " Item " + tender.Reference + " has been successfully added to cart ", "OK");
-        }
+        }*/
 
         async void OnBookmarkTapped(object sender, EventArgs eventArgs)
         {
