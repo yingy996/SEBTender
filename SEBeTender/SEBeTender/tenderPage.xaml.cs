@@ -7,18 +7,27 @@ using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using HtmlAgilityPack;
-//ON NEXT PAGE, IF DATABASE TENDER SIMILAR, NO NEED RE-DISPLAY
+
 namespace SEBeTender
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class tenderPage : ContentPage
 	{
+        //store the url for next tender page
         private string nextUrl;
-        private string dbNextUrl;
+
+        //store the url for previous tender page
         private string previousUrl;
+
+        //if true, then previous url available
         private bool isPreviousAvailable = false;
+
+        //if true, then next url available
         private bool isNextAvailable = false;
+
+        //store the current tender page which will be inserted into the tender database column
         private int Page = 1;
+
 		public tenderPage ()
 		{
             BindingContext = this;
@@ -34,27 +43,116 @@ namespace SEBeTender
             var nextLblTapRecognizer = new TapGestureRecognizer();
             nextLblTapRecognizer.Tapped += onNextPageTapped;
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
+            nextPage.IsVisible = false;
+
+            retrieveAndDisplayFirstPageTenders();
+
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
+        }
+
+        public async void retrieveAndDisplayFirstPageTenders()
+        {
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
+            //Show tenders from database first if exists, then clear database to make way for new tenders
+            List<tenderItem> dbtenders1 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
+            List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
+            if (dbtenders1.Count > 0)
+            {
+                listView.ItemsSource = dbtenders1;
+                if (dbtenders2.Count > 0)
+                {
+                    nextPage.IsVisible = true;
+                }
+                activityIndicator.IsRunning = false;
+                activityIndicator.IsVisible = false;
+                await WaitAndExecuteUpdateTenders(10800000);
+            }
+            else
+            {
+                //Sending HTTP request to obtain the tender page data
+                string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
+                var httpResult = httpTask;
+                //Console.WriteLine("This is get TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER done");
+                //Extract tender data from the response
+                var tenders = await DataExtraction.getWebData(httpResult, "tender");
+                List<tenderItem> tenderItems = (List<tenderItem>)tenders;
+                //Console.WriteLine("This is EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION done");
+                //Get bookmark details from online database
+                if (userSession.username != "")
+                {
+                    List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                    List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+                    if (tenderBookmarks.Count > 0)
+                    {
+                        foreach (var tenderItem in tenderItems)
+                        {
+                            foreach (var tenderBookmark in tenderBookmarks)
+                            {
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+                //Console.WriteLine("This is BOOKMARK BOOKMARK BOOKMARK BOOKMARK BOOKMARK BOOKMARK BOOKMARK done");
+                listView.ItemsSource = tenderItems;
+                //Save page 1 tenders to database
+                await saveToTenderDb(tenderItems, 1);
+
+                //save subsequent page tenders to database;
+                await storeAllTenders();
+
+                activityIndicator.IsRunning = false;
+                activityIndicator.IsVisible = false;
+            }
+            
+
+        }
+
+        public async Task WaitAndExecuteUpdateTenders(int milisec)
+        {
+            await Task.Delay(milisec);
+            await DisplayAlert("Update Tenders", "Refresh Tenders", "Okay");
+
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
 
             //Sending HTTP request to obtain the tender page data
-            Task<string> httpTask = Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp", false));
-            var httpResult = httpTask.Result.ToString();
-            //Task<string> httpTask = getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp");
-            //string httpTask = getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp").Result;
+            string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
+            var httpResult = httpTask;
 
-            //var httpResult = httpTask.ToString();
+
 
             //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "tender");
+            var tenders = await DataExtraction.getWebData(httpResult, "tender");
             List<tenderItem> tenderItems = (List<tenderItem>)tenders;
 
-            //Get bookmark details from database
+            //delete existing tenders from database
+            deleteAllTenders();
+
+            //Save page 1 tenders to database
+            await saveToTenderDb(tenderItems, 1);
+
+            //save subsequent page tenders to database;
+            await storeAllTenders();
+
+            List<tenderItem> dbtenders1 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
+            
+
+            //Get bookmark details from online database
             if (userSession.username != "")
             {
-                Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
-                List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.Result.ToList();
+                List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
                 if (tenderBookmarks.Count > 0)
                 {
-                    foreach (var tenderItem in tenderItems)
+                    foreach (var tenderItem in dbtenders1)
                     {
                         foreach (var tenderBookmark in tenderBookmarks)
                         {
@@ -65,34 +163,20 @@ namespace SEBeTender
                             }
                         }
                     }
-                    
+
                 }
             }
 
-            //Show tenders from database first if exists, then replace if different with newest from SEBtender
-            if(App.Database.getTendersAsync(1) != null)
-            {
-                listView.ItemsSource = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1)).Result;
-                deleteTenders(Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1)).Result);
+            listView.ItemsSource = tenderItems;
+                //await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
 
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
 
-            }
-
-
-            
-
-
-            //Save page 1 tenders to database
-            saveToTenderDb(tenderItems, 1);
-
-            //save >1 pages tenders to database
-            storeAllTenders();
-
-            listView.ItemsSource = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1)).Result;
-            
+            await WaitAndExecuteUpdateTenders(10800000);
         }
 
-        async void saveToTenderDb(List<tenderItem> tenderItems, int page)
+        async Task saveToTenderDb(List<tenderItem> tenderItems, int page)
         {
             List<dbTenderItem> dbTenderItems = new List<dbTenderItem>();
             
@@ -114,8 +198,8 @@ namespace SEBeTender
                 dbTenderItem.MobilePhone = item.MobilePhone;
                 dbTenderItem.Email = item.Email;
                 dbTenderItem.Fax = item.Fax;
-                //dbTenderItem.FileLinks = JsonConvert.SerializeObject(item.FileLinks).ToString();
-                dbTenderItem.FileLinks = "";
+                dbTenderItem.FileLinks = JsonConvert.SerializeObject(item.FileLinks).ToString();
+                //dbTenderItem.FileLinks = "";
                 dbTenderItem.CheckedValue = item.CheckedValue;
                 dbTenderItem.AddToCartQuantity = item.AddToCartQuantity;
                 dbTenderItem.BookmarkImage = item.BookmarkImage;
@@ -131,7 +215,7 @@ namespace SEBeTender
         async Task<List<tenderItem>> retrieveTenderFromDatabase(int page)
         {
             List<tenderItem> tenderItems = new List<tenderItem>();
-            List<dbTenderItem> dbTenderItems = Task.Run<List<dbTenderItem>>(() => App.Database.getTendersAsync(page)).Result;
+            List<dbTenderItem> dbTenderItems = await Task.Run<List<dbTenderItem>>(() => App.Database.getTendersAsync(page));
             foreach (var item in dbTenderItems)
             {
                 Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.FileLinks);
@@ -162,7 +246,7 @@ namespace SEBeTender
             return tenderItems;
         }
 
-        async void deleteTenders(List<tenderItem> tenderItems)
+        /*async void deleteTenders(List<tenderItem> tenderItems)
         {
             foreach (tenderItem item in tenderItems)
             {
@@ -191,7 +275,7 @@ namespace SEBeTender
                 dbTenderItem.Page = Page;
                 await App.Database.DeleteTenderAsync(dbTenderItem);
             }
-        }
+        }*/
         async Task<List<tenderBookmark>> retrieveBookmark()
         {
             string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostTenderBookmark(userSession.username));
@@ -207,7 +291,7 @@ namespace SEBeTender
             return tenderBookmarks;
         }
 
-        async Task<string> getPageData(string url, bool isDB)
+        async Task<string> getPageData(string url)
         {
 
             string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url, false));
@@ -233,18 +317,13 @@ namespace SEBeTender
                     }
                     else if (aNode.InnerHtml == "Next")
                     {
-                        if (isDB == true)
-                        {
-                            dbNextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                        }
-                        else
-                        {
                             nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
                             isNextAvailable = true;
-                        }
                     }
                 }
             }
+
+
 
             return httpResult;
         }
@@ -267,16 +346,18 @@ namespace SEBeTender
             listView.ScrollTo(topItem, ScrollToPosition.Start, true);
         }
 
-        async void storeAllTenders()
+        async Task storeAllTenders()
         {
-            //check if next tender page exists
-            string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp", true));
+            //denotes the tender page for use in this method
             int i = 1;
+
+
             while (isNextAvailable != false)
             {
+                string httpTask = await Task.Run<string>(() => getPageData(nextUrl));
+
                 i = i + 1;
 
-                //string httpTask = await Task.Run<string>(() => getPageData(nextUrl));
                 var httpResult = httpTask.ToString();
 
 
@@ -288,30 +369,15 @@ namespace SEBeTender
                 var tenderItems = await Task.Run<Object>(() => DataExtraction.getTenderPage(htmlDoc));
 
                 saveToTenderDb((List<tenderItem>)tenderItems, i);
-
-                //listView.ItemsSource = (List<tenderItem>)tenderItems;
-                //listView.ItemTemplate = dataTemplate;
-
-                if (isPreviousAvailable)
-                {
-                    previousPage.IsVisible = true;
-                }
-                else
-                {
-                    previousPage.IsVisible = false;
-                }
-
-                if (isNextAvailable)
-                {
-                    nextPage.IsVisible = true;
-                }
-                else
-                {
-                    nextPage.IsVisible = false;
-                }
-
-                httpTask = await Task.Run<string>(() => getPageData(nextUrl, true));
             }
+
+            List<tenderItem> dbtenders = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
+
+            if (dbtenders.Count > 0)
+            {
+                nextPage.IsVisible = true;
+            }
+            //await WaitAndExecuteUpdateTenders(10800000, storeAllTenders);
         }
 
         async void deleteAllTenders()
@@ -323,15 +389,15 @@ namespace SEBeTender
             Page = Page + 1;
 
             //Show tenders of next page from database first
-            List<tenderItem> tenderItems = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page)).Result;
+            List<tenderItem> tenderItems = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page));
             listView.ItemsSource = tenderItems;
             listView.ItemTemplate = dataTemplate;
 
-            //Delete tenders of next page from the database
+            /*//Delete tenders of next page from the database
             deleteTenders(tenderItems);
 
             //retrieve newest appropriate page tenders via web scraping
-            string httpTask = await Task.Run<string>(() => getPageData(nextUrl, false));
+            string httpTask = await Task.Run<string>(() => getPageData(nextUrl));
             var httpResult = httpTask.ToString();
             
             //Small data extraction to get "Next" and "Previous" page hyperlinks
@@ -349,8 +415,11 @@ namespace SEBeTender
             //Show updated tenders of next page from the database
             listView.ItemsSource = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page)).Result;
             listView.ItemTemplate = dataTemplate;
+            */
 
-            if (isPreviousAvailable)
+            List<tenderItem> dbprevious = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page - 1));
+            List<tenderItem> dbnext = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page + 1));
+            if (dbprevious.Count > 0)
             {
                 previousPage.IsVisible = true;
             } else
@@ -358,7 +427,7 @@ namespace SEBeTender
                 previousPage.IsVisible = false;
             }
 
-            if (isNextAvailable)
+            if (dbnext.Count > 0)
             {
                 nextPage.IsVisible = true;
             }
@@ -375,15 +444,15 @@ namespace SEBeTender
             Page = Page - 1;
 
             //Show tenders of previous page from database first
-            List<tenderItem> tenderItems = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page)).Result;
+            List<tenderItem> tenderItems = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page));
             listView.ItemsSource = tenderItems;
             listView.ItemTemplate = dataTemplate;
 
-            //Delete tenders of previous page from the database
+            /*//Delete tenders of previous page from the database
             deleteTenders(tenderItems);
 
             //retrieve newest appropriate page tenders via web scraping
-            string httpTask = await Task.Run<string>(() => getPageData(previousUrl, false));
+            string httpTask = await Task.Run<string>(() => getPageData(previousUrl));
             var httpResult = httpTask.ToString();
 
             //Small data extraction to get "Next" and "Previous" page hyperlinks
@@ -401,9 +470,14 @@ namespace SEBeTender
             //Show updated tenders of next page from the database
             listView.ItemsSource = Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page)).Result;
             listView.ItemTemplate = dataTemplate;
+            */
 
-            if (isPreviousAvailable)
+            List<tenderItem> dbprevious = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page - 1));
+            List<tenderItem> dbnext = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page + 1));
+
+            if (dbprevious.Count > 0)
             {
+                
                 previousPage.IsVisible = true;
             }
             else
@@ -411,7 +485,7 @@ namespace SEBeTender
                 previousPage.IsVisible = false;
             }
 
-            if (isNextAvailable)
+            if (dbnext.Count > 0)
             {
                 nextPage.IsVisible = true;
             }

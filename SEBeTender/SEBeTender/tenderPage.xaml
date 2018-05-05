@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <!--<ScrollView >-->
         <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
-            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
             <Label Text="Tender Notices" FontSize="20" FontAttributes="Bold"/>
             <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>

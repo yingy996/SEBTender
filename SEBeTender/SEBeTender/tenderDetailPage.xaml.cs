@@ -80,7 +80,7 @@ namespace SEBeTender
             htmlDoc.LoadHtml(httpResult);
 
             //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "tender");
+            var tenders = await DataExtraction.getWebData(httpResult, "tender");
             List<tenderItem> tenderItems = (List<tenderItem>)tenders;
 
             activityIndicator.IsVisible = false;

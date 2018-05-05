@@ -72,8 +72,9 @@ namespace SEBeTender
 
 
             //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "tender");
-            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
+            //var tenders = await DataExtraction.getWebData(httpResult, "tender");
+            var tenders = Task.Run<Object>(() => DataExtraction.getWebData(httpResult, "tender"));
+            List<tenderItem> tenderItems = (List<tenderItem>)tenders.Result;
             if(tenderItems.Count > 0 ) {
                 Console.WriteLine("Tender list item no.1 ref: " + tenderItems.First().Title);
             } else {

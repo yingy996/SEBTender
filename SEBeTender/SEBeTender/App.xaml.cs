@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Plugin.FirebasePushNotification;
 using Xamarin.Forms;
 
@@ -10,7 +11,7 @@ namespace SEBeTender
     public partial class App : Application
     {
         static tenderDatabase database;
-        SEBeTender.MainPage mPage;
+       
         public static string AppName = "SEBeTender";
 
         public App()
@@ -19,8 +20,10 @@ namespace SEBeTender
 
             MainPage = new SEBeTender.rootPage();
             //MainPage = new MainPage();
-
+            
+            
         }
+
 
         public static tenderDatabase Database
         {
