@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SEBeTender.editAnnouncement" Title="Sarawak Energy e-Tender">
     <ContentPage.Content>
-        <StackLayout>
-            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+        <StackLayout Padding="10">
+            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
 
             <Grid>
                 <Label Text="Edit Announcement Post" FontSize="20" FontAttributes="Bold"/>
@@ -22,26 +22,30 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Text="Announcement Title:" FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                    <Editor x:Name="editTitle" Text="{Binding announcementTitle}" Grid.Row="1" Completed="editTitle_Completed"/>
-
-                    <Label Text="Announcement Content:" FontAttributes="Bold" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                    <Editor x:Name="editContent" Text="{Binding announcementContent}" HeightRequest="300" VerticalOptions="FillAndExpand" Grid.Row="3" Completed="editContent_Completed"/>
+                    <Label Text="Announcement Title:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                    <Frame CornerRadius="5" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False" Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand">
+                        <Editor x:Name="editTitle" Text="{Binding announcementTitle}" Completed="editTitle_Completed"/>
+                    </Frame>
+                    
+                    <Label Text="Announcement Content:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                    <Frame CornerRadius="5" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False" HorizontalOptions="FillAndExpand" Grid.Row="3" Grid.Column="0">
+                        <Editor x:Name="editContent" Text="{Binding announcementContent}" HeightRequest="200" VerticalOptions="FillAndExpand" Completed="editContent_Completed"/>
+                    </Frame>
 
                 </Grid>
             </Grid>
 
             <Grid VerticalOptions="End">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Text="Update" Grid.Column="0" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" BackgroundColor="#3C83B8" TextColor="White" Clicked="onUpdateBtnClick"/>
-                <Button Text="Cancel" Grid.Column="1" FontSize="Small" WidthRequest="120" HeightRequest="50" HorizontalOptions="Center" Clicked="onCancelBtnClick"/>
+                <Button Text="Update" Grid.Row="0" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White" Clicked="onUpdateBtnClick"/>
+                <Button Text="Cancel" Grid.Row="0" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White" Clicked="onCancelBtnClick"/>
             </Grid>
 
         </StackLayout>

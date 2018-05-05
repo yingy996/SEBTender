@@ -87,7 +87,7 @@ namespace SEBeTender
                     TargetType = typeof(userCalendar)
                 });
 
-                this.Add(new menuItem()
+                /*this.Add(new menuItem()
                 {
                     Title = "Purchased Tender Document",
                     TargetType = typeof(purchasedTendersPage)
@@ -109,7 +109,7 @@ namespace SEBeTender
                 {
                     Title = "View Cart",
                     TargetType = typeof(MainPage)
-                });
+                });*/
 
                 this.Add(new menuItem()
                 {

@@ -19,20 +19,38 @@ namespace SEBeTender
             var items = Enumerable.Range(0, 10);
 
             //Sending HTTP request to obtain the tender page data
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
-            var httpResult = httpTask.Result.ToString();
+            //Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
+            //var httpResult = httpTask.Result.ToString();
+
+            retrieveEligibleTenders();
             
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
+            
+        }
+
+        async void retrieveEligibleTenders()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            //Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.getAnnouncementsResult().Result);
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
+            var httpResult = httpTask;
+
             //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "eligibelTenderPage");
+            var tenders = DataExtraction.getWebData(httpResult, "eligibelTenderPage");  
             List<tenderItem> tenderItems = (List<tenderItem>)tenders;
 
             //Get bookmark details from database
             if (userSession.username != "")
             {
-                Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
-                if (bookmarkHttpTask.Result != null)
+                //string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
+                //Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = await retrieveBookmark();
+                if (tenderBookmarks != null)
                 {
-                    List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.Result.ToList();
+                    //List<tenderBookmark> tenderBookmarks = bookmarkHttpTask;
                     if (tenderBookmarks.Count > 0)
                     {
                         foreach (var tenderItem in tenderItems)
@@ -46,16 +64,19 @@ namespace SEBeTender
                                 }
                             }
                         }
-
                     }
                 }
-                
             }
 
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+            pageTitle.IsVisible = true;
             listView.ItemsSource = tenderItems;
-            listView.SeparatorVisibility = SeparatorVisibility.None;
-            listView.ItemSelected += onItemSelected;
-            
+
+            if (tenderItems.Count > 0)
+            {
+                upBtn.IsVisible = true;
+            }
         }
 
         async void onItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -75,14 +96,26 @@ namespace SEBeTender
             string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostTenderBookmark(userSession.username));
             var httpResult = httpTask;
             List<tenderBookmark> tenderBookmarks = new List<tenderBookmark>();
+
+            while (httpResult == null)
+            {
+                httpTask = await Task.Run<string>(() => HttpRequestHandler.PostTenderBookmark(userSession.username));
+                httpResult = httpTask;
+            }
+            Console.WriteLine("as");
+
             if (httpResult != null)
             {
                 if (httpResult != "No bookmark found")
                 {
                     tenderBookmarks = JsonConvert.DeserializeObject<List<tenderBookmark>>(httpResult);
+                    return tenderBookmarks;
+                } else
+                {
+                    return tenderBookmarks;
                 }
             }
-            return tenderBookmarks;
+            return null;
         }
 
         void onUpButtonClicked()
@@ -92,13 +125,13 @@ namespace SEBeTender
             listView.ScrollTo(topItem, ScrollToPosition.Start, true);
         }
 
-        void OnCartTapped(object sender, EventArgs args)
+        /*void OnCartTapped(object sender, EventArgs args)
         {
             var tenderSelected = ((TappedEventArgs)args).Parameter;
             tenderItem tender = (tenderItem)tenderSelected;
 
             DisplayAlert("Success", tender.AddToCartQuantity + " Item " + tender.Reference + " has been successfully added to cart ", "OK");
-        }
+        }*/
 
         async void OnBookmarkTapped(object sender, EventArgs eventArgs)
         {

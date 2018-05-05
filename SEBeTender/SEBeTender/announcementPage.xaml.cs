@@ -15,29 +15,65 @@ namespace SEBeTender
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class announcementPage : ContentPage
     {
-
-
         public announcementPage()
         {
             BindingContext = this;
             InitializeComponent();
-            previousPage.IsVisible = false;
+            //previousPage.IsVisible = false;
 
             Console.WriteLine(HttpRequestHandler.getAnnouncementsResult());
 
-            var items = Enumerable.Range(0, 10);
-
-
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.getAnnouncementsResult().Result);
-            Console.WriteLine(httpTask.Result);
-
-            List<RootObject> announcementItem = JsonConvert.DeserializeObject<List<RootObject>>(httpTask.Result);
-
-            listView.ItemsSource = announcementItem;
+            retrieveAnnouncement();
+           
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
         }
 
+        async void retrieveAnnouncement()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            //Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.getAnnouncementsResult().Result);
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.getAnnouncementsResult());
+            while (httpTask == null)
+            {
+                httpTask = await Task.Run<string>(() => HttpRequestHandler.getAnnouncementsResult());
+            }
+            //var httpResult = httpTask;
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+            pageTitle.IsVisible = true;
+
+            if (httpTask != null)
+            {
+                List<RootObject> announcementItem = JsonConvert.DeserializeObject<List<RootObject>>(httpTask.ToString());
+
+                //If announcement is available, display it in the listview, else display the error message
+                if (announcementItem != null)
+                {
+                    if (announcementItem.Count > 0)
+                    {
+                        Console.WriteLine("Announcement is not null");
+                        listView.ItemsSource = announcementItem;
+                        upBtn.IsVisible = true;
+                    } else
+                    {
+                        errorMsg.IsVisible = true;
+                    }
+                } else
+                {
+                    errorMsg.IsVisible = true;
+                }
+                
+            }
+            else
+            {
+                Console.WriteLine("Announcement Task is null ");
+                errorMsg.IsVisible = true;
+            }           
+        }
 
         void onUpButtonClicked()
         {
@@ -71,20 +107,29 @@ namespace SEBeTender
 
         public string announcementTitle { get; set; }
 
-        public string announcementContent
+        public string announcementContentShort
         {
             get
             {
-                if (announcementcontent.Length > 50)
+                if (announcementcontent.Length > 60)
                 {
-                    announcementcontent = announcementcontent.Substring(0, 50);
-                    announcementcontent = string.Concat(announcementcontent, "...");
-                    return announcementcontent;
+                    string tempContent = announcementcontent.Substring(0, 60);
+                    tempContent = string.Concat(tempContent, "...");
+                    return tempContent;
                 }
                 else
                 {
                     return announcementcontent;
                 }
+            }
+            set { announcementcontent = value; }
+        }
+
+        public string announcementContent
+        {
+            get
+            {
+                return announcementcontent;
             }
             set { announcementcontent = value; }
         }

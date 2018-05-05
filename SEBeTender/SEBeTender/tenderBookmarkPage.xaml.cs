@@ -17,7 +17,6 @@ namespace SEBeTender
             BindingContext = this;
             InitializeComponent ();
 
-            var items = Enumerable.Range(0, 10);
             //listView.ItemsSource = items;
 
 

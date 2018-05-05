@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <ScrollView VerticalOptions="FillAndExpand" Padding="10">
             <StackLayout>
-                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
                 
                 <Label Text="Add Announcement" FontSize="20" FontAttributes="Bold"/>
 

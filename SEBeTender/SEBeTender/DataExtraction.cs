@@ -323,15 +323,23 @@ namespace SEBeTender
 
         private static string getAdminLoginStatus(HtmlDocument htmlDocument)
         {
-            string isLoginSuccess = htmlDocument.GetElementbyId("isSuccess").InnerHtml;
+            if (htmlDocument != null)
+            {
+                if (htmlDocument.GetElementbyId("isSuccess") != null)
+                {
+                    string isLoginSuccess = htmlDocument.GetElementbyId("isSuccess").InnerHtml;
 
-            if (!String.IsNullOrEmpty(isLoginSuccess))
-            {
-                return "success";
-            } else
-            {
-                return "fail";
+                    if (!String.IsNullOrEmpty(isLoginSuccess))
+                    {
+                        return "success";
+                    }
+                    else
+                    {
+                        return "fail";
+                    }
+                }              
             }
+            return "fail";
         }
 
         private static async Task<Object> getCompanyProfilePage(HtmlDocument htmlDocument)

@@ -18,7 +18,7 @@ namespace SEBeTender
             VerticalOptions = LayoutOptions.FillAndExpand;
             this.SeparatorVisibility = SeparatorVisibility.None;
             ItemTemplate = new DataTemplate(() => {
-                var label = new Label { VerticalOptions = LayoutOptions.FillAndExpand, TextColor = Color.White, Margin = new Thickness(5) };
+                var label = new Label { VerticalOptions = LayoutOptions.Center, TextColor = Color.White, Margin = new Thickness(5) };
                 label.SetBinding(Label.TextProperty, "Title");
                 //717D7E
                 return new ViewCell { View = label };
