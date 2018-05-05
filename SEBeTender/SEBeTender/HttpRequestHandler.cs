@@ -189,11 +189,9 @@ namespace SEBeTender
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Fetch announcement error: " + ex);
                 return null;
             }
-
-
         }
 
         public static async Task<string> PostadminloginCheck(string username, string password)

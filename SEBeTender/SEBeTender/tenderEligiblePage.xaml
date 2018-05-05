@@ -4,8 +4,8 @@
              x:Class="SEBeTender.tenderEligiblePage" Title="Sarawak Energy e-Tender">
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
-            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
-            <Label Text="Available Tender Documents for Purchase" FontSize="20" FontAttributes="Bold"/>
+            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+            <Label Text="Available Tender Documents for Purchase" x:Name="pageTitle" IsVisible="False" FontSize="20" FontAttributes="Bold"/>
 
             <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
@@ -80,7 +80,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Button Image="smallUpBtn.png" BackgroundColor="White" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" WidthRequest="20" HeightRequest="20" BorderRadius="40" Clicked="onUpButtonClicked"/>
+                <Button Image="smallUpBtn.png" x:Name="upBtn" IsVisible="False" BackgroundColor="White" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" WidthRequest="20" HeightRequest="20" BorderRadius="40" Clicked="onUpButtonClicked"/>
             </Grid>
         </StackLayout>
     </ContentPage.Content>

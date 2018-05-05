@@ -18,6 +18,7 @@ namespace SEBeTender
         string closingdateto = "";
         string bidclosingdatefrom = "";
         string bidclosingdateto = "";
+        HtmlDocument globalHtmlDoc = new HtmlDocument();
 
         public searchTenderPage()
         {
@@ -29,22 +30,11 @@ namespace SEBeTender
 
 
             //Send Http request to retrieve search page originating station drop down
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
-            var httpResult = httpTask.Result.ToString();
+            //Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
+            //var httpResult = httpTask.Result.ToString();
 
-            //--------Station Picker Control Section----------------------------------------------
-            //Small data extraction to extract Station dropdown selects/options to fill Picker
-            HtmlDocument htmlDoc = new HtmlDocument();
-            HtmlNode.ElementsFlags.Remove("option");
-            htmlDoc.LoadHtml(httpResult);
-            var stationList = new List<string>();
-            foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
-            {
-                stationList.Add(node.InnerText);
-            }
-            stationPicker.ItemsSource = stationList;
-            stationPicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
-            //---------End Station Picker Control Section-----------------------------------------
+            //HtmlDocument htmlDoc = retrieveOriginatingStation().Result;
+            retrieveOriginatingStation();
 
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
@@ -76,6 +66,18 @@ namespace SEBeTender
             username = adminAuth.Username;
             password = adminAuth.Password;
 
+            /*retrieveOriginatingStation();
+
+            HtmlDocument htmlDoc = globalHtmlDoc;          
+            var stationList = new List<string>();
+
+            if (htmlDoc != null)
+            {
+                foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
+                {
+                    stationList.Add(node.InnerText);
+                }
+            }*/
             
             //Send Http request to retrieve search page originating station drop down
             Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
@@ -94,12 +96,11 @@ namespace SEBeTender
             stationPicker.ItemsSource = stationList;
             stationPicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
             //---------End Station Picker Control Section-----------------------------------------
-
+            
 
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
             bookmarkImg.GestureRecognizers.Add(tapRecognizer);
-
 
             //---------DatePicker Control Section---------------
             //set datepicker text color to light gray to simulate not-filled
@@ -139,23 +140,25 @@ namespace SEBeTender
 
                 }
 
-                foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
+                if (htmlDoc != null)
                 {
-
-                    for (int x = 0; x < stationList.Count; x++)
+                    foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
                     {
-                        if (stationList[x] == aCustomSearchItem.originatingStation)
+                        for (int x = 0; x < stationList.Count; x++)
                         {
-                            stationPicker.SelectedIndex = x;
-                            selectedStation = aCustomSearchItem.originatingStation;
+                            if (stationList[x] == aCustomSearchItem.originatingStation)
+                            {
+                                stationPicker.SelectedIndex = x;
+                                selectedStation = aCustomSearchItem.originatingStation;
+                            }
+                            else if (x == stationList.Count - 1 && stationList[x] != aCustomSearchItem.originatingStation)
+                            {
+                                DisplayAlert("Error", "There are no available tenders with the chosen originating station. Please choose the originating station again", "Okay");
+                            }
                         }
-                        else if (x == stationList.Count - 1 && stationList[x] != aCustomSearchItem.originatingStation)
-                        {
-                            DisplayAlert("Error", "There are no available tenders with the chosen originating station. Please choose the originating station again", "Okay");
-                        }
-                    }
 
-                }
+                    }
+                }              
 
                 if (!string.IsNullOrEmpty(aCustomSearchItem.closingDateFrom))
                 {
@@ -178,9 +181,35 @@ namespace SEBeTender
                     bidclosingdateTo.Date = DateTime.Parse(aCustomSearchItem.biddingclosingDateTo);
                     bidclosingdateTo.TextColor = Color.Black;
                 }
+            }  
+        }
 
+        async Task retrieveOriginatingStation()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+            //Send Http request to retrieve search page originating station drop down
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
+            var httpResult = httpTask;
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            //--------Station Picker Control Section----------------------------------------------
+            //Small data extraction to extract Station dropdown selects/options to fill Picker
+            HtmlDocument htmlDoc = new HtmlDocument();
+            HtmlNode.ElementsFlags.Remove("option");
+            htmlDoc.LoadHtml(httpResult);
+            var stationList = new List<string>();
+            foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
+            {
+                stationList.Add(node.InnerText);
             }
-  
+            stationPicker.ItemsSource = stationList;
+            stationPicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
+            //---------End Station Picker Control Section-----------------------------------------
+
+            //setting globalHtmlDoc to be used in another constructor with parameter
+            globalHtmlDoc.LoadHtml(httpResult);
         }
 
         //Event Handler Arguments
