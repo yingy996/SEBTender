@@ -60,6 +60,27 @@ namespace SEBeTender
             List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
             if (dbtenders1.Count > 0)
             {
+                if (userSession.username != "")
+                {
+                    List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                    List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+                    if (tenderBookmarks.Count > 0)
+                    {
+                        foreach (var tenderItem in dbtenders1)
+                        {
+                            foreach (var tenderBookmark in tenderBookmarks)
+                            {
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
                 listView.ItemsSource = dbtenders1;
                 if (dbtenders2.Count > 0)
                 {
@@ -352,7 +373,6 @@ namespace SEBeTender
             //denotes the tender page for use in this method
             int i = 1;
 
-
             while (isNextAvailable != false)
             {
                 string httpTask = await Task.Run<string>(() => getPageData(nextUrl));
@@ -385,15 +405,40 @@ namespace SEBeTender
         {
             App.Database.deleteAllTenders();
         }
+
         async void onNextPageTapped(object sender, EventArgs eventArgs)
         {
             Page = Page + 1;
-
+            nextPage.IsEnabled = false;
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
             //Show tenders of next page from database first
             List<tenderItem> tenderItems = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page));
+
+            if (userSession.username != "")
+            {
+                List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+                if (tenderBookmarks.Count > 0)
+                {
+                    foreach (var tenderItem in tenderItems)
+                    {
+                        foreach (var tenderBookmark in tenderBookmarks)
+                        {
+                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                            {
+                                tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+
             listView.ItemsSource = tenderItems;
             listView.ItemTemplate = dataTemplate;
-
+            
             /*//Delete tenders of next page from the database
             deleteTenders(tenderItems);
 
@@ -436,16 +481,44 @@ namespace SEBeTender
             {
                 nextPage.IsVisible = false;
             }
-
-            
+            nextPage.IsEnabled = true;
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
         }
 
         async void onPreviousPageTapped(object sender, EventArgs eventArgs)
         {
-            Page = Page - 1;
-
+            if (Page > 1)
+            {
+                Page = Page - 1;
+            }
+            previousPage.IsEnabled = false;
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
             //Show tenders of previous page from database first
             List<tenderItem> tenderItems = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page));
+
+            if (userSession.username != "")
+            {
+                List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+                if (tenderBookmarks.Count > 0)
+                {
+                    foreach (var tenderItem in tenderItems)
+                    {
+                        foreach (var tenderBookmark in tenderBookmarks)
+                        {
+                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                            {
+                                tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+
             listView.ItemsSource = tenderItems;
             listView.ItemTemplate = dataTemplate;
 
@@ -494,6 +567,10 @@ namespace SEBeTender
             {
                 nextPage.IsVisible = false;
             }
+
+            previousPage.IsEnabled = true;
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
         }
 
         async void OnBookmarkTapped(object sender, EventArgs eventArgs)
