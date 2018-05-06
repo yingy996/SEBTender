@@ -40,10 +40,38 @@ namespace SEBeTender
 
             if (dbtenders0.Count > 0)
             {
-                listView.ItemsSource = dbtenders0;
+                //Get bookmark details from database
+                if (userSession.username != "")
+                {
+                    //string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
+                    //Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                    List<tenderBookmark> tenderBookmarks = await retrieveBookmark();
+                    if (tenderBookmarks != null)
+                    {
+                        //List<tenderBookmark> tenderBookmarks = bookmarkHttpTask;
+                        if (tenderBookmarks.Count > 0)
+                        {
+                            foreach (var tenderItem in dbtenders0)
+                            {
+                                foreach (var tenderBookmark in tenderBookmarks)
+                                {
+                                    if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                    {
+                                        tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
+                listView.ItemsSource = dbtenders0;
+                pageTitle.IsVisible = true;
                 activityIndicator.IsRunning = false;
                 activityIndicator.IsVisible = false;
+                upBtn.IsVisible = true;
+
 
                 await WaitAndExecuteUpdateTenders(10000);
             }
@@ -87,7 +115,7 @@ namespace SEBeTender
 
                 //save all eligible tenders to database
                 await saveToTenderDb(tenderItems, 0);
-
+                pageTitle.IsVisible = true;
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
                 //pageTitle.IsVisible = true;
