@@ -67,18 +67,18 @@ namespace SEBeTender
                 }
                 activityIndicator.IsRunning = false;
                 activityIndicator.IsVisible = false;
-                await WaitAndExecuteUpdateTenders(10800000);
+                await WaitAndExecuteUpdateTenders(10000);
             }
             else
             {
                 //Sending HTTP request to obtain the tender page data
                 string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
                 var httpResult = httpTask;
-                //Console.WriteLine("This is get TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER TENDER done");
+                
                 //Extract tender data from the response
                 var tenders = await DataExtraction.getWebData(httpResult, "tender");
                 List<tenderItem> tenderItems = (List<tenderItem>)tenders;
-                //Console.WriteLine("This is EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION EXTRACTION done");
+                
                 //Get bookmark details from online database
                 if (userSession.username != "")
                 {
@@ -100,7 +100,7 @@ namespace SEBeTender
 
                     }
                 }
-                //Console.WriteLine("This is BOOKMARK BOOKMARK BOOKMARK BOOKMARK BOOKMARK BOOKMARK BOOKMARK done");
+                
                 listView.ItemsSource = tenderItems;
                 //Save page 1 tenders to database
                 await saveToTenderDb(tenderItems, 1);
@@ -110,6 +110,8 @@ namespace SEBeTender
 
                 activityIndicator.IsRunning = false;
                 activityIndicator.IsVisible = false;
+
+                await WaitAndExecuteUpdateTenders(10800000);
             }
             
 
@@ -167,7 +169,7 @@ namespace SEBeTender
                  }
             }
             listView.ItemsSource = tenderItems;
-                //await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
+                
 
             activityIndicator.IsRunning = false;
             activityIndicator.IsVisible = false;
