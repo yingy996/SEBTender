@@ -22,8 +22,9 @@ namespace SEBeTender
             var httpResult = httpTask.Result.ToString();
 
             //Extract company profile data from the response
-            var profileData = DataExtraction.getWebData(httpResult, "userContactPerson");
-            ContactPerson profile = (ContactPerson)profileData;
+            //var profileData = DataExtraction.getWebData(httpResult, "userContactPerson");
+            var profileData = Task.Run<Object>(() => DataExtraction.getWebData(httpResult, "userContactPerson"));
+            ContactPerson profile = (ContactPerson)profileData.Result;
 
             name.Text = profile.Name;
             telephoneNo.Text = profile.TelephoneNo;
