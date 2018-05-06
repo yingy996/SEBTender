@@ -34,7 +34,7 @@ namespace SEBeTender
         {
             await Navigation.PushAsync(new editContactPerson());
         }
-
+        /*
         async void onEditLicenseBtnClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new editUPKLicenseNo());
@@ -44,10 +44,10 @@ namespace SEBeTender
         {
             await Navigation.PushAsync(new editCIDB());
         }
-
+        */
         async void onChangePasswordBtnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new editContactPage());
+            await Navigation.PushAsync(new userChangePassword());
         }
 
         async void onNotificationBtnClicked(object sender, EventArgs e)

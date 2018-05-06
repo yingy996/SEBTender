@@ -17,11 +17,11 @@ namespace SEBeTender
             BindingContext = this;
             InitializeComponent();
 
-            //Sending HTTP request to obtain the company profile data
+            //Sending HTTP request to obtain the contact person data
             Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_contact_edit.jsp", true));
             var httpResult = httpTask.Result.ToString();
 
-            //Extract company profile data from the response
+            //Extract contact person data from the response
             var profileData = DataExtraction.getWebData(httpResult, "userContactPerson");
             ContactPerson profile = (ContactPerson)profileData;
 
