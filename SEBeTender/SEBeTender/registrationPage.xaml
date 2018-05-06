@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.registrationPage" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Back" BackgroundColor="#2acc4a" TextColor="White" Clicked="onBackButtonClicked" HorizontalOptions="Start"/>
+                <Button Text="Forward" BackgroundColor="#2acc4a" TextColor="White" Clicked="onForwardButtonClicked" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <WebView x:Name="webView" Source="http://www2.sesco.com.my/etender/registration/vendor_term.jsp" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -94,6 +94,10 @@
       <DependentUpon>Registration.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)registrationPage.xaml.cs">
+      <DependentUpon>registrationPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)registrationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)rootPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)searchTenderPage.xaml.cs">
@@ -274,6 +278,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)editCIDB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)registrationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
