@@ -28,6 +28,7 @@ namespace SEBeTender
         public string AddToCartQuantity { get; set; }
         public string BookmarkImage { get; set; }
         public int Page { get; set; }
+        
 
     }
 }
