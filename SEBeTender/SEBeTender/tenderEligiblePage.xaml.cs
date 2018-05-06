@@ -105,10 +105,7 @@ namespace SEBeTender
         public async Task WaitAndExecuteUpdateTenders(int milisec)
         {
             await Task.Delay(milisec);
-            await DisplayAlert("Update Tenders", "Refresh Tenders", "Okay");
-
-            activityIndicator.IsVisible = true;
-            activityIndicator.IsRunning = true;
+            
 
             //Sending HTTP request to obtain the tender page data
             string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
@@ -150,10 +147,10 @@ namespace SEBeTender
                     }
                 }
             }
+
+            await DisplayAlert("Update Tenders", "Refresh Tenders", "Okay");
             listView.ItemsSource = tenderItems;
 
-            activityIndicator.IsVisible = false;
-            activityIndicator.IsRunning = false;
 
 
             await WaitAndExecuteUpdateTenders(10800000);
