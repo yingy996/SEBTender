@@ -60,24 +60,32 @@ namespace SEBeTender
             var responseData = DataExtraction.getWebData(httpTaskResult, "userChangePassword");
             ChangePasswordResponse response = (ChangePasswordResponse)responseData;
 
-            Console.WriteLine(response.ErrorMessage);
-            
-            if (response.ErrorPressence == true)
+            //Console.WriteLine(response.ErrorMessage);
+            bool errPressence = response.ErrorPressence;
+
+            //Console.WriteLine("Error Message : " + errMessage);
+
+            if (errPressence == true)
             {
-                await DisplayAlert("Change Password Error", response.ErrorMessage, "OK");
+                string errMessage = response.ErrorMessage;
+                await DisplayAlert("Change Password Error", errMessage, "OK");
 
                 var page = App.Current.MainPage as rootPage;
                 var refreshPage = new userChangePassword();
                 page.changePage(refreshPage);
             }
-            else 
-            {
-                await DisplayAlert("Success", response.SuccessMessage, "OK");
 
+            if (errPressence == false)
+            {
+                //await DisplayAlert("Success", "Your password has been successfully changed. Please re-login with your new password.", "OK");
+                /*
+                //App.Current.MainPage = new rootPage();
                 var page = App.Current.MainPage as rootPage;
-                var logoutPage = new logoutPage();
-                page.changePage(logoutPage);
-            }            
+                var relogPage = new relogPage();
+                page.changePage(relogPage);
+                */
+                App.Current.MainPage = new rootPage { Detail = new NavigationPage(new relogPage()) };
+            }
 
         }
 
@@ -94,8 +102,6 @@ namespace SEBeTender
         public bool ErrorPressence { get; set; }
 
         public string ErrorMessage { get; set; }
-
-        public string SuccessMessage { get; set; }
 
     }
 }
