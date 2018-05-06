@@ -33,7 +33,11 @@ namespace SEBeTender
 
             announcementid = announcementItem.announcementID;
 
-            checkAdminLoginStatus(announcementItem);
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                checkAdminLoginStatus(announcementItem);
+            }
+            
 
         }
 

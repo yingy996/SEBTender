@@ -47,7 +47,8 @@ namespace SEBeTender
                 var httpResult = httpTask.ToString();
 
                 //Data extraction to get admin login status from HTTP response
-                var status = DataExtraction.getWebData(httpResult, "adminLoginPage");
+                //var extractionTask = await Task.Run<Object>(() => DataExtraction.getWebData(httpResult, "adminLoginPage"));
+                var status = await DataExtraction.getWebData(httpResult, "adminLoginPage");
 
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
