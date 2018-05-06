@@ -75,6 +75,9 @@
     <PackageReference Include="Selenium.WebDriver">
       <Version>3.11.1</Version>
     </PackageReference>
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.4.118</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfCalendar">
       <Version>16.1.0.37</Version>
     </PackageReference>
@@ -110,6 +113,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LocalFileHelper.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="MyFirebaseIIDService.cs" />

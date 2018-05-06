@@ -44,6 +44,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DataExtraction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)dbTenderItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)editAnnouncement.xaml.cs">
       <DependentUpon>editAnnouncement.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -69,6 +70,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)HttpRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ILocalFileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INotificationSubscription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)loginPage.xaml.cs">
       <DependentUpon>loginPage.xaml</DependentUpon>
@@ -104,6 +106,7 @@
       <DependentUpon>tenderBookmarkPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)tenderDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tenderDetailPage.xaml.cs">
       <DependentUpon>tenderDetailPage.xaml</DependentUpon>
       <SubType>Code</SubType>

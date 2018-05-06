@@ -19,6 +19,7 @@ namespace SEBeTender
             var items = Enumerable.Range(0, 10);
 
             //Sending HTTP request to obtain the tender page data
+
             //Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
             //var httpResult = httpTask.Result.ToString();
 
@@ -39,8 +40,9 @@ namespace SEBeTender
             var httpResult = httpTask;
 
             //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "eligibelTenderPage");  
-            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
+            //var tenders = DataExtraction.getWebData(httpResult, "eligibelTenderPage");
+            var tenders = Task.Run<Object>(() => DataExtraction.getWebData(httpResult, "eligibelTenderPage"));
+            List<tenderItem> tenderItems = (List<tenderItem>)tenders.Result;
 
             //Get bookmark details from database
             if (userSession.username != "")

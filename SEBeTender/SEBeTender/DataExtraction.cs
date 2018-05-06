@@ -10,7 +10,7 @@ namespace SEBeTender
 {
     class DataExtraction
     {
-        public static Object getWebData(string webData, string page)
+        public static async Task<Object> getWebData(string webData, string page)
         {
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(webData);
@@ -18,19 +18,25 @@ namespace SEBeTender
 
             if (page == "tender")
             {
-                Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
-                var output = getTenderTask.Result;
+                //Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
+                Object getTenderTask = await Task.Run<Object>(() => getTenderPage(htmlDocument));
+                //var output = getTenderTask.Result;
+                var output = getTenderTask;
                 //var output = getTenderPage(htmlDocument);
                 return output;
             } else if(page == "searchtenderpage")
             {
-                Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
-                var output = getTenderTask.Result;
+                //Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
+                Object getTenderTask = await Task.Run<Object>(() => getTenderPage(htmlDocument));
+                var output = getTenderTask;
+                //var output = getTenderTask.Result;
                 return output;
             } else if (page == "eligibelTenderPage")
             {
-                Task<Object> getEligibleTenderTask = Task.Run<Object>(() => getEligibleTenderPage(htmlDocument));
-                var output = getEligibleTenderTask.Result;
+                //Task<Object> getEligibleTenderTask = Task.Run<Object>(() => getEligibleTenderPage(htmlDocument));
+                Object getEligibleTenderTask = await Task.Run<Object>(() => getEligibleTenderPage(htmlDocument));
+                var output = getEligibleTenderTask;
+                //var output = getEligibleTenderTask.Result;
                 return output;
             } else if (page == "adminLoginPage")
             {

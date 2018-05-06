@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Plugin.FirebasePushNotification;
 using Xamarin.Forms;
 using System.Threading.Tasks;
@@ -10,7 +11,8 @@ namespace SEBeTender
 {
     public partial class App : Application
     {
-        SEBeTender.MainPage mPage;
+        static tenderDatabase database;
+       
         public static string AppName = "SEBeTender";
 
         public App()
@@ -27,8 +29,21 @@ namespace SEBeTender
                 MainPage = new SEBeTender.rootPage(true);
             }
             
-            //MainPage = new MainPage();
+            //MainPage = new MainPage();    
         }
+
+
+        public static tenderDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new tenderDatabase(DependencyService.Get<ILocalFileHelper>().getLocalFilePath("tenderDb.db3"));
+                }
+                return database;
+            }
+       }
 
         private static bool checkUserLogin()
         {
@@ -48,7 +63,6 @@ namespace SEBeTender
                 {
                     return false;
                 }
-                
             }
         }
 
