@@ -20,26 +20,9 @@ namespace SEBeTender
         public announcementDetailPage(RootObject announcementItem)
         {
             InitializeComponent();
-            string username = "", password = "";
+            //string username = "", password = "";
             editButton.IsVisible = false;
             deleteButton.IsVisible = false;
-            
-            username = adminAuth.Username;
-            password = adminAuth.Password;
-
-            //Send HTTP request to check user exists
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostadminloginCheck(username, password));
-            var httpResult = httpTask.Result;
-
-            //Console.WriteLine(httpResult);
-
-            if (httpResult == "loggedin")
-            {
-                editButton.IsVisible = true;
-                deleteButton.IsVisible = true;
-
-                deleteButton.Clicked += OnDeleteButtonClicked;
-            }
 
             announcementTitlelbl.Text = announcementItem.announcementTitle;
             announcementContentlbl.Text = announcementItem.announcementContent;
@@ -50,9 +33,38 @@ namespace SEBeTender
 
             announcementid = announcementItem.announcementID;
 
+            checkAdminLoginStatus(announcementItem);
+
         }
 
-        void OnEditButtonClicked(object sender, EventArgs e)
+        async void checkAdminLoginStatus(RootObject announcementItem)
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+            string username = adminAuth.Username;
+            string password = adminAuth.Password;
+
+            //Send HTTP request to check user exists
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostadminloginCheck(username, password));
+            var httpResult = httpTask;
+            //Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostadminloginCheck(username, password));
+            //var httpResult = httpTask.Result;
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+            //Console.WriteLine(httpResult);
+
+            if (httpResult == "loggedin")
+            {
+                editButton.IsVisible = true;
+                deleteButton.IsVisible = true;
+
+                deleteButton.Clicked += OnDeleteButtonClicked;
+            }
+
+            
+        }
+
+        async void OnEditButtonClicked(object sender, EventArgs e)
         {
             if (announcementid == "")
             {
@@ -60,33 +72,54 @@ namespace SEBeTender
             }
             else
             {
-                var page = App.Current.MainPage as rootPage;
+                await Navigation.PushAsync(new editAnnouncement(announcementid));
+                /*var page = App.Current.MainPage as rootPage;
                 var editAnnouncementPage = new editAnnouncement(announcementid);
-                page.changePage(editAnnouncementPage);
+                page.changePage(editAnnouncementPage);*/
             }
 
         }
 
         async void OnDeleteButtonClicked(object sender, EventArgs e)
         {
-            string username = "";
-            username = adminAuth.Username;
-            //Send HTTP request to check user exists
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.deleteAnnouncement(announcementid, username));
-            var httpResult = httpTask.Result;
+            var answer = await DisplayAlert("Delete", "Are you sure you want to delete the announcement?", "Yes", "No");
 
-            if(httpResult == "deletesuccess")
+            if (answer)
             {
+                string username = "";
+                username = adminAuth.Username;
+                //Send HTTP request to check user exists
+                Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.deleteAnnouncement(announcementid, username));
+                var httpResult = httpTask.Result;
 
-                var answer = await DisplayAlert("Exit", "Are you sure you want to delete the announcement?", "Yes", "No");
-                if (answer)
+                if (httpResult == "deletesuccess")
                 {
+                    await DisplayAlert("Success", "Announcement successfully deleted", "OK");
+
                     var page = App.Current.MainPage as rootPage;
                     var announcementPage = new announcementPage();
                     page.changePage(announcementPage);
-                }
-            }
+                } else
+                {
+                    int count = 0;
+                    while (count < 3 && httpResult != "deletesuccess")
+                    {
+                        Console.WriteLine("Looping for failure delete");
+                        httpTask = Task.Run<string>(() => HttpRequestHandler.deleteAnnouncement(announcementid, username));
+                        httpResult = httpTask.Result;
+                        count++;
+                    }
 
+                    if (httpResult != "deletesuccess")
+                    {
+                        await DisplayAlert("Failed", "Failed to delete announcement. Please try again later.", "OK");
+
+                        var page = App.Current.MainPage as rootPage;
+                        var announcementPage = new announcementPage();
+                        page.changePage(announcementPage);
+                    }
+                }      
+            }
         }
     }
 }

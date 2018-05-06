@@ -79,6 +79,7 @@ namespace SEBeTender
                 Console.WriteLine("Tender list item no.1 ref: " + tenderItems.First().Title);
             } else {
                 Console.WriteLine("No item returned!!");
+                errorMsg.IsVisible = true;
             }
             
             listView.ItemsSource = tenderItems;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Plugin.FirebasePushNotification;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace SEBeTender
 {
@@ -18,10 +19,17 @@ namespace SEBeTender
         {
             InitializeComponent();
 
-            MainPage = new SEBeTender.rootPage();
-            //MainPage = new MainPage();
+            if (checkUserLogin() == false)
+            {
+                //User not logged in, show default tender listing page
+                MainPage = new SEBeTender.rootPage();
+            } else
+            {
+                //User logged in, show logged in menu and 'available tenders for purchase' page
+                MainPage = new SEBeTender.rootPage(true);
+            }
             
-            
+            //MainPage = new MainPage();    
         }
 
 
@@ -34,6 +42,27 @@ namespace SEBeTender
                     database = new tenderDatabase(DependencyService.Get<ILocalFileHelper>().getLocalFilePath("tenderDb.db3"));
                 }
                 return database;
+            }
+       }
+
+        private static bool checkUserLogin()
+        {
+            if (String.IsNullOrEmpty(Settings.Username)) //user not logged in
+            {
+                return false;
+            } else
+            {
+                //Send HTTP request to log user in
+                Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostUserLogin(Settings.Username, Settings.Password));
+                var httpResult = httpTask.Result.ToString();
+
+                if (httpResult == "Success")
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
             }
         }
 

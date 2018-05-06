@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.editUPKLicenseNo" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <StackLayout>
+            <ScrollView VerticalOptions="FillAndExpand" Padding="10">
+
+                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="UPK License No." FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                        <Label Text="1." Grid.Row="1" Grid.Column="0" WidthRequest="15"/>
+                        <Frame Grid.Row="1" Grid.Column="1" Padding="2" BackgroundColor="#E5E7E8">
+                            <Entry x:Name="upkLicense_1" Text="{Binding UPKLicense_1}"/>
+                        </Frame>
+
+                        <Label Text="2." Grid.Row="2" Grid.Column="0" WidthRequest="15"/>
+                        <Frame Grid.Row="2" Grid.Column="1" Padding="2" BackgroundColor="#E5E7E8">
+                            <Entry x:Name="upkLicense_2" Text="{Binding UPKLicense_2}"/>
+                        </Frame>
+
+                        <Label Text="3." Grid.Row="3" Grid.Column="0" WidthRequest="15"/>
+                        <Frame Grid.Row="3" Grid.Column="1" Padding="2" BackgroundColor="#E5E7E8">
+                            <Entry x:Name="upkLicense_3" Text="{Binding UPKLicense_3}"/>
+                        </Frame>
+
+                        <Label Text="4." Grid.Row="4" Grid.Column="0" WidthRequest="15"/>
+                        <Frame Grid.Row="4" Grid.Column="1" Padding="2" CornerRadius="5" BackgroundColor="#E5E7E8">
+                            <Entry x:Name="upkLicense_4" Text="{Binding UPKLicense_4}"/>
+                        </Frame>
+                    </Grid>
+            </ScrollView>
+
+            <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Text="Update" Grid.Row="0" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
+                <Button Text="Cancel" Grid.Row="0" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+            </Grid>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

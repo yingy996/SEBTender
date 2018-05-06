@@ -33,13 +33,15 @@ namespace SEBeTender
                 //Clear user session 
                 userSession.userLoginCookie = "";
                 userSession.username = "";
+                Settings.Username = string.Empty;
+                Settings.Password = string.Empty;
                 logoutStatus.Text = "You have successfully logout! You will be redirected to login page shortly.";
                 logoutStatus.TextColor = Color.Default;
                 logoutStatus.FontAttributes = FontAttributes.None;
 
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
-                //await Task.Delay(1000);
+                await Task.Delay(1000);
 
                 //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) 
                 App.Current.MainPage = new rootPage();

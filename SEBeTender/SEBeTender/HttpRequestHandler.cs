@@ -102,7 +102,9 @@ namespace SEBeTender
                     cookieResult = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
                     userSession.userLoginCookie = cookieResult;
                     userSession.username = username;
-                    
+                    //for future automated login (user just need to login for once and will be kept logged in afterward)
+                    Settings.Username = username;
+                    Settings.Password = password;
                 } else
                 {
                     //if login request failed, return error message
@@ -187,11 +189,9 @@ namespace SEBeTender
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Fetch announcement error: " + ex);
                 return null;
             }
-
-
         }
 
         public static async Task<string> PostadminloginCheck(string username, string password)
@@ -483,6 +483,95 @@ namespace SEBeTender
             }
 
             return result;
+        }
+
+
+        public static async Task<string> EditCompanyProfileRequest(string url, string name, string regno, string mailingAddress, string country)
+        {
+            string responseStatus = "";
+
+            CookieContainer cookieContainer = new CookieContainer();
+            var httpClientHandler = new HttpClientHandler() { CookieContainer = cookieContainer };
+            HttpClient httpClient = new HttpClient(httpClientHandler);
+
+            var uri = new Uri(string.Format(url, string.Empty));
+
+            string[] cookieWords = Regex.Split(userSession.userLoginCookie, "=");
+            string cookieName = cookieWords[0];
+            string[] cookieValues = Regex.Split(cookieWords[1], "; ");
+            string cookieValue = cookieValues[0];
+            cookieContainer.Add(uri, new Cookie(cookieName, cookieValue));
+
+            var parameters = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("VenName", name),
+                new KeyValuePair<string,string>("VenComReg", regno),
+                new KeyValuePair<string,string>("VenAdd", mailingAddress),
+                new KeyValuePair<string,string>("VenCouCode", country)
+
+            });
+
+            try
+            {
+                var response = await httpClient.PostAsync(uri, parameters);
+                Console.WriteLine("Response code: " + response.StatusCode);
+                responseStatus = response.StatusCode.ToString();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return responseStatus;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return responseStatus;
+        }
+
+        public static async Task<string> EditContactPersonRequest(string url, string name, string telno, string faxno, string email)
+        {
+            string responseStatus = "";
+
+            CookieContainer cookieContainer = new CookieContainer();
+            var httpClientHandler = new HttpClientHandler() { CookieContainer = cookieContainer };
+            HttpClient httpClient = new HttpClient(httpClientHandler);
+
+            var uri = new Uri(string.Format(url, string.Empty));
+
+            string[] cookieWords = Regex.Split(userSession.userLoginCookie, "=");
+            string cookieName = cookieWords[0];
+            string[] cookieValues = Regex.Split(cookieWords[1], "; ");
+            string cookieValue = cookieValues[0];
+            cookieContainer.Add(uri, new Cookie(cookieName, cookieValue));
+
+            var parameters = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("VenContactPerson", name),
+                new KeyValuePair<string,string>("VenTelNo", telno),
+                new KeyValuePair<string,string>("VenFaxNo", faxno),
+                new KeyValuePair<string,string>("VenEmail", email)
+
+            });
+
+            try
+            {
+                var response = await httpClient.PostAsync(uri, parameters);
+                Console.WriteLine("Response code: " + response.StatusCode);
+                responseStatus = response.StatusCode.ToString();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return responseStatus;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return responseStatus;
         }
     }
 }

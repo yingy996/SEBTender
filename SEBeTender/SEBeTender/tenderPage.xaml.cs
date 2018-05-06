@@ -154,19 +154,18 @@ namespace SEBeTender
                 {
                     foreach (var tenderItem in dbtenders1)
                     {
-                        foreach (var tenderBookmark in tenderBookmarks)
-                        {
-                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                            foreach (var tenderBookmark in tenderBookmarks)
                             {
-                                tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                break;
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
                             }
-                        }
-                    }
+                     }
 
-                }
+                 }
             }
-
             listView.ItemsSource = tenderItems;
                 //await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
 

@@ -33,8 +33,8 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         
-                                        <Label Text="{Binding identifier}" FontSize="Medium" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="0" Margin="0,0,0,10" BackgroundColor="Transparent" VerticalTextAlignment="Center"/>
-                                        <Image Source="delete.png" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,0,10">
+                                        <Label Text="{Binding identifier}" FontSize="Medium" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" BackgroundColor="Transparent" VerticalTextAlignment="Center"/>
+                                        <Image Source="delete.png" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" Margin="0,10,0,0">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Tapped="onDeleteTapped" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>

@@ -27,22 +27,22 @@ namespace SEBeTender
 
         async void onEditCompanyBtnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new editContactPage());
+            await Navigation.PushAsync(new editCompanyProfile());
         }
 
         async void onEditContactBtnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new editContactPage());
+            await Navigation.PushAsync(new editContactPerson());
         }
 
         async void onEditLicenseBtnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new editContactPage());
+            await Navigation.PushAsync(new editUPKLicenseNo());
         }
 
         async void onEditCIDBBtnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new editContactPage());
+            await Navigation.PushAsync(new editCIDB());
         }
 
         async void onChangePasswordBtnClicked(object sender, EventArgs e)
