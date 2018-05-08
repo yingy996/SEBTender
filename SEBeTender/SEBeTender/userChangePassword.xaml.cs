@@ -62,29 +62,28 @@ namespace SEBeTender
 
             //Console.WriteLine(response.ErrorMessage);
             bool errPressence = response.ErrorPressence;
+            string errMessage = response.ErrorMessage;
 
             //Console.WriteLine("Error Message : " + errMessage);
 
-            if (errPressence == true)
+            if (!String.IsNullOrWhiteSpace(errMessage))
             {
-                string errMessage = response.ErrorMessage;
                 await DisplayAlert("Change Password Error", errMessage, "OK");
 
                 var page = App.Current.MainPage as rootPage;
                 var refreshPage = new userChangePassword();
                 page.changePage(refreshPage);
             }
-
-            if (errPressence == false)
+            else
             {
                 //await DisplayAlert("Success", "Your password has been successfully changed. Please re-login with your new password.", "OK");
-                /*
+                
                 //App.Current.MainPage = new rootPage();
                 var page = App.Current.MainPage as rootPage;
                 var relogPage = new relogPage();
                 page.changePage(relogPage);
-                */
-                App.Current.MainPage = new rootPage { Detail = new NavigationPage(new relogPage()) };
+                
+                //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new relogPage()) };
             }
 
         }

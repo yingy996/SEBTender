@@ -11,12 +11,14 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Text="Logging out..." FontSize="20" FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Center"/>
-
-                <Label x:Name="logoutStatus" Text="" Grid.Row="1" FontSize="Default" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="2" Color="#2acc4a" 
+                <Label Text="Password Successfully Changed" FontSize="20" FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Center"/>
+                <Label Text="Logging Out..." FontSize="15" FontAttributes="Bold" Grid.Row="1" HorizontalTextAlignment="Center"/>
+                
+                <Label x:Name="logoutStatus" Text="" Grid.Row="2" FontSize="Default" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="3" Color="#2acc4a" 
                                    VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,20,0,0"/>
 
             </Grid>

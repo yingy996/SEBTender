@@ -374,11 +374,20 @@ namespace SEBeTender
         {
             ChangePasswordResponse response = new ChangePasswordResponse();
 
-            response.ErrorPressence = false;
-            response.ErrorMessage = htmlDocument.DocumentNode.SelectSingleNode("//td[@class='contentred']").InnerHtml;
+            //response.ErrorPressence = false;
+            var node = htmlDocument.DocumentNode.SelectSingleNode("//td//td[@class='contentred']");
+            string err = "";
 
-            string err = response.ErrorMessage;
-            Console.WriteLine(err);
+            if (node != null)
+            {
+                response.ErrorMessage = htmlDocument.DocumentNode.SelectSingleNode("//td[@class='contentred']").InnerHtml;
+                err = response.ErrorMessage;
+                Console.WriteLine(err);
+            }
+            else
+            {
+                response.ErrorMessage = "";
+            }
 
             if (err != "" || err != null)
             {
