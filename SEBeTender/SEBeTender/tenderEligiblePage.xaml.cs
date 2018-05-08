@@ -187,7 +187,8 @@ namespace SEBeTender
             await WaitAndExecuteUpdateTenders(10800000);
 
         }
-            async Task<List<tenderItem>> retrieveTenderFromDatabase(int page)
+
+        async Task<List<tenderItem>> retrieveTenderFromDatabase(int page)
         {
             List<tenderItem> tenderItems = new List<tenderItem>();
             List<dbTenderItem> dbTenderItems = await Task.Run<List<dbTenderItem>>(() => App.Database.getTendersAsync(page));
