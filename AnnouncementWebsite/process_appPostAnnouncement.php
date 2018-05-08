@@ -71,6 +71,8 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 
                     $result = $query->execute();
                     if($result == true) {
+                        require_once("process_sendNotification.php");
+                        sendNotification("Announcement: " . $announcement_title);
                         echo "You have succesfully posted your announcement!";	
                     } else {
                         echo "Problem in posting announcement. Please try again!";	

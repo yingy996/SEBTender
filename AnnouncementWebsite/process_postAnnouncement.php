@@ -44,6 +44,8 @@ if(!empty($_POST["postAnnouncementbutton"])) {
 
         $result = $query->execute();
         if($result == true) {
+            require_once("process_sendNotification.php");
+            sendNotification("Announcement: " . $announcement_title);
             $error_message = "";
             $success_message = "You have succesfully posted your announcement!";	
             unset($_POST);
