@@ -44,6 +44,15 @@
                             </div>
                             
                             <div class="form-group">
+                                <label for="role">Role:</label>
+                                <select class="form-control" name="role" required>
+                                    <option value="admin">Administrator</option>
+                                    <option value="editor">Editor</option>
+                                </select>
+                            </div>
+                            
+                            
+                            <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="<?php if(isset($_POST["username"])) echo $_POST["username"]; ?>" required/>
                                 <span class="error"><?php if($usernameError != "") echo "<p class='alert alert-danger'>" . $usernameError . "</p>";?></span>

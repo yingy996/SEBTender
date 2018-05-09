@@ -6,7 +6,7 @@ if (isset($_SESSION["user_login"])) {
     $passwordError = "";
     $confPasswordError = "";
     $errorpresence = false;
-    $name = $email = $username = $password = $confPassword = "";
+    $name = $email = $username = $password = $confPassword = $role = "";
     $success_message = "";
     $error_message = "";
     
@@ -63,7 +63,13 @@ if (isset($_SESSION["user_login"])) {
         if(empty($_POST["confPassword"])){
             $confPasswordError = "Confirm Password must not be empty";
             $errorpresence = true;
-        }      
+        }
+        
+        if(empty($_POST["role"])) {
+            $errorpresence = true;
+        } else {
+            $role = sanitizeInput($_POST["role"]);
+        }
         
         //Register user if inputs are valid
         if (!$errorpresence) {
@@ -80,12 +86,13 @@ if (isset($_SESSION["user_login"])) {
                 $usernameError = "Username already exists";
             } else {
                 //if inputs are valid and username is unique, register user into database
-                $query = $db_handle->getConn()->prepare("INSERT INTO administrator (administratorID, username, password, administratorName, administratorEmail) VALUES (NULL, :username, :password, :adminname, :adminemail)");
+                $query = $db_handle->getConn()->prepare("INSERT INTO administrator (administratorID, username, password, administratorName, administratorEmail, role) VALUES (NULL, :username, :password, :adminname, :adminemail, :role)");
     
                 $query->bindParam(":username", $username);
                 $query->bindParam(":password", $password);
                 $query->bindParam(":adminname", $name);
                 $query->bindParam(":adminemail", $email);
+                $query->bindParam(":role", $role);
                 
                 $result = $query->execute();
                 
