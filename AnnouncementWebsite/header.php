@@ -29,6 +29,8 @@
                 }else{
                     echo '<li><a href="postAnnouncement.php">Posts Announcement</a></li>
                     <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                    echo '<li><a href="addAdmin.php">Add Admin</a></li>
+                    <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                     echo '<li><a href="logout.php">Logout</a></li>';  
                 }
             
