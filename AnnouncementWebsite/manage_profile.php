@@ -30,14 +30,22 @@
             
             <div class="row">
                 <div class="col-xs-12">                 
-                    <p>Edit My Profile: <a href="addAdmin.php" class="btn btn-default">Edit Profile</a></p>
+                    
+                    <form action="editUser.php" method="post">
+                        <p>
+                            Edit My Profile: 
+                            <input type="submit" id="editButton" name="editButton" class="btn btn-default" value="Edit Profile"/>
+                        </p>
+                        
+                        <input type="hidden" id="username" name="username" value="<?php echo $login_user; ?>"/>
+                    </form>
                     <br/>
                 </div>
             </div>
             
             <div class="row">
                 <div class="col-xs-12">                 
-                    <p>Change Password: <a href="addAdmin.php" class="btn btn-default">Change Password</a></p>
+                    <p>Change Password: <a href="change_password.php" class="btn btn-default">Change Password</a></p>
                     <br/>
                 </div>
             </div>
