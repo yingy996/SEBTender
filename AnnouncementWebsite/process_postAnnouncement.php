@@ -27,7 +27,6 @@ if (isset($_SESSION["user_login"])) {
 
 
         if($error_message == "" && $errorpresence == false) {
-
             require_once("dbcontroller.php");
             $db_handle = new DBController();
 

@@ -1,5 +1,10 @@
 <?php
-if (isset($_SESSION["user_login"])) {
+if (isset($_SESSION["user_login"]) && isset($_SESSION["user_role"])) {
+    if ($_SESSION["user_role"] != "admin") {
+        header("location: index.php");
+        exit();
+    }
+    
     $nameError = "";
     $emailError = "";
     $usernameError = "";

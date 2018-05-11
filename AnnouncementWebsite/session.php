@@ -11,7 +11,7 @@
 		
 		$db_handle = new DBController();
 		//check if username exits
-		$query = $db_handle->getConn()->prepare("SELECT username FROM administrator WHERE username = :username");
+		$query = $db_handle->getConn()->prepare("SELECT username, role FROM administrator WHERE username = :username");
         $query->bindParam(":username", $user_check);
 		
 		$user_check = sanitizeInput($user_check);
@@ -19,6 +19,7 @@
 		$query->execute();
 		$result = $query->fetchAll();
 		$login_user = $result[0]["username"];
+        $login_userRole = $result[0]["role"];
     } 
     
     /*if(!isset($_SESSION["user_login"])) {
