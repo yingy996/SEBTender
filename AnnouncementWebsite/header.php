@@ -48,4 +48,4 @@
         
         <div>
             <img class="sescobanner" src="images/banner.jpg"/>
-        </div>]';
+        </div>';

@@ -47,8 +47,10 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
                 $_SESSION["user_login"] = $username;
                 $_SESSION["user_role"] = $roleResult;
 
-                header("refresh:2;url=index.php");
-                $resultMsg = "Login successfully! You will be redirected soon.";
+                header("Location:index.php");
+                exit();
+                //header("refresh:2;url=index.php");
+                //$resultMsg = "Login successfully! You will be redirected soon.";
             } else {
                 $errorMsg = "Invalid password. Please try again!";
             }

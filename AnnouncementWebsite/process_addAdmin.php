@@ -82,7 +82,7 @@ if (isset($_SESSION["user_login"]) && isset($_SESSION["user_role"])) {
             $db_handle = new DBController();
             
             //validate uniqueness of username
-            $checkUsernameQuery = $db_handle->getConn()->prepare("SELECT username FROM administrator WHERE username= :username");
+            $checkUsernameQuery = $db_handle->getConn()->prepare("SELECT username FROM administrator WHERE username= :username AND isDeleted = false");
             $checkUsernameQuery->bindParam(":username", $username);
             $checkUsernameQuery->execute();
             $checkUsernameResult = count($checkUsernameQuery->fetchAll());
