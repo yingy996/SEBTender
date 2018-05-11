@@ -56,6 +56,9 @@ namespace SEBeTender
             searchButton.Clicked += OnSubmitButtonClicked;
             clearButton.Clicked += OnClearButtonClicked;
 
+            keywordTabButton.Clicked += normalTabClicked;
+            normalTabButton.Clicked += keywordTabClicked;
+
         }
 
         public searchTenderPage(customSearchesItem aCustomSearchItem)
@@ -184,6 +187,19 @@ namespace SEBeTender
             }  
         }
 
+        //Custom tab control
+        private void normalTabClicked(object sender, EventArgs e)
+        {
+            stkTab1.IsVisible = true;
+            stkTab2.IsVisible = false;
+        }
+
+        private void keywordTabClicked(object sender, EventArgs e)
+        {
+            stkTab1.IsVisible = false;
+            stkTab2.IsVisible = true;
+        }
+
         async Task retrieveOriginatingStation()
         {
             activityIndicator.IsVisible = true;
@@ -257,14 +273,6 @@ namespace SEBeTender
         {
             if (sender == searchButton)
             {
-                /*Console.WriteLine("Ref: " + tenderReferenceInput.Text);
-                Console.WriteLine("Title: " + tenderTitleInput.Text);
-                Console.WriteLine("Station: " + selectedStation);
-                Console.WriteLine("closingdatefrom: " + closingdatefrom);
-                Console.WriteLine("closingdateto: " + closingdateto);
-                Console.WriteLine("bidclosingdatefrom: " + bidclosingdatefrom);
-                Console.WriteLine("bidclosingdateto: " + bidclosingdateto);*/
-
                 if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedStation == "" && closingdatefrom == "" && closingdateto == ""
                     && bidclosingdatefrom == "" && bidclosingdateto == "")
                 {
@@ -273,19 +281,58 @@ namespace SEBeTender
                 }
                 else
                 {
-
-
                     //Sending HTTP request to obtain the tender page search result data
                     Task<string> httpSearchTask = Task.Run<string>(() => HttpRequestHandler.SearchPostRequest("http://www2.sesco.com.my/etender/notice/notice.jsp", tenderReferenceInput.Text, tenderTitleInput.Text, selectedStation, closingdatefrom, closingdateto, bidclosingdatefrom, bidclosingdateto));
                     var httpSearchResult = httpSearchTask.Result.ToString();
                     //Console.WriteLine(httpSearchResult);
-                    await Navigation.PushAsync(new tenderSearchResultPage(httpSearchResult));
+                    await Navigation.PushAsync(new tenderSearchResultPage(httpSearchResult, null));
                 }
-
-
-
             }
 
+        }
+
+        void OnClearButtonClicked(object sender, EventArgs e)
+        {
+            if (sender == clearButton)
+            {
+                tenderReferenceInput.Text = "";
+                tenderTitleInput.Text = "";
+                stationPicker.SelectedIndex = 0;
+                selectedStation = "";
+                closingdatefrom = "";
+                closingdateto = "";
+                bidclosingdatefrom = "";
+                bidclosingdateto = "";
+                closingdateFrom.TextColor = Color.LightGray;
+                closingdateTo.TextColor = Color.LightGray;
+                bidclosingdateFrom.TextColor = Color.LightGray;
+                bidclosingdateTo.TextColor = Color.LightGray;
+
+            }
+        }
+
+        async void OnKeywordSubmitButtonClicked(Object sender, EventArgs e)
+        {
+            if(sender == keywordSearchButton)
+            {
+                if (String.IsNullOrEmpty(tenderKeywordInput.Text))
+                {
+                    DisplayAlert("Error", "Please enter at least a character", "Okay");
+                }
+            }
+            else
+            {
+                List<dbTenderItem> dbsearchTenderItem = App.Database.keywordSearchTenders(tenderKeywordInput.Text);
+                await Navigation.PushAsync(new tenderSearchResultPage("Search Local Database", dbsearchTenderItem));
+            }
+        }
+
+        void OnKeywordClearButtonClicked(object sender, EventArgs e)
+        {
+            if(sender == keywordClearButton)
+            {
+                tenderKeywordInput.Text = "";
+            }
         }
 
         async void OnSearchBookmarkTapped(object sender, EventArgs eventArgs)
@@ -326,6 +373,7 @@ namespace SEBeTender
                     string biddingclosingDateTo = bidclosingdateto;
 
                     DisplayAlert("Add bookmark", "Search preferences added and can be viewed at the Custom Searches page", "OK");
+                    
 
 
                     string postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingStation, closingDateFrom, closingDateTo, biddingclosingDateFrom, biddingclosingDateTo, userSession.username, identifier, "add"));
@@ -345,25 +393,7 @@ namespace SEBeTender
             }
         }
 
-        void OnClearButtonClicked(object sender, EventArgs e)
-        {
-            if (sender == clearButton)
-            {
-                tenderReferenceInput.Text = "";
-                tenderTitleInput.Text = "";
-                stationPicker.SelectedIndex = 0;
-                selectedStation = "";
-                closingdatefrom = "";
-                closingdateto = "";
-                bidclosingdatefrom = "";
-                bidclosingdateto = "";
-                closingdateFrom.TextColor = Color.LightGray;
-                closingdateTo.TextColor = Color.LightGray;
-                bidclosingdateFrom.TextColor = Color.LightGray;
-                bidclosingdateTo.TextColor = Color.LightGray;
-
-            }
-        }
+        
 
         Task<string> InputBox(INavigation navigation)
         {

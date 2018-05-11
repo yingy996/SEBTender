@@ -36,6 +36,10 @@ namespace SEBeTender
             return database.DeleteAsync(item);
         }
 
+        public Task<List<dbTenderItem>> keywordSearchTenders(string keyword)
+        {
+            return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Reference = ? or Title = ? or OriginatingStation = ? or CLosingDate = ? or BidClosingDate = ? or TendererClass = ? or Name = ?", keyword);
+        }
         public void deleteAllTenders()
         {
             //return database.QueryAsync<dbTenderItem>("DELETE * FROM dbTenderItem");
