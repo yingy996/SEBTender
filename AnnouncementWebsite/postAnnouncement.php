@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-ng-app="">
     <head>
-        <title>SESCo eTender Mobile Application Announcements</title>
+        <title>SESCO eTender Announcements</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initialscale=1.0"/>
         <!-- Bootstrap -->
@@ -30,12 +30,12 @@
                             <?php } ?>
                             <div class="form-group">
                                 <label for="title">Announcement Title:</label>
-                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter Announcement Title" required/><span class="error"><?php if($announcement_title != "") echo "<p class='alert alert-danger'>" . $announcement_titleerr . "</p>";?></span>
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter Announcement Title" required/><span class="error"><?php if($announcement_titleerr != "") echo "<p class='alert alert-danger'>" . $announcement_titleerr . "</p>";?></span>
                             </div>
 
                             <div class="form-group">
                                 <label for="content">Announcement Content:</label>
-                                <textarea class="form-control" id="content" name="content" placeholder="Enter Announcement Content" required></textarea><span class="error"><?php if($announcement_content != "") echo "<p class='alert alert-danger'>" . $announcement_contenterr . "</p>";?></span>
+                                <textarea class="form-control" id="content" name="content" placeholder="Enter Announcement Content" required></textarea><span class="error"><?php if($announcement_contenterr != "") echo "<p class='alert alert-danger'>" . $announcement_contenterr . "</p>";?></span>
                             </div>
                             <p><input type="submit" name="postAnnouncementbutton" class="btn btn-default" id="postAnnouncementbutton" value="Posts Announcement"/></p>
 

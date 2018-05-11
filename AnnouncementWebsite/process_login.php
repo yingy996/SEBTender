@@ -37,7 +37,15 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
                     @session_start();
                 }
 
+                $roleQuery = $db_handle->getConn()->prepare("SELECT role FROM administrator WHERE username = :username");
+
+                $roleQuery->bindParam(":username", $username);
+
+                $roleQuery->execute();
+                $roleResult = $roleQuery->fetchColumn();
+                
                 $_SESSION["user_login"] = $username;
+                $_SESSION["user_role"] = $roleResult;
 
                 header("refresh:2;url=index.php");
                 $resultMsg = "Login successfully! You will be redirected soon.";

@@ -18,22 +18,29 @@
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbar-to-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="index.php">Announcements</a></li>
+                    <ul class="nav navbar-nav navbar-right">';
+                    if (isset($_SESSION["user_login"])) {
+                        echo '<li><a href="manage_profile.php">Welcome, <em>'. $_SESSION["user_login"] .'</em></a></li>
+                        <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                    }
+                        echo '<li><a href="index.php">Announcements</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                 
                 //display if adminnistrator logged in
                 if (!isset($_SESSION["user_login"])){
 
                     echo '<li><a href="login.php">Administrator Login</a></li>';
-                }else{
+                } else {
                     echo '<li><a href="postAnnouncement.php">Posts Announcement</a></li>
                     <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
-                    echo '<li><a href="logout.php">Logout</a></li>';  
-                }
-            
+                    if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
+                        echo '<li><a href="manage_users.php">Manage Users</a></li>
+                            <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                    }
                     
+                    echo '<li><a href="logout.php">Logout</a></li>';
                     
+                }      
                     echo '</ul>
                 </div>
             </div>
@@ -41,6 +48,4 @@
         
         <div>
             <img class="sescobanner" src="images/banner.jpg"/>
-        </div>
-            
-        ';
+        </div>]';
