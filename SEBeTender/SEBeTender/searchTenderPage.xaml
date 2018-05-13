@@ -5,16 +5,27 @@
              x:Class="SEBeTender.searchTenderPage" Title="Sarawak Energy e-Tender">
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal">
-            <Grid HorizontalOptions="FillAndExpand"
-          VerticalOptions="FillAndExpand"
-          ColumnSpacing="0"
-          RowSpacing="0"
-          Padding="0">
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="0" RowSpacing="0" Padding="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <StackLayout Grid.Row="0"
-                     Grid.Column="0"
-                     Padding="7.5"
-                     VerticalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Row="0" Grid.Column="0" Padding="7.5" VerticalOptions="FillAndExpand">
+                    <Button x:Name="normalTabButton" Clicked="normalTabClicked" Text="Normal Search"/>
+                </StackLayout>
+
+                <StackLayout Grid.Row="0" Grid.Column="1" Padding="7.5" VerticalOptions="FillAndExpand">
+                    <Button x:Name="keywordTabButton" Clicked="keywordTabClicked" Text="Keyword Search"/>
+                </StackLayout>
+
+
+                <StackLayout x:Name="stkTab1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                     <ScrollView VerticalOptions="FillAndExpand" Padding="10">
                         <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
                         <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
@@ -98,13 +109,9 @@
                             <Button Text="Clear"  x:Name="clearButton" VerticalOptions="Start" Grid.Row="10" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
                         </Grid>
                     </ScrollView>
-                    <Button x:Name="normalTabButton" Text="Normal Search"></Button>
                 </StackLayout>
 
-                <StackLayout Grid.Row="0"
-                     Grid.Column="2"
-                     Padding="7.5"
-                     VerticalOptions="FillAndExpand">
+                <StackLayout x:Name="stkTab2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                     <ScrollView VerticalOptions="FillAndExpand" Padding="10">
                         <ActivityIndicator x:Name="activityIndicator2" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
                         <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
@@ -128,21 +135,12 @@
                                 <Entry x:Name="tenderKeywordInput"/>
                             </Frame>
 
-                            <Button Text="Search" x:Name="keywordSearchButton" VerticalOptions="End" Grid.Row="2" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
+                            <Button Text="Search" x:Name="keywordSubmitButton" VerticalOptions="End" Grid.Row="2" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
                             <Button Text="Clear"  x:Name="keywordClearButton" VerticalOptions="Start" Grid.Row="2" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
                         </Grid>
                     </ScrollView>
-                    <Button x:Name="keywordTabButton" Text="Keyword Search"></Button>
                 </StackLayout>
             </Grid>
-        </StackLayout>
-
-        <!-- tab 1 container -->
-        <StackLayout x:Name="stkTab1">
-        </StackLayout>
-
-        <!-- tab 2 container -->
-        <StackLayout x:Name="stkTab2" IsVisible="false">
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

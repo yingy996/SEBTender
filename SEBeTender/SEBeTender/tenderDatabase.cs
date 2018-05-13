@@ -38,7 +38,13 @@ namespace SEBeTender
 
         public Task<List<dbTenderItem>> keywordSearchTenders(string keyword)
         {
-            return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Reference = ? or Title = ? or OriginatingStation = ? or CLosingDate = ? or BidClosingDate = ? or TendererClass = ? or Name = ?", keyword);
+            string dbkeyword = "%" + keyword + "%";
+            /*return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Reference like '%" + keyword + "%' or Title like '%" + keyword + "%' or OriginatingStation like '%" + keyword + "%' or CLosingDate like '%" + keyword + "%' or BidClosingDate like '%" + keyword + "%' or TendererClass like '%" + keyword + "%' or Name like '%" + keyword + "%'");*/
+            return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Reference like '" + dbkeyword + "' or Title like '" + dbkeyword + "' or OriginatingStation like '" + dbkeyword + "' or CLosingDate like '" + dbkeyword + "' or BidClosingDate like '" + dbkeyword + "' or TendererClass like '" + dbkeyword + "' or Name like '" + dbkeyword + "'");
+            
+            //return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Title like '%" + keyword + "%'");
+            //return database.Table<dbTenderItem>().Where(i => i.Title.ToLower().Contains(dbkeyword)).ToListAsync();
+
         }
         public void deleteAllTenders()
         {

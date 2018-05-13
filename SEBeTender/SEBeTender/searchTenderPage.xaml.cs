@@ -53,11 +53,18 @@ namespace SEBeTender
             bidclosingdateTo.DateSelected += DatePicker_DateSelected;
             //---------End DatePicker Control Section-----------
 
+            stkTab2.IsVisible = false;
+            normalTabButton.TextColor = Color.White;
+            keywordTabButton.TextColor = Color.White;
+            normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
+            keywordTabButton.BackgroundColor = Color.FromHex("#527DD4");
             searchButton.Clicked += OnSubmitButtonClicked;
             clearButton.Clicked += OnClearButtonClicked;
 
-            keywordTabButton.Clicked += normalTabClicked;
-            normalTabButton.Clicked += keywordTabClicked;
+            keywordSubmitButton.Clicked += OnKeywordSubmitButtonClicked;
+            keywordClearButton.Clicked += OnClearButtonClicked;
+
+           
 
         }
 
@@ -190,15 +197,21 @@ namespace SEBeTender
         //Custom tab control
         private void normalTabClicked(object sender, EventArgs e)
         {
+            normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
+            keywordTabButton.BackgroundColor = Color.FromHex("#527DD4");
             stkTab1.IsVisible = true;
             stkTab2.IsVisible = false;
         }
 
         private void keywordTabClicked(object sender, EventArgs e)
         {
+            normalTabButton.BackgroundColor = Color.FromHex("#527DD4");
+            keywordTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
             stkTab1.IsVisible = false;
             stkTab2.IsVisible = true;
         }
+
+
 
         async Task retrieveOriginatingStation()
         {
@@ -313,18 +326,20 @@ namespace SEBeTender
 
         async void OnKeywordSubmitButtonClicked(Object sender, EventArgs e)
         {
-            if(sender == keywordSearchButton)
+            if(sender == keywordSubmitButton)
             {
                 if (String.IsNullOrEmpty(tenderKeywordInput.Text))
                 {
                     DisplayAlert("Error", "Please enter at least a character", "Okay");
                 }
+                else
+                {
+                    Console.WriteLine(tenderKeywordInput.Text);
+                    List<dbTenderItem> dbsearchTenderItem = await App.Database.keywordSearchTenders(tenderKeywordInput.Text);
+                    await Navigation.PushAsync(new tenderSearchResultPage("Search Local Database", dbsearchTenderItem));
+                }
             }
-            else
-            {
-                List<dbTenderItem> dbsearchTenderItem = App.Database.keywordSearchTenders(tenderKeywordInput.Text);
-                await Navigation.PushAsync(new tenderSearchResultPage("Search Local Database", dbsearchTenderItem));
-            }
+            
         }
 
         void OnKeywordClearButtonClicked(object sender, EventArgs e)

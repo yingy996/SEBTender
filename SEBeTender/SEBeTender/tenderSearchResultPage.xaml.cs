@@ -46,11 +46,11 @@ namespace SEBeTender
 
             if(searchTenderResult == "Search Local Database")
             {
-                retrieveSearchResult(searchTenderResult);
+                displayKeywordResult(dbTenderItems);
             }
             else
             {
-                displayKeywordResult(dbTenderItems);
+                retrieveSearchResult(searchTenderResult);
             }
         }
 
@@ -137,6 +137,10 @@ namespace SEBeTender
 
         async void displayKeywordResult(List<dbTenderItem> dbTenderItems)
         {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            
             List<tenderItem> tenderItems = new List<tenderItem>();
             foreach (var item in dbTenderItems)
             {
@@ -163,6 +167,43 @@ namespace SEBeTender
                 tenderitem.BookmarkImage = item.BookmarkImage;
 
                 tenderItems.Add(tenderitem);
+            }
+
+            //Get bookmark details from database
+            if (userSession.username != "")
+            {
+                //string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
+                //Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = await retrieveBookmark();
+                if (tenderBookmarks != null)
+                {
+                    //List<tenderBookmark> tenderBookmarks = bookmarkHttpTask;
+                    if (tenderBookmarks.Count > 0)
+                    {
+                        foreach (var tenderItem in tenderItems)
+                        {
+                            foreach (var tenderBookmark in tenderBookmarks)
+                            {
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            pageTitle.IsVisible = true;
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+            if (tenderItems.Count > 0)
+            {
+                upBtn.IsVisible = true;
+            } else
+            {
+                errorMsg.IsVisible = true;
             }
 
             listView.ItemsSource = tenderItems;
