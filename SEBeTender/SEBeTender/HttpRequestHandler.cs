@@ -218,7 +218,6 @@ namespace SEBeTender
         }
 
         public static async Task<string> PostAddAnnouncement(string username, string password, string title, string content)
-
         {
             string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
@@ -572,6 +571,44 @@ namespace SEBeTender
             }
 
             return responseStatus;
+        }
+
+        public static async Task<String> registerNewAdmin(string name, string email, string role, string username, string password, string confPassword)
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                string result = "";
+                var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("adminUsername", adminAuth.Username),
+                    new KeyValuePair<string,string>("adminPassword", adminAuth.Password),
+                    new KeyValuePair<string,string>("name", name),
+                    new KeyValuePair<string,string>("email", email),
+                    new KeyValuePair<string,string>("role", role),
+                    new KeyValuePair<string,string>("username", username),
+                    new KeyValuePair<string,string>("password", password),
+                    new KeyValuePair<string,string>("confPassword", confPassword)
+                });
+
+                HttpClient httpClient = new HttpClient();
+                try
+                {
+                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appAddAdmin.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                return result;
+            } else
+            {
+                return "Admin not logged in";
+            }
+            
         }
     }
 }

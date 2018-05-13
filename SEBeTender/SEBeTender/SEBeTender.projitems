@@ -90,6 +90,10 @@
       <DependentUpon>purchasedTendersPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)registerAdminPage.xaml.cs">
+      <DependentUpon>registerAdminPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -284,6 +288,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)registrationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)registerAdminPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
