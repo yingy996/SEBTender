@@ -18,8 +18,7 @@ namespace SEBeTender
             var displayPage = new tenderPage(); 
             Detail = new NavigationPage(displayPage);   
             
-            menuPage.menu.ItemSelected += onItemSelected;
-            
+            menuPage.menu.ItemSelected += onItemSelected;  
 		}
 
         public rootPage (bool isUserLoggedIn)
