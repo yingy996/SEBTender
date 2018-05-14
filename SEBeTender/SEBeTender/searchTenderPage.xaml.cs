@@ -52,7 +52,7 @@ namespace SEBeTender
             bidclosingdateFrom.DateSelected += DatePicker_DateSelected;
             bidclosingdateTo.DateSelected += DatePicker_DateSelected;
             //---------End DatePicker Control Section-----------
-
+            
             stkTab2.IsVisible = false;
             normalTabButton.TextColor = Color.White;
             keywordTabButton.TextColor = Color.White;
