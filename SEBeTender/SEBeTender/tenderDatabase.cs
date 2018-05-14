@@ -36,6 +36,16 @@ namespace SEBeTender
             return database.DeleteAsync(item);
         }
 
+        public Task<List<dbTenderItem>> keywordSearchTenders(string keyword)
+        {
+            string dbkeyword = "%" + keyword + "%";
+            /*return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Reference like '%" + keyword + "%' or Title like '%" + keyword + "%' or OriginatingStation like '%" + keyword + "%' or CLosingDate like '%" + keyword + "%' or BidClosingDate like '%" + keyword + "%' or TendererClass like '%" + keyword + "%' or Name like '%" + keyword + "%'");*/
+            return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Reference like '" + dbkeyword + "' or Title like '" + dbkeyword + "' or OriginatingStation like '" + dbkeyword + "' or CLosingDate like '" + dbkeyword + "' or BidClosingDate like '" + dbkeyword + "' or TendererClass like '" + dbkeyword + "' or Name like '" + dbkeyword + "'");
+            
+            //return database.QueryAsync<dbTenderItem>("select * from dbTenderItem where Title like '%" + keyword + "%'");
+            //return database.Table<dbTenderItem>().Where(i => i.Title.ToLower().Contains(dbkeyword)).ToListAsync();
+
+        }
         public void deleteAllTenders()
         {
             //return database.QueryAsync<dbTenderItem>("DELETE * FROM dbTenderItem");
