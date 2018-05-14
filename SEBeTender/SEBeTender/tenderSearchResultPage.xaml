@@ -6,7 +6,7 @@
         <!--<ScrollView >-->
         <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
             <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
-            <Label Text="Tender Notices" x:Name="pageTitle" IsVisible="False" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="Tender Search Results" x:Name="pageTitle" IsVisible="False" FontSize="20" FontAttributes="Bold"/>
             <Label Text="No result found." x:Name="errorMsg" FontAttributes="Italic" IsVisible="False"/>
             <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>

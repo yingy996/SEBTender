@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEBeTender.iOS", "SEBeTende
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SEBeTender", "SEBeTender\SEBeTender\SEBeTender.shproj", "{1335A2A7-954F-4F9E-8147-15E456CCB8A5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D46C5ED9-111F-490F-8F70-265259987FCD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SEBeTender\SEBeTender\SEBeTender.projitems*{1335a2a7-954f-4f9e-8147-15e456ccb8a5}*SharedItemsImports = 13

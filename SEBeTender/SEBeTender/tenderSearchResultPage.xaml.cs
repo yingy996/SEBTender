@@ -23,7 +23,7 @@ namespace SEBeTender
 
         }
 
-        public tenderSearchResultPage(string searchTenderResult)
+        public tenderSearchResultPage(string searchTenderResult, List<dbTenderItem> dbTenderItems)
         {
             //BindingContext = this;
             Console.WriteLine(searchTenderResult);
@@ -44,58 +44,14 @@ namespace SEBeTender
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
             nextPage.IsVisible = false;
 
-            retrieveSearchResult(searchTenderResult);
-            
-            /*Console.WriteLine("testing");
-            BindingContext = this;
-            var label = new Label { Text = "text" };
-            //StackLayout stackLayout = new StackLayout();
-            //var childToRaise = stackLayout.Children.First();
-
-            InitializeComponent();
-
-            //Set "Previous" and "Next" hyperlink label. 
-            var previousLblTapRecognizer = new TapGestureRecognizer();
-            previousLblTapRecognizer.Tapped += onPreviousPageTapped;
-            previousPage.GestureRecognizers.Add(previousLblTapRecognizer);
-            previousPage.IsVisible = false;  //"Previous" label is set to invisible for first page
-
-            var nextLblTapRecognizer = new TapGestureRecognizer();
-            nextLblTapRecognizer.Tapped += onNextPageTapped;
-            nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
-
-            //Retrieve string search result passed from searchTenderPage
-            var httpResult = searchTenderResult;
-
-            //Small data extraction to get "Next" and "Previous" page hyperlinks
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(httpResult);
-            var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
-            if (aNodes != null)
+            if(searchTenderResult == "Search Local Database")
             {
-                foreach (var aNode in aNodes)
-                {
-                    if (aNode.InnerHtml == "Previous")
-                    {
-                        previousUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                        isPreviousAvailable = true;
-                    }
-                    else if (aNode.InnerHtml == "Next")
-                    {
-                        nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                        isNextAvailable = true;
-                    }
-                }
+                displayKeywordResult(dbTenderItems);
             }
-
-
-            //Extract tender data from the response
-            var tenders = DataExtraction.getWebData(httpResult, "searchtenderpage");
-            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
-
-            listView.ItemsSource = tenderItems;
-            listView.SeparatorVisibility = SeparatorVisibility.None;
-            listView.ItemSelected += onItemSelected;*/
+            else
+            {
+                retrieveSearchResult(searchTenderResult);
+            }
         }
 
         async void retrieveSearchResult(string searchTenderResult)
@@ -175,6 +131,82 @@ namespace SEBeTender
             }
 
             listView.ItemsSource = tenderItems;            
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
+        }
+
+        async void displayKeywordResult(List<dbTenderItem> dbTenderItems)
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            
+            List<tenderItem> tenderItems = new List<tenderItem>();
+            foreach (var item in dbTenderItems)
+            {
+                Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.FileLinks);
+                tenderItem tenderitem = new tenderItem();
+                tenderitem.Reference = item.Reference;
+                tenderitem.Title = item.Title;
+                tenderitem.OriginatingStation = item.OriginatingStation;
+                tenderitem.ClosingDate = item.ClosingDate;
+                tenderitem.BidClosingDate = item.BidClosingDate;
+                tenderitem.FeeBeforeGST = item.FeeBeforeGST;
+                tenderitem.FeeAfterGST = item.FeeAfterGST;
+                tenderitem.FeeGST = item.FeeGST;
+                tenderitem.TendererClass = item.TendererClass;
+                tenderitem.Name = item.Name;
+                tenderitem.OffinePhone = item.OffinePhone;
+                tenderitem.Extension = item.Extension;
+                tenderitem.MobilePhone = item.MobilePhone;
+                tenderitem.Email = item.Email;
+                tenderitem.Fax = item.Fax;
+                tenderitem.FileLinks = fileLinks;
+                tenderitem.CheckedValue = item.CheckedValue;
+                tenderitem.AddToCartQuantity = item.AddToCartQuantity;
+                tenderitem.BookmarkImage = item.BookmarkImage;
+
+                tenderItems.Add(tenderitem);
+            }
+
+            //Get bookmark details from database
+            if (userSession.username != "")
+            {
+                //string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
+                //Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = await retrieveBookmark();
+                if (tenderBookmarks != null)
+                {
+                    //List<tenderBookmark> tenderBookmarks = bookmarkHttpTask;
+                    if (tenderBookmarks.Count > 0)
+                    {
+                        foreach (var tenderItem in tenderItems)
+                        {
+                            foreach (var tenderBookmark in tenderBookmarks)
+                            {
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            pageTitle.IsVisible = true;
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+            if (tenderItems.Count > 0)
+            {
+                upBtn.IsVisible = true;
+            } else
+            {
+                errorMsg.IsVisible = true;
+            }
+
+            listView.ItemsSource = tenderItems;
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
         }
