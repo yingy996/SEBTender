@@ -137,17 +137,20 @@ namespace SEBeTender
                     TargetType = typeof(adminPostAnnouncement)
                 });
 
-                this.Add(new menuItem()
+                if (userSession.adminRole == "admin")
                 {
-                    Title = "Manage Admin Users",
-                    TargetType = typeof(manageUserPage)
-                });
+                    this.Add(new menuItem()
+                    {
+                        Title = "Manage Admin Users",
+                        TargetType = typeof(manageUserPage)
+                    });
 
-                this.Add(new menuItem()
-                {
-                    Title = "Register New Admin",
-                    TargetType = typeof(registerAdminPage)
-                });
+                    this.Add(new menuItem()
+                    {
+                        Title = "Register New Admin",
+                        TargetType = typeof(registerAdminPage)
+                    });
+                }               
 
                 this.Add(new menuItem()
                 {

@@ -48,15 +48,20 @@ namespace SEBeTender
 
                 //Data extraction to get admin login status from HTTP response
                 //var extractionTask = await Task.Run<Object>(() => DataExtraction.getWebData(httpResult, "adminLoginPage"));
-                var status = await DataExtraction.getWebData(httpResult, "adminLoginPage");
+                //var status = await DataExtraction.getWebData(httpResult, "adminLoginPage");
 
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
 
                 //if login success, save the user account with Xamarin.Auth
-                if (status.ToString() == "success")
+                if (httpResult != "admin" && httpResult != "editor")
+                {
+                    errorLbl.Text = "Login failed! Please try again.";                   
+                }
+                else
                 {
                     adminAuth.saveCredentials(username, password);
+                    userSession.adminRole = httpResult;
                     Console.WriteLine("Admin login: " + adminAuth.Username);
                     //Navigate to tender page
                     errorLbl.TextColor = Color.Green;
@@ -70,13 +75,6 @@ namespace SEBeTender
                     //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderEligiblePage()) };
                     App.Current.MainPage = new rootPage(false);
                     //rootPage.changeDetailPage(typeof(tenderPage));
-                }
-                else
-                {
-                    Console.WriteLine("HTTP Result: " + httpResult);
-                    Console.WriteLine("Status : " + status.ToString());
-                    
-                    errorLbl.Text = "Login failed! Please try again.";
                 }
             }
 
