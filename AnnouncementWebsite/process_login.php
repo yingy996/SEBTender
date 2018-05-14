@@ -37,10 +37,22 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
                     @session_start();
                 }
 
-                $_SESSION["user_login"] = $username;
+                $roleQuery = $db_handle->getConn()->prepare("SELECT role FROM administrator WHERE username = :username");
 
-                header("refresh:2;url=index.php");
+                $roleQuery->bindParam(":username", $username);
+
+                $roleQuery->execute();
+                $roleResult = $roleQuery->fetchColumn();
+                
+                $_SESSION["user_login"] = $username;
+                $_SESSION["user_role"] = $roleResult;
+
                 $resultMsg = "Login successfully! You will be redirected soon.";
+                header("refresh:2;url=index.php");
+                //header("Location:index.php");
+                //exit();
+                //header("refresh:2;url=index.php");
+                //$resultMsg = "Login successfully! You will be redirected soon.";
             } else {
                 $errorMsg = "Invalid password. Please try again!";
             }

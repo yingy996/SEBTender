@@ -13,7 +13,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
     try{
         $db_handle = new DBController();
         /* Get number of rows where user input username matches with those in database */
-        $query = $db_handle->getConn()->prepare("SELECT administratorID FROM administrator WHERE username = :username");
+        $query = $db_handle->getConn()->prepare("SELECT administratorID FROM administrator WHERE username = :username AND isDeleted = false");
 
         $query->bindParam(":username", $username);
 

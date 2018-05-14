@@ -341,8 +341,11 @@ namespace SEBeTender
                     }
                     else
                     {
-                        return "fail";
+                        return "fail 1";
                     }
+                } else
+                {
+                    return "No message";
                 }              
             }
             return "fail";

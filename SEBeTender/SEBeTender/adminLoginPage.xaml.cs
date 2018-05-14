@@ -63,8 +63,8 @@ namespace SEBeTender
 
                     errorLbl.Text = "Login success! You will be redirected soon";
                     await Task.Delay(1000);
-                    errorLbl.TextColor = Color.Red;
-                    errorLbl.Text = "";
+                    //errorLbl.TextColor = Color.Red;
+                    //errorLbl.Text = "";
 
                     //await Navigation.PushAsync(new tenderPage());
                     //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderEligiblePage()) };
@@ -73,6 +73,9 @@ namespace SEBeTender
                 }
                 else
                 {
+                    Console.WriteLine("HTTP Result: " + httpResult);
+                    Console.WriteLine("Status : " + status.ToString());
+                    
                     errorLbl.Text = "Login failed! Please try again.";
                 }
             }

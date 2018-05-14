@@ -56,7 +56,6 @@ namespace SEBeTender
                 
             } else
             {
-                Console.WriteLine("bookmark is not null ");
                 errorMsg.IsVisible = true;
             }
             
