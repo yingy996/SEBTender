@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.editUserPage" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <ScrollView VerticalOptions="FillAndExpand" Padding="10">
+            <StackLayout>
+                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+                <Label Text="Register New Admin" FontSize="20" FontAttributes="Bold"  Margin="0,20,10,0" />
+                <Label x:Name="errorLbl" Text="" FontAttributes="Italic" TextColor="Red" Grid.Row="2" Grid.Column="0" HorizontalTextAlignment="Start"/>
+                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Name:" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center"/>
+                    <Frame CornerRadius="5" Grid.Row="0" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
+                        <Entry x:Name="nameInput"/>
+                    </Frame>
+
+                    <Label Text="Email:" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
+                    <Frame CornerRadius="5" Grid.Row="1" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
+                        <Entry x:Name="emailInput"/>
+                    </Frame>
+
+                    <Label Text="Role:" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
+                    <Frame CornerRadius="5" Grid.Row="2" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
+                        <Picker x:Name="rolePicker">
+                            <Picker.Items>
+                                <x:String>Administrator</x:String>
+                                <x:String>Editor</x:String>
+                            </Picker.Items>
+                            <Picker.SelectedIndex>0</Picker.SelectedIndex>
+                        </Picker>
+                    </Frame>
+
+                    <Label Text="Username:" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center"/>
+                    <Frame CornerRadius="5" Grid.Row="3" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
+                        <Entry x:Name="usernameInput" IsEnabled="False"/>
+                    </Frame>
+
+                    <Button Text="Update" x:Name="registerButton" Clicked="onUpdateButtonClicked" VerticalOptions="End" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#2acc4a" TextColor="White"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

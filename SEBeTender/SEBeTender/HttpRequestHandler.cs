@@ -610,5 +610,109 @@ namespace SEBeTender
             }
             
         }
+
+        public static async Task<string> getManageAdminUserList()
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                try
+                {
+                    string result = "";
+                    var parameters = new FormUrlEncodedContent(new[] {
+                        new KeyValuePair<string,string>("username", adminAuth.Username),
+                        new KeyValuePair<string,string>("password", adminAuth.Password)
+                    });
+                    HttpClient client = new HttpClient();
+
+                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_manageUsers.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = response.Content.ReadAsStringAsync().Result;
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Fetch announcement error: " + ex);
+                    return null;
+                }
+            }
+            else
+            {
+                return "Admin not logged in";
+            }          
+        }
+
+        public static async Task<string> deleteAdminUser(adminUser user)
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                try
+                {
+                    string result = "";
+                    var parameters = new FormUrlEncodedContent(new[] {
+                        new KeyValuePair<string,string>("adminUsername", adminAuth.Username),
+                        new KeyValuePair<string,string>("adminPassword", adminAuth.Password),
+                        new KeyValuePair<string,string>("username", user.Username)
+                    });
+                    HttpClient client = new HttpClient();
+
+                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_deleteUser.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = response.Content.ReadAsStringAsync().Result;
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Delete user error: " + ex);
+                    return null;
+                }
+            }
+            else
+            {
+                return "Admin not logged in";
+            }
+        }
+
+        public static async Task<String> editAdmin(string name, string email, string role, string username)
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                string result = "";
+                var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("adminUsername", adminAuth.Username),
+                    new KeyValuePair<string,string>("adminPassword", adminAuth.Password),
+                    new KeyValuePair<string,string>("name", name),
+                    new KeyValuePair<string,string>("email", email),
+                    new KeyValuePair<string,string>("role", role),
+                    new KeyValuePair<string,string>("username", username),
+                });
+
+                HttpClient httpClient = new HttpClient();
+                try
+                {
+                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appEditUser.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                return result;
+            }
+            else
+            {
+                return "Admin not logged in";
+            }
+
+        }
     }
 }
