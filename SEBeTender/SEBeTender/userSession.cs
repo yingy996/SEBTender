@@ -8,11 +8,6 @@ namespace SEBeTender
     {
         public static string userLoginCookie = "";
         public static string username = "";
-        private static Cart cart = new Cart();
-
-        public static Cart UserCart {
-            get { return cart; }
-            set { cart = value; }
-        }
+        public static string adminRole = "";
     }
 }
