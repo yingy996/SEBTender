@@ -29,7 +29,7 @@ if (!empty($_POST["delete_postID"])) {
         $query = $db_handle->getConn()->prepare("UPDATE announcement SET postDeleted = true, editedDate = NOW(), editedBy = '$login_user' WHERE announcementID = ". $deleteID);
         $result = $query->execute();
 
-        if($result = true) {
+        if($result == true) {
             //unset($_POST);
             echo "<script type='text/javascript'>alert('Announcement post has been successfully deleted.');</script>";
             header("refresh:0, index.php");

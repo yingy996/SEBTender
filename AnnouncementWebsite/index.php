@@ -24,12 +24,13 @@
         <div class="container">
             <!-- Sort and filter list -->
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                 <h1>Announcements</h1>
+                    <hr/>
                 </div>
             </div>
             
-            <hr/>
+            
             <?php 
             $index = 0;	
 

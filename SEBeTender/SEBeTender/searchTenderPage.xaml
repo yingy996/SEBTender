@@ -6,6 +6,7 @@
     <ContentPage.Content>
         <ScrollView VerticalOptions="FillAndExpand" Padding="10">
             <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+            
             <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

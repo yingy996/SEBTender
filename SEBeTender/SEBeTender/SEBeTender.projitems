@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -26,6 +26,7 @@
       <DependentUpon>adminPostAnnouncement.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)adminUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)announcementDetailPage.xaml.cs">
       <DependentUpon>announcementDetailPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -69,6 +70,10 @@
       <DependentUpon>editUPKLicenseNo.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)editUserPage.xaml.cs">
+      <DependentUpon>editUserPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)HttpRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ILocalFileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INotificationSubscription.cs" />
@@ -82,12 +87,20 @@
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)manageUserPage.xaml.cs">
+      <DependentUpon>manageUserPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)menuData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)purchasedTendersPage.xaml.cs">
       <DependentUpon>purchasedTendersPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)registerAdminPage.xaml.cs">
+      <DependentUpon>registerAdminPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Registration.xaml.cs">
@@ -284,6 +297,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)registrationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)registerAdminPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)manageUserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)editUserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
