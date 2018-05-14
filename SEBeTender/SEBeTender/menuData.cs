@@ -139,6 +139,12 @@ namespace SEBeTender
 
                 this.Add(new menuItem()
                 {
+                    Title = "Manage Admin Users",
+                    TargetType = typeof(manageUserPage)
+                });
+
+                this.Add(new menuItem()
+                {
                     Title = "Register New Admin",
                     TargetType = typeof(registerAdminPage)
                 });

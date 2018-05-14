@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.manageUserPage" Title="Sarawak Energy e-Tender">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
+            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+            <Label Text="Manage Admin Users" x:Name="pageTitle" IsVisible="False" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="No user found." x:Name="errorMsg" FontAttributes="Italic" IsVisible="False"/>
+
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5.5*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListView x:Name="listView" HasUnevenRows="true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:Name="dataTemplate">
+                            <ViewCell>
+                                <!--Frame's background color controls the background color for each tender items-->
+                                <Frame BackgroundColor="#E5E7E8" Margin="5,5,5,15" Padding="0,5" CornerRadius="10" HasShadow="False">
+                                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="15,0,15,5" Margin="0,0,0,15" BackgroundColor="Transparent">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="{Binding Username}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding Role}" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                        <Label Text="{Binding administratorName, StringFormat='Name: {0:N}'}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                        <Label Text="{Binding administratorEmail, StringFormat='Email: {0:N}'}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                                        <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                                        <StackLayout Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                                            <Image Source="edit.png" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0,20,10,0">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="onEditBtnTapped" CommandParameter="{Binding .}" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+
+                                            <Image Source="delete.png" HorizontalOptions="End" VerticalOptions="Center" Margin="0,20,10,0">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="onDeleteBtnTapped" CommandParameter="{Binding .}" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                        </StackLayout>
+
+                                    </Grid>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Image="smallUpBtn.png" BackgroundColor="White" x:Name="upBtn" IsVisible="False" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" WidthRequest="20" HeightRequest="20" BorderRadius="50" Clicked="onUpButtonClicked"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
