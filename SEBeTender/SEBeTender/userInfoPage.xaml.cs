@@ -47,7 +47,7 @@ namespace SEBeTender
 
         async void onChangePasswordBtnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new editContactPage());
+            await Navigation.PushAsync(new userChangePassword());
         }
 
         async void onNotificationBtnClicked(object sender, EventArgs e)
