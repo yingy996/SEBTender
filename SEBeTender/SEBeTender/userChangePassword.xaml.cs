@@ -34,11 +34,11 @@ namespace SEBeTender
         
         private async void onUpdateBtnClicked(object sender, EventArgs e)
         {
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.ChangePasswordRequest("http://www2.sesco.com.my/etender/vendor/vendor_change_password.jsp?check=yes", oldpass.Text, newpass.Text, renewpass.Text));
-            var httpTaskResult = httpTask;
+            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.ChangePasswordRequest("http://www2.sesco.com.my/etender/vendor/vendor_change_password.jsp?check=yes", oldpass.Text, newpass.Text, renewpass.Text));
+            var httpTaskResult = httpTask.Result.ToString();
                 
             //Extract response message data from Change Password page
-            var responseData = await DataExtraction.getWebData(httpTaskResult, "userChangePassword");
+            var responseData = DataExtraction.getWebData(httpTaskResult, "userChangePassword");
             ChangePasswordResponse response = (ChangePasswordResponse)responseData;
 
             //Console.WriteLine(response.ErrorMessage);
