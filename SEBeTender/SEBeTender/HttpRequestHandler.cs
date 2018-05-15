@@ -758,47 +758,5 @@ namespace SEBeTender
 
         }
 
-        public static async Task<string> ChangePasswordRequest(string url, string oldpass, string newpass, string renewpass)
-        {
-            string result = "";
-
-            CookieContainer cookieContainer = new CookieContainer();
-            var httpClientHandler = new HttpClientHandler() { CookieContainer = cookieContainer };
-            HttpClient httpClient = new HttpClient(httpClientHandler);
-
-            var uri = new Uri(string.Format(url, string.Empty));
-
-            string[] cookieWords = Regex.Split(userSession.userLoginCookie, "=");
-            string cookieName = cookieWords[0];
-            string[] cookieValues = Regex.Split(cookieWords[1], "; ");
-            string cookieValue = cookieValues[0];
-            cookieContainer.Add(uri, new Cookie(cookieName, cookieValue));
-
-            var parameters = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string,string>("OldPassword", oldpass),
-                new KeyValuePair<string,string>("NewPassword", newpass),
-                new KeyValuePair<string,string>("RetypePassword", renewpass)
-
-            });
-
-            try
-            {
-                var response = await httpClient.PostAsync(uri, parameters);
-                Console.WriteLine("Response code: " + response.StatusCode);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    result = await response.Content.ReadAsStringAsync();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-
-            return result;
-        }
     }
 }
