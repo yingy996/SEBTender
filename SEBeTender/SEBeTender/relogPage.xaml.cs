@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +14,7 @@ namespace SEBeTender
 	{
 		public relogPage ()
 		{
-            InitializeComponent();
+			InitializeComponent ();
             RelogUserAsync();
         }
 
@@ -41,7 +41,7 @@ namespace SEBeTender
 
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
-                await Task.Delay(1000);
+                await Task.Delay(3000);
 
                 //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) 
                 App.Current.MainPage = new rootPage();

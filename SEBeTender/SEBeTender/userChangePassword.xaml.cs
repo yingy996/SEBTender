@@ -15,37 +15,21 @@ namespace SEBeTender
 		public userChangePassword ()
 		{
             BindingContext = this;
-            InitializeComponent();
+            InitializeComponent ();
+		}
 
-            /*
-            //Sending HTTP request to obtain the company profile data
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_contact_edit.jsp", true));
-            var httpResult = httpTask.Result.ToString();
-
-            //Extract company profile data from the response
-            var profileData = DataExtraction.getWebData(httpResult, "userContactPerson");
-            ContactPerson profile = (ContactPerson)profileData;
-            
-            name.Text = profile.Name;
-            telephoneNo.Text = profile.TelephoneNo;
-            faxNo.Text = profile.FaxNo;
-            emailAddress.Text = profile.EmailAddress;*/
-        }
-        
-        private async void onUpdateBtnClicked(object sender, EventArgs e)
+        private async Task onUpdateBtnClicked(object sender, EventArgs e)
         {
+            //Send request to retrieve response from Change Password page
             Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.ChangePasswordRequest("http://www2.sesco.com.my/etender/vendor/vendor_change_password.jsp?check=yes", oldpass.Text, newpass.Text, renewpass.Text));
             var httpTaskResult = httpTask.Result.ToString();
-                
+
             //Extract response message data from Change Password page
-            var responseData = DataExtraction.getWebData(httpTaskResult, "userChangePassword");
+            var responseData = DataExtraction.getChangePasswordResponse(httpTaskResult);
             ChangePasswordResponse response = (ChangePasswordResponse)responseData;
 
-            //Console.WriteLine(response.ErrorMessage);
             bool errPressence = response.ErrorPressence;
             string errMessage = response.ErrorMessage;
-
-            //Console.WriteLine("Error Message : " + errMessage);
 
             if (!String.IsNullOrWhiteSpace(errMessage))
             {
@@ -57,14 +41,9 @@ namespace SEBeTender
             }
             else
             {
-                //await DisplayAlert("Success", "Your password has been successfully changed. Please re-login with your new password.", "OK");
-                
-                //App.Current.MainPage = new rootPage();
                 var page = App.Current.MainPage as rootPage;
                 var relogPage = new relogPage();
                 page.changePage(relogPage);
-                
-                //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new relogPage()) };
             }
 
         }
@@ -75,7 +54,7 @@ namespace SEBeTender
             var userInfoPage = new userInfoPage();
             page.changePage(userInfoPage);
         }
-	}
+    }
 
     public class ChangePasswordResponse
     {
