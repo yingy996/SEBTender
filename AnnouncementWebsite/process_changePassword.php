@@ -1,7 +1,6 @@
 <?php
 $oldPasswordError = $newPasswordError = $confPasswordError = "";
 $errorpresence = false;
-$newPassword = "";
 $username = $login_user;
 $oldPassword = $newPassword = "";
 
@@ -57,6 +56,5 @@ if(isset($_POST["updateBtn"])){
             header("refresh:2;url=manage_profile.php");
         }
     }
-}
-
+} 
 ?>

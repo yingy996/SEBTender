@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.relogPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand" Margin="0,50,0,0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="Password Successfully Changed" FontSize="20" FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Center"/>
+            <Label Text="Logging Out..." FontSize="15" FontAttributes="Bold" Grid.Row="1" HorizontalTextAlignment="Center"/>
+
+            <Label x:Name="logoutStatus" Text="" Grid.Row="2" FontSize="Default" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+            <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Grid.Row="3" Color="#2acc4a" 
+                                   VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,20,0,0"/>
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
