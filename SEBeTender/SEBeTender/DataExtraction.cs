@@ -10,7 +10,7 @@ namespace SEBeTender
 {
     class DataExtraction
     {
-        public static async Task<Object> getWebData(string webData, string page)
+        public static Object getWebData(string webData, string page)
         {
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(webData);
@@ -18,25 +18,19 @@ namespace SEBeTender
 
             if (page == "tender")
             {
-                //Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
-                Object getTenderTask = await Task.Run<Object>(() => getTenderPage(htmlDocument));
-                //var output = getTenderTask.Result;
-                var output = getTenderTask;
+                Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
+                var output = getTenderTask.Result;
                 //var output = getTenderPage(htmlDocument);
                 return output;
             } else if(page == "searchtenderpage")
             {
-                //Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
-                Object getTenderTask = await Task.Run<Object>(() => getTenderPage(htmlDocument));
-                var output = getTenderTask;
-                //var output = getTenderTask.Result;
+                Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
+                var output = getTenderTask.Result;
                 return output;
             } else if (page == "eligibelTenderPage")
             {
-                //Task<Object> getEligibleTenderTask = Task.Run<Object>(() => getEligibleTenderPage(htmlDocument));
-                Object getEligibleTenderTask = await Task.Run<Object>(() => getEligibleTenderPage(htmlDocument));
-                var output = getEligibleTenderTask;
-                //var output = getEligibleTenderTask.Result;
+                Task<Object> getEligibleTenderTask = Task.Run<Object>(() => getEligibleTenderPage(htmlDocument));
+                var output = getEligibleTenderTask.Result;
                 return output;
             } else if (page == "adminLoginPage")
             {
@@ -52,7 +46,13 @@ namespace SEBeTender
                 Task<Object> getContactPerson = Task.Run<Object>(() => getContactPersonPage(htmlDocument));
                 var output = getContactPerson.Result;
                 return output;
-            } /*else if (page == "userUPKLicense")
+            } else if (page == "userChangePassword")
+            {
+                Task<Object> getChangePassword = Task.Run<Object>(() => getChangePasswordPage(htmlDocument));
+                var output = getChangePassword.Result;
+                return output;
+            }
+            /*else if (page == "userUPKLicense")
             {
                 Task<Object> getUPKLicense = Task.Run<Object>(() => getUPKLicensePage(htmlDocument));
                 var output = getUPKLicense.Result;
@@ -341,11 +341,8 @@ namespace SEBeTender
                     }
                     else
                     {
-                        return "fail 1";
+                        return "fail";
                     }
-                } else
-                {
-                    return "No message";
                 }              
             }
             return "fail";
@@ -371,6 +368,37 @@ namespace SEBeTender
             profile.EmailAddress = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenEmail']").Attributes["value"].Value;
 
             return profile;
+        }
+
+        private static async Task<Object> getChangePasswordPage(HtmlDocument htmlDocument)
+        {
+            ChangePasswordResponse response = new ChangePasswordResponse();
+
+            //response.ErrorPressence = false;
+            var node = htmlDocument.DocumentNode.SelectSingleNode("//td//td[@class='contentred']");
+            string err = "";
+
+            if (node != null)
+            {
+                response.ErrorMessage = htmlDocument.DocumentNode.SelectSingleNode("//td[@class='contentred']").InnerHtml;
+                err = response.ErrorMessage;
+                Console.WriteLine(err);
+            }
+            else
+            {
+                response.ErrorMessage = "";
+            }
+
+            if (err != "" || err != null)
+            {
+                response.ErrorPressence = true;
+            }
+            else
+            {
+                response.ErrorPressence = false;
+            }
+
+            return response;
         }
     }
 }
