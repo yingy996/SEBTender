@@ -41,7 +41,7 @@ namespace SEBeTender
 
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
-                await Task.Delay(1000);
+                await Task.Delay(3000);
 
                 //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) 
                 App.Current.MainPage = new rootPage();

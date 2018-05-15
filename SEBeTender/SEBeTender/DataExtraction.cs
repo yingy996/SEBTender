@@ -52,13 +52,12 @@ namespace SEBeTender
                 Task<Object> getContactPerson = Task.Run<Object>(() => getContactPersonPage(htmlDocument));
                 var output = getContactPerson.Result;
                 return output;
-            } else if (page == "userChangePassword")
+            } /*else if (page == "userChangePassword")
             {
                 Object getChangePassword = Task.Run<Object>(() => getChangePasswordPage(htmlDocument));
                 var output = getChangePassword;
                 return output;
-            }
-            /*else if (page == "userUPKLicense")
+            } else if (page == "userUPKLicense")
             {
                 Task<Object> getUPKLicense = Task.Run<Object>(() => getUPKLicensePage(htmlDocument));
                 var output = getUPKLicense.Result;
@@ -377,6 +376,17 @@ namespace SEBeTender
             profile.EmailAddress = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenEmail']").Attributes["value"].Value;
 
             return profile;
+        }
+
+        public static Object getChangePasswordResponse(string webData)
+        {
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(webData);
+
+            Task<Object> getChangePassword = Task.Run<Object>(() => getChangePasswordPage(htmlDocument));
+            var output = getChangePassword.Result;
+
+            return output;
         }
 
         private static async Task<Object> getChangePasswordPage(HtmlDocument htmlDocument)
