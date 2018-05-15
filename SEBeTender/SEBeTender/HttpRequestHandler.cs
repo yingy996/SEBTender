@@ -712,7 +712,42 @@ namespace SEBeTender
             {
                 return "Admin not logged in";
             }
+        }
 
+        public static async Task<String> adminChangePassword(string oldPassword, string newPassword, string confPassword)
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                string result = "";
+                var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("adminUsername", adminAuth.Username),
+                    new KeyValuePair<string,string>("adminPassword", adminAuth.Password),
+                    new KeyValuePair<string,string>("oldPassword", oldPassword),
+                    new KeyValuePair<string,string>("newPassword", newPassword),
+                    new KeyValuePair<string,string>("confPassword", confPassword)
+                });
+
+                HttpClient httpClient = new HttpClient();
+                try
+                {
+                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appChangePassword.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                Console.WriteLine("Result is: " + result);
+                return result;
+            }
+            else
+            {
+                return "Admin not logged in";
+            }
         }
     }
 }

@@ -39,6 +39,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Cart.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)changePasswordPage.xaml.cs">
+      <DependentUpon>changePasswordPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)customSearchesItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)customSearchPage.xaml.cs">
       <DependentUpon>customSearchPage.xaml</DependentUpon>
@@ -315,6 +319,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)editUserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)changePasswordPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
