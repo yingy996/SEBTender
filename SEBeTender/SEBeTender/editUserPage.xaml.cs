@@ -19,7 +19,6 @@ namespace SEBeTender
 			InitializeComponent ();
             //if no user is given, get the current admin user details to display
             getCurrentUserDetails();
-
         }
 
         public editUserPage(adminUser user)
