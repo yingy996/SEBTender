@@ -157,6 +157,12 @@ namespace SEBeTender
                     Title = "Edit My Profile",
                     TargetType = typeof(editUserPage)
                 });
+                
+                this.Add(new menuItem()
+                {
+                    Title = "Change Password",
+                    TargetType = typeof(changePasswordPage)
+                });
 
                 this.Add(new menuItem()
                 {
