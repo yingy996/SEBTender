@@ -60,12 +60,12 @@ namespace SEBeTender
 
         async void onItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as tenderBookmark;
+            var user = e.SelectedItem as adminUser;
 
-            if (item != null)
+            if (user != null)
             {
                 listView.SelectedItem = null;
-                //await Navigation.PushAsync(new tenderDetailPage(item));
+                await Navigation.PushAsync(new editUserPage(user));
             }
         }
 
