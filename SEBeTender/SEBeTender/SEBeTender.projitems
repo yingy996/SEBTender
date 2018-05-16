@@ -14,6 +14,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)adminAuth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)adminEditProfilePage.xaml.cs">
+      <DependentUpon>adminEditProfilePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)adminLoginPage.xaml.cs">
       <DependentUpon>adminLoginPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -345,6 +349,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)relogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)adminEditProfilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

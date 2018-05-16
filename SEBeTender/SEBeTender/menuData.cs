@@ -154,6 +154,12 @@ namespace SEBeTender
 
                 this.Add(new menuItem()
                 {
+                    Title = "Edit My Profile",
+                    TargetType = typeof(editUserPage)
+                });
+                
+                this.Add(new menuItem()
+                {
                     Title = "Change Password",
                     TargetType = typeof(changePasswordPage)
                 });

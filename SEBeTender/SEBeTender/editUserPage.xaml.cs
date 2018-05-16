@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,10 @@ namespace SEBeTender
 		public editUserPage ()
 		{
 			InitializeComponent ();
-		}
+            //if no user is given, get the current admin user details to display
+            getCurrentUserDetails();
+
+        }
 
         public editUserPage(adminUser user)
         {
@@ -32,6 +36,56 @@ namespace SEBeTender
             }
 
             usernameInput.Text = user.Username;
+        }
+
+        async Task getCurrentUserDetails()
+        {
+            adminUser user = new adminUser();
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            //Send HTTP request to get current user details
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.getCurrentUserDetails());
+            string httpResult = httpTask.ToString();
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            if (httpResult != null)
+            {
+                if (httpResult == "No user found")
+                {
+                    errorLbl.IsVisible = true;
+                }
+                else if (httpResult == "Admin not logged in")
+                {
+                    errorLbl.Text = httpResult;
+                    errorLbl.IsVisible = true;
+                }
+                else
+                {
+                    List<adminUser> adminUsers = JsonConvert.DeserializeObject<List<adminUser>>(httpResult);
+                    user = adminUsers[0];
+
+                    nameInput.Text = user.administratorName;
+                    emailInput.Text = user.administratorEmail;
+                    if (user.Role == "Administrator")
+                    {
+                        rolePicker.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        rolePicker.SelectedIndex = 1;
+                    }
+
+                    usernameInput.Text = user.Username;
+                }
+
+            }
+            else
+            {
+                errorLbl.IsVisible = true;
+            }
         }
 
         async void onUpdateButtonClicked(object sender, EventArgs eventArgs)
