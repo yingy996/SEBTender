@@ -715,6 +715,39 @@ namespace SEBeTender
 
         }
 
+        public static async Task<string> getCurrentUserDetails()
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                try
+                {
+                    string result = "";
+                    var parameters = new FormUrlEncodedContent(new[] {
+                        new KeyValuePair<string,string>("username", adminAuth.Username),
+                        new KeyValuePair<string,string>("password", adminAuth.Password)
+                    });
+                    HttpClient client = new HttpClient();
+
+                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetUser.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = response.Content.ReadAsStringAsync().Result;
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Fetch announcement error: " + ex);
+                    return null;
+                }
+            }
+            else
+            {
+                return "Admin not logged in";
+            }
+        }
+
         public static async Task<string> ChangePasswordRequest(string url, string oldpass, string newpass, string renewpass)
         {
             string result = "";
