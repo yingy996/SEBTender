@@ -14,16 +14,19 @@ namespace SEBeTender
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class editUserPage : ContentPage
 	{
+        private bool isCurrentUser = true;
 		public editUserPage ()
 		{
 			InitializeComponent ();
             //if no user is given, get the current admin user details to display
+            isCurrentUser = true;
             getCurrentUserDetails();
         }
 
         public editUserPage(adminUser user)
         {
             InitializeComponent();
+            isCurrentUser = false;
             nameInput.Text = user.administratorName;
             emailInput.Text = user.administratorEmail;
             if(user.Role == "Administrator")
@@ -35,6 +38,11 @@ namespace SEBeTender
             }
 
             usernameInput.Text = user.Username;
+
+            if (user.Username == adminAuth.Username)
+            {
+                rolePicker.IsEnabled = false;
+            }
         }
 
         async Task getCurrentUserDetails()
@@ -79,7 +87,7 @@ namespace SEBeTender
 
                     usernameInput.Text = user.Username;
                 }
-
+                rolePicker.IsEnabled = false;
             }
             else
             {
@@ -89,6 +97,8 @@ namespace SEBeTender
 
         async void onUpdateButtonClicked(object sender, EventArgs eventArgs)
         {
+            errorLbl.Text = "";
+            errorLbl.IsVisible = true;
             string name = "", email = "", username = "";
             var selectedRole = rolePicker.Items[rolePicker.SelectedIndex];
 
@@ -161,8 +171,16 @@ namespace SEBeTender
                 {
                     await DisplayAlert("Success", httpResult, "OK");
                     var page = App.Current.MainPage as rootPage;
-                    var manageUserPage = new manageUserPage();
-                    page.changePage(manageUserPage);
+                    
+                    if (isCurrentUser)
+                    {
+                        var pageToChange = new editUserPage();
+                        page.changePage(pageToChange);
+                    } else
+                    {
+                        var pageToChange = new manageUserPage();
+                        page.changePage(pageToChange);
+                    }                                       
                 }
                 else
                 {
