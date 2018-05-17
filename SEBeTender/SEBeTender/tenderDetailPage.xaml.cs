@@ -128,7 +128,7 @@ namespace SEBeTender
                 Console.WriteLine("Tender returned: " + tenderItem.Reference + "Tender title: " + tenderItem.Title);
             } else
             {
-                await DisplayAlert("Not found", "Tender is not available!", "OK");
+                await DisplayAlert("Not found", "Tender '" + tenderBookmark.tenderReferenceNumber  +"' is not available!", "OK");
                 var page = App.Current.MainPage as rootPage;
                 var tenderBookmarkPage = new tenderBookmarkPage();
                 page.changePage(tenderBookmarkPage);

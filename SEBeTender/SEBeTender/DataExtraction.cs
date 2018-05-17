@@ -306,29 +306,30 @@ namespace SEBeTender
 
             //Get the checkedValue for the tender items
             var inputNodes = htmlDocument.DocumentNode.SelectNodes("//td/input");
-
-            foreach (var inputNode in inputNodes)
+            if (inputNodes != null)
             {
-                string inputValue = inputNode.Attributes["value"].Value;
-                if (inputValue != "1")
+                foreach (var inputNode in inputNodes)
                 {
-
-                    //string[] inputValueWords = Regex.Split(inputValue, "|");
-                    string[] inputValueWords = inputValue.Split('|');
-                    
-                    foreach (var item in tenderItems)
+                    string inputValue = inputNode.Attributes["value"].Value;
+                    if (inputValue != "1")
                     {
-                        if (inputValueWords[0].Trim() == item.Reference)
+
+                        //string[] inputValueWords = Regex.Split(inputValue, "|");
+                        string[] inputValueWords = inputValue.Split('|');
+
+                        foreach (var item in tenderItems)
                         {
-                            var index = tenderItems.IndexOf(item);
-                            tenderItems[index].CheckedValue = inputValue;
-                            //item.CheckedValue = inputValue;
+                            if (inputValueWords[0].Trim() == item.Reference)
+                            {
+                                var index = tenderItems.IndexOf(item);
+                                tenderItems[index].CheckedValue = inputValue;
+                                //item.CheckedValue = inputValue;
+                            }
                         }
+                        //Console.WriteLine("Node: " + inputValue);
                     }
-                    //Console.WriteLine("Node: " + inputValue);
                 }
             }
-
             return tenderItems;
         }
 
