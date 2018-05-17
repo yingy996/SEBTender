@@ -141,7 +141,6 @@ namespace SEBeTender
         public async Task WaitAndExecuteUpdateTenders(int milisec)
         {
             await Task.Delay(milisec);
-            
 
             //Sending HTTP request to obtain the tender page data
             string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
@@ -150,6 +149,15 @@ namespace SEBeTender
             //Extract tender data from the response
             var tenders = await DataExtraction.getWebData(httpResult, "tender");
             List<tenderItem> tenderItems = (List<tenderItem>)tenders;
+
+            DisplayAlert("Update Tenders", "Updating tender listing. Please wait while the update is running...", "Okay");
+            //Display the activity indicator to show activity running in the background 
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
+
+            //Disable next page and previous page button to disallow user from navigating to other page while update is running
+            previousPage.IsEnabled = false;
+            nextPage.IsEnabled = false;
 
             //delete existing tenders from database
             deleteAllTenders();
@@ -185,11 +193,13 @@ namespace SEBeTender
                  }
             }
 
-            await DisplayAlert("Update Tenders", "Refresh Tenders", "Okay");
+            //await DisplayAlert("Update Tenders", "Refresh Tenders", "Okay");
             listView.ItemsSource = tenderItems;
-                
 
-            
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
+            previousPage.IsEnabled = true;
+            nextPage.IsEnabled = true;
 
             await WaitAndExecuteUpdateTenders(10800000);
         }
@@ -564,6 +574,11 @@ namespace SEBeTender
                 nextPage.IsVisible = false;
             }
 
+            //If current page is page 1, hide previous page button
+            if (Page == 1)
+            {
+                previousPage.IsVisible = false;
+            }
             previousPage.IsEnabled = true;
             activityIndicator.IsRunning = false;
             activityIndicator.IsVisible = false;
