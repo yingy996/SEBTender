@@ -125,6 +125,17 @@ namespace SEBeTender
             bidclosingdateTo.DateSelected += DatePicker_DateSelected;
             //---------End DatePicker Control Section-----------
 
+            stkTab2.IsVisible = false;
+            normalTabButton.TextColor = Color.White;
+            keywordTabButton.TextColor = Color.White;
+            normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
+            keywordTabButton.BackgroundColor = Color.FromHex("#527DD4");
+            searchButton.Clicked += OnSubmitButtonClicked;
+            clearButton.Clicked += OnClearButtonClicked;
+
+            keywordSubmitButton.Clicked += OnKeywordSubmitButtonClicked;
+            keywordClearButton.Clicked += OnClearButtonClicked;
+
             searchButton.Clicked += OnSubmitButtonClicked;
             clearButton.Clicked += OnClearButtonClicked;
 
