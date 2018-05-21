@@ -214,6 +214,9 @@
   <ItemGroup>
     <BundleResource Include="Resources\edit.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\SEBicon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\SEBeTender\SEBeTender.projitems" Label="Shared" />
 </Project>

@@ -14,7 +14,7 @@ using Android.Util;
 
 namespace SEBeTender.Droid
 {
-    [Activity(Label = "SEBeTender", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "SEB eTender", Icon = "@drawable/SEBicon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         const string TAG = "MainActivity";
