@@ -150,7 +150,19 @@ namespace SEBeTender
                         Title = "Register New Admin",
                         TargetType = typeof(registerAdminPage)
                     });
-                }               
+                }
+
+                this.Add(new menuItem()
+                {
+                    Title = "Edit My Profile",
+                    TargetType = typeof(editUserPage)
+                });
+                
+                this.Add(new menuItem()
+                {
+                    Title = "Change Password",
+                    TargetType = typeof(changePasswordPage)
+                });
 
                 this.Add(new menuItem()
                 {

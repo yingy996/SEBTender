@@ -712,7 +712,118 @@ namespace SEBeTender
             {
                 return "Admin not logged in";
             }
+        }
 
+        public static async Task<String> adminChangePassword(string oldPassword, string newPassword, string confPassword)
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                string result = "";
+                var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("adminUsername", adminAuth.Username),
+                    new KeyValuePair<string,string>("adminPassword", adminAuth.Password),
+                    new KeyValuePair<string,string>("oldPassword", oldPassword),
+                    new KeyValuePair<string,string>("newPassword", newPassword),
+                    new KeyValuePair<string,string>("confPassword", confPassword)
+                });
+
+                HttpClient httpClient = new HttpClient();
+                try
+                {
+                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appChangePassword.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                Console.WriteLine("Result is: " + result);
+                return result;
+            }
+            else
+            {
+                return "Admin not logged in";
+            }
+        }
+
+        public static async Task<string> getCurrentUserDetails()
+        {
+            if (!String.IsNullOrEmpty(adminAuth.Username))
+            {
+                try
+                {
+                    string result = "";
+                    var parameters = new FormUrlEncodedContent(new[] {
+                        new KeyValuePair<string,string>("username", adminAuth.Username),
+                        new KeyValuePair<string,string>("password", adminAuth.Password)
+                    });
+                    HttpClient client = new HttpClient();
+
+                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetUser.php", parameters);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = response.Content.ReadAsStringAsync().Result;
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Fetch announcement error: " + ex);
+                    return null;
+                }
+            }
+            else
+            {
+                return "Admin not logged in";
+            }
+        }
+
+        public static async Task<string> ChangePasswordRequest(string url, string oldpass, string newpass, string renewpass)
+        {
+            string result = "";
+
+            CookieContainer cookieContainer = new CookieContainer();
+            var httpClientHandler = new HttpClientHandler() { CookieContainer = cookieContainer };
+            HttpClient httpClient = new HttpClient(httpClientHandler);
+
+            var uri = new Uri(string.Format(url, string.Empty));
+
+            string[] cookieWords = Regex.Split(userSession.userLoginCookie, "=");
+            string cookieName = cookieWords[0];
+            string[] cookieValues = Regex.Split(cookieWords[1], "; ");
+            string cookieValue = cookieValues[0];
+            cookieContainer.Add(uri, new Cookie(cookieName, cookieValue));
+
+            var parameters = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("OldPassword", oldpass),
+                new KeyValuePair<string,string>("NewPassword", newpass),
+                new KeyValuePair<string,string>("RetypePassword", renewpass)
+
+            });
+
+            try
+            {
+                var response = await httpClient.PostAsync(uri, parameters);
+                Console.WriteLine("Response code: " + response.StatusCode);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return result;
         }
     }
 }

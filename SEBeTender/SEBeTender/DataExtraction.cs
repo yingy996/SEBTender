@@ -52,7 +52,12 @@ namespace SEBeTender
                 Task<Object> getContactPerson = Task.Run<Object>(() => getContactPersonPage(htmlDocument));
                 var output = getContactPerson.Result;
                 return output;
-            } /*else if (page == "userUPKLicense")
+            } /*else if (page == "userChangePassword")
+            {
+                Object getChangePassword = Task.Run<Object>(() => getChangePasswordPage(htmlDocument));
+                var output = getChangePassword;
+                return output;
+            } else if (page == "userUPKLicense")
             {
                 Task<Object> getUPKLicense = Task.Run<Object>(() => getUPKLicensePage(htmlDocument));
                 var output = getUPKLicense.Result;
@@ -301,29 +306,30 @@ namespace SEBeTender
 
             //Get the checkedValue for the tender items
             var inputNodes = htmlDocument.DocumentNode.SelectNodes("//td/input");
-
-            foreach (var inputNode in inputNodes)
+            if (inputNodes != null)
             {
-                string inputValue = inputNode.Attributes["value"].Value;
-                if (inputValue != "1")
+                foreach (var inputNode in inputNodes)
                 {
-
-                    //string[] inputValueWords = Regex.Split(inputValue, "|");
-                    string[] inputValueWords = inputValue.Split('|');
-                    
-                    foreach (var item in tenderItems)
+                    string inputValue = inputNode.Attributes["value"].Value;
+                    if (inputValue != "1")
                     {
-                        if (inputValueWords[0].Trim() == item.Reference)
+
+                        //string[] inputValueWords = Regex.Split(inputValue, "|");
+                        string[] inputValueWords = inputValue.Split('|');
+
+                        foreach (var item in tenderItems)
                         {
-                            var index = tenderItems.IndexOf(item);
-                            tenderItems[index].CheckedValue = inputValue;
-                            //item.CheckedValue = inputValue;
+                            if (inputValueWords[0].Trim() == item.Reference)
+                            {
+                                var index = tenderItems.IndexOf(item);
+                                tenderItems[index].CheckedValue = inputValue;
+                                //item.CheckedValue = inputValue;
+                            }
                         }
+                        //Console.WriteLine("Node: " + inputValue);
                     }
-                    //Console.WriteLine("Node: " + inputValue);
                 }
             }
-
             return tenderItems;
         }
 
@@ -371,6 +377,48 @@ namespace SEBeTender
             profile.EmailAddress = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='VenEmail']").Attributes["value"].Value;
 
             return profile;
+        }
+
+        public static Object getChangePasswordResponse(string webData)
+        {
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(webData);
+
+            Task<Object> getChangePassword = Task.Run<Object>(() => getChangePasswordPage(htmlDocument));
+            var output = getChangePassword.Result;
+
+            return output;
+        }
+
+        private static async Task<Object> getChangePasswordPage(HtmlDocument htmlDocument)
+        {
+            ChangePasswordResponse response = new ChangePasswordResponse();
+
+            //response.ErrorPressence = false;
+            var node = htmlDocument.DocumentNode.SelectSingleNode("//td//td[@class='contentred']");
+            string err = "";
+
+            if (node != null)
+            {
+                response.ErrorMessage = htmlDocument.DocumentNode.SelectSingleNode("//td[@class='contentred']").InnerHtml;
+                err = response.ErrorMessage;
+                Console.WriteLine(err);
+            }
+            else
+            {
+                response.ErrorMessage = "";
+            }
+
+            if (err != "" || err != null)
+            {
+                response.ErrorPressence = true;
+            }
+            else
+            {
+                response.ErrorPressence = false;
+            }
+
+            return response;
         }
     }
 }

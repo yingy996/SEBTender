@@ -39,6 +39,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Cart.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)changePasswordPage.xaml.cs">
+      <DependentUpon>changePasswordPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)customSearchesItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)customSearchPage.xaml.cs">
       <DependentUpon>customSearchPage.xaml</DependentUpon>
@@ -112,6 +116,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)registrationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)relogPage.xaml.cs">
+      <DependentUpon>relogPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)rootPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)searchTenderPage.xaml.cs">
       <DependentUpon>searchTenderPage.xaml</DependentUpon>
@@ -143,6 +151,10 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)userCalendar.xaml.cs">
       <DependentUpon>userCalendar.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)userChangePassword.xaml.cs">
+      <DependentUpon>userChangePassword.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)userInfoPage.xaml.cs">
@@ -315,6 +327,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)editUserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)changePasswordPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)userChangePassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)relogPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

@@ -32,8 +32,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
-                                            
-                                            
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -44,14 +43,15 @@
                                         <Label Text="{Binding ClosingDate}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
                                         <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                        
                                         <Label Text="{Binding Title}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
 
-                                        <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                        <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
 
-                                        <Label Text="{Binding TendererClass}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding TendererClass}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                        <Label Text="{Binding BidClosingDate}" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                        <Label Text="{Binding FeeBeforeGST, StringFormat='RM {0:F0}'}" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding BidClosingDate}" Grid.Row="5" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding FeeBeforeGST, StringFormat='RM {0:F0}'}" Grid.Row="5" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
                                         <!--<StackLayout Orientation="Horizontal" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
                                             <Stepper x:Name="stepper"  Minimum="1" Increment="1" HorizontalOptions="Center"  VerticalOptions="Center"/>
@@ -60,7 +60,7 @@
                                             </Frame>
                                         </StackLayout>-->
 
-                                        <StackLayout Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <StackLayout Orientation="Horizontal" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
                                             <Image Source="{Binding BookmarkImage}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0,20,10,0">
                                                 <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="OnBookmarkTapped" CommandParameter="{Binding .}" />

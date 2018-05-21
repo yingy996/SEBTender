@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,19 @@ namespace SEBeTender
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class editUserPage : ContentPage
 	{
+        private bool isCurrentUser = true;
 		public editUserPage ()
 		{
 			InitializeComponent ();
-		}
+            //if no user is given, get the current admin user details to display
+            isCurrentUser = true;
+            getCurrentUserDetails();
+        }
 
         public editUserPage(adminUser user)
         {
             InitializeComponent();
+            isCurrentUser = false;
             nameInput.Text = user.administratorName;
             emailInput.Text = user.administratorEmail;
             if(user.Role == "Administrator")
@@ -32,10 +38,67 @@ namespace SEBeTender
             }
 
             usernameInput.Text = user.Username;
+
+            if (user.Username == adminAuth.Username)
+            {
+                rolePicker.IsEnabled = false;
+            }
+        }
+
+        async Task getCurrentUserDetails()
+        {
+            adminUser user = new adminUser();
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            //Send HTTP request to get current user details
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.getCurrentUserDetails());
+            string httpResult = httpTask.ToString();
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            if (httpResult != null)
+            {
+                if (httpResult == "No user found")
+                {
+                    errorLbl.IsVisible = true;
+                }
+                else if (httpResult == "Admin not logged in")
+                {
+                    errorLbl.Text = httpResult;
+                    errorLbl.IsVisible = true;
+                }
+                else
+                {
+                    List<adminUser> adminUsers = JsonConvert.DeserializeObject<List<adminUser>>(httpResult);
+                    user = adminUsers[0];
+
+                    nameInput.Text = user.administratorName;
+                    emailInput.Text = user.administratorEmail;
+                    if (user.Role == "Administrator")
+                    {
+                        rolePicker.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        rolePicker.SelectedIndex = 1;
+                    }
+
+                    usernameInput.Text = user.Username;
+                }
+                rolePicker.IsEnabled = false;
+            }
+            else
+            {
+                errorLbl.IsVisible = true;
+            }
         }
 
         async void onUpdateButtonClicked(object sender, EventArgs eventArgs)
         {
+            errorLbl.Text = "";
+            errorLbl.IsVisible = true;
             string name = "", email = "", username = "";
             var selectedRole = rolePicker.Items[rolePicker.SelectedIndex];
 
@@ -108,8 +171,16 @@ namespace SEBeTender
                 {
                     await DisplayAlert("Success", httpResult, "OK");
                     var page = App.Current.MainPage as rootPage;
-                    var manageUserPage = new manageUserPage();
-                    page.changePage(manageUserPage);
+                    
+                    if (isCurrentUser)
+                    {
+                        var pageToChange = new editUserPage();
+                        page.changePage(pageToChange);
+                    } else
+                    {
+                        var pageToChange = new manageUserPage();
+                        page.changePage(pageToChange);
+                    }                                       
                 }
                 else
                 {
