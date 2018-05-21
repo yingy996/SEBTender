@@ -31,8 +31,8 @@
                     <Entry x:Name="passwordEntry" IsPassword="True" Placeholder="Password"/>
                 </Frame>
 
-                <Button Text="Login" Clicked="onLoginBtnClicked" CornerRadius="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Grid.Row="5" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-
+                <Button Text="Login" Clicked="onLoginBtnClicked" CornerRadius="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Grid.Row="5" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black"/>
+<!-- #2acc4a-->
             </Grid>
         </ScrollView>
     </ContentPage.Content>
