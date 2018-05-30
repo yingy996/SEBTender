@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.userInfoPage" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.userInfoPage" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <StackLayout Padding="10">
             <Label Text="User Account Details" FontAttributes="Bold" FontSize="20" Margin="0,0,0,10"></Label>
             <Button Text="View / Edit Company Profile"
-                    HorizontalOptions="FillAndExpand" Clicked="onEditCompanyBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
+                    HorizontalOptions="FillAndExpand" Clicked="onEditCompanyBtnClicked" BackgroundColor="#c0d94e" TextColor="Black" Margin="20,0"></Button>
             <Button Text="View / Edit Contact Person"
-                    HorizontalOptions="FillAndExpand" Clicked="onEditContactBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
+                    HorizontalOptions="FillAndExpand" Clicked="onEditContactBtnClicked" BackgroundColor="#c0d94e" TextColor="Black" Margin="20,0"></Button>
             <!-- <Button Text="View / Edit UPK License No."
                     HorizontalOptions="FillAndExpand" Clicked="onEditLicenseBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
             <Button Text="View / Edit CIDB"
                     HorizontalOptions="FillAndExpand" Clicked="onEditCIDBBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button> -->
             <Button Text="Change Password"
-                    HorizontalOptions="FillAndExpand" Clicked="onChangePasswordBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
+                    HorizontalOptions="FillAndExpand" Clicked="onChangePasswordBtnClicked" BackgroundColor="#c0d94e" TextColor="Black" Margin="20,0"></Button>
             <Button Text="Turn off Notification" x:Name="notificationBtn" IsVisible="False"
-                    HorizontalOptions="FillAndExpand" Clicked="onNotificationBtnClicked" BackgroundColor="#2acc4a" TextColor="White" Margin="20,0"></Button>
+                    HorizontalOptions="FillAndExpand" Clicked="onNotificationBtnClicked" BackgroundColor="#c0d94e" TextColor="Black" Margin="20,0"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

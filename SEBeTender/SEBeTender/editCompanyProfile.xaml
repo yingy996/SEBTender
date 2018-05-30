@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.editCompanyProfile" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.editCompanyProfile" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <StackLayout>
             <ScrollView VerticalOptions="FillAndExpand" Padding="10">
@@ -48,8 +48,8 @@
                         <Label x:Name="country" Text="{Binding Country}" FontAttributes="Bold"/>
                     </Grid>
 
-                    <Button Text="Update" VerticalOptions="End" Grid.Row="9" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White" Clicked="onUpdateBtnClicked"/>
-                    <Button Text="Cancel"  VerticalOptions="Start" Grid.Row="9" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White" Clicked="onCancelBtnClicked"/>
+                    <Button Text="Update" VerticalOptions="End" Grid.Row="9" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black" Clicked="onUpdateBtnClicked"/>
+                    <Button Text="Cancel"  VerticalOptions="Start" Grid.Row="9" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black" Clicked="onCancelBtnClicked"/>
                 </Grid>
                 
             </ScrollView>

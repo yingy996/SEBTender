@@ -56,8 +56,8 @@ namespace SEBeTender
             stkTab2.IsVisible = false;
             normalTabButton.TextColor = Color.White;
             keywordTabButton.TextColor = Color.White;
-            normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
-            keywordTabButton.BackgroundColor = Color.FromHex("#527DD4");
+            //normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
+            //keywordTabButton.BackgroundColor = Color.FromHex("#527DD4");
             searchButton.Clicked += OnSubmitButtonClicked;
             clearButton.Clicked += OnClearButtonClicked;
 

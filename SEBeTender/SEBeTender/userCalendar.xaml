@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:SEBeTender" 
              xmlns:syncfusion="clr-namespace:Syncfusion.SfCalendar.XForms;assembly=Syncfusion.SfCalendar.XForms"
-             x:Class="SEBeTender.userCalendar" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.userCalendar" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <StackLayout>
             <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>

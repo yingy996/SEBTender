@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.adminLoginPage" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.adminLoginPage" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <ScrollView VerticalOptions="FillAndExpand" Padding="10,10,10,10">
 
@@ -31,8 +31,8 @@
                     <Entry x:Name="passwordEntry" IsPassword="True" Placeholder="Password"/>
                 </Frame>
 
-                <Button Text="Login" Clicked="onLoginBtnClicked" CornerRadius="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Grid.Row="5" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-
+                <Button Text="Login" Clicked="onLoginBtnClicked" CornerRadius="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Grid.Row="5" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black"/>
+<!-- #2acc4a-->
             </Grid>
         </ScrollView>
     </ContentPage.Content>

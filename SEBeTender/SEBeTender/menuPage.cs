@@ -11,9 +11,9 @@ namespace SEBeTender
 	{
         public ListView menu { get; set; }
 		public menuPage ()
-		{
-            Icon = "menuicon.png";
+		{            
             Title = "Sarawak Energy e-Tender";
+            Icon = "menuicon.png";
             //BackgroundColor = Color.FromHex("4295d1");
             BackgroundColor = Color.FromHex("#3C83B8");
             Padding = new Thickness(10);

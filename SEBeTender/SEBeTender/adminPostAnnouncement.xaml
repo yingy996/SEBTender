@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.adminPostAnnouncement" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.adminPostAnnouncement" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <ScrollView VerticalOptions="FillAndExpand" Padding="10">
             <StackLayout>
@@ -30,8 +30,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Text="Submit" Clicked="OnSubmitButtonClicked" x:Name="searchButton" VerticalOptions="End" Grid.Row="0" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-                    <Button Text="Clear" Clicked="OnClearButtonClicked" x:Name="clearButton" VerticalOptions="Start" Grid.Row="0" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+                    <Button Text="Submit" Clicked="OnSubmitButtonClicked" x:Name="searchButton" VerticalOptions="End" Grid.Row="0" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black"/>
+                    <Button Text="Clear" Clicked="OnClearButtonClicked" x:Name="clearButton" VerticalOptions="Start" Grid.Row="0" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black"/>
                 </Grid>
                 
             </StackLayout>

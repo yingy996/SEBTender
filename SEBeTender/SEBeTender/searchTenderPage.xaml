@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             x:Class="SEBeTender.searchTenderPage" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.searchTenderPage" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal">
             <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="0" RowSpacing="0" Padding="0">
@@ -17,11 +17,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackLayout Grid.Row="0" Grid.Column="0" Padding="7.5" VerticalOptions="FillAndExpand">
-                    <Button x:Name="normalTabButton" Clicked="normalTabClicked" Text="Normal Search"/>
+                    <Button x:Name="normalTabButton" BackgroundColor="#0383c7" Clicked="normalTabClicked" Text="Normal Search"/>
                 </StackLayout>
 
                 <StackLayout Grid.Row="0" Grid.Column="1" Padding="7.5" VerticalOptions="FillAndExpand">
-                    <Button x:Name="keywordTabButton" Clicked="keywordTabClicked" Text="Keyword Search"/>
+                    <Button x:Name="keywordTabButton" BackgroundColor="#0383c7" Clicked="keywordTabClicked" Text="Keyword Search"/>
                 </StackLayout>
 
 
@@ -105,8 +105,8 @@
                                 <DatePicker.Format>dd-MM-yyyy</DatePicker.Format>
                             </DatePicker>
 
-                            <Button Text="Search" x:Name="searchButton" VerticalOptions="End" Grid.Row="10" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-                            <Button Text="Clear"  x:Name="clearButton" VerticalOptions="Start" Grid.Row="10" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+                            <Button Text="Search" x:Name="searchButton" VerticalOptions="End" Grid.Row="10" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black"/>
+                            <Button Text="Clear"  x:Name="clearButton" VerticalOptions="Start" Grid.Row="10" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black"/>
                         </Grid>
                     </ScrollView>
                 </StackLayout>
@@ -127,7 +127,7 @@
                             </Grid.ColumnDefinitions>
 
                             <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                                <Label Text="Search Tender Notices By Keyword" FontSize="20" FontAttributes="Bold"  Margin="0,20,10,0" />
+                                <Label Text="Search Tender Notices By Keyword" FontSize="20" FontAttributes="Bold"  Margin="0,20,10,0" /> 
                             </StackLayout>
 
                             <Label Text="Tender Keyword:" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
@@ -135,8 +135,8 @@
                                 <Entry x:Name="tenderKeywordInput"/>
                             </Frame>
 
-                            <Button Text="Search" x:Name="keywordSubmitButton" VerticalOptions="End" Grid.Row="2" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White"/>
-                            <Button Text="Clear"  x:Name="keywordClearButton" VerticalOptions="Start" Grid.Row="2" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White"/>
+                            <Button Text="Search" x:Name="keywordSubmitButton" VerticalOptions="End" Grid.Row="2" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black"/>
+                            <Button Text="Clear"  x:Name="keywordClearButton" VerticalOptions="Start" Grid.Row="2" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black"/>
                         </Grid>
                     </ScrollView>
                 </StackLayout>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.editAnnouncement" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.editAnnouncement" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <StackLayout Padding="10">
             <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
@@ -44,8 +44,8 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Text="Update" Grid.Row="0" Grid.Column="0" BackgroundColor="#2acc4a" TextColor="White" Clicked="onUpdateBtnClick"/>
-                <Button Text="Cancel" Grid.Row="0" Grid.Column="1" BackgroundColor="#2acc4a" TextColor="White" Clicked="onCancelBtnClick"/>
+                <Button Text="Update" Grid.Row="0" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black" Clicked="onUpdateBtnClick"/>
+                <Button Text="Cancel" Grid.Row="0" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black" Clicked="onCancelBtnClick"/>
             </Grid>
 
         </StackLayout>

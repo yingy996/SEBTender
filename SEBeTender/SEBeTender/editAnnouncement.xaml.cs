@@ -13,7 +13,7 @@ namespace SEBeTender
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class editAnnouncement : ContentPage
     {
-        string editID = "";
+        static string editID = "";
         string updatedTitle, updatedContent = "";
         bool updateTitleError, updateContentError = false;
 
@@ -23,18 +23,16 @@ namespace SEBeTender
             InitializeComponent();
 
             editID = announcementid;
-            Task<string> httpTask = Task.Run<string>(() => getEditPageResultAsync(editID).Result);
-            Console.WriteLine(httpTask.Result);
-
-            List<RootObject> announcementItem = JsonConvert.DeserializeObject<List<RootObject>>(httpTask.Result);
-
-            editID = announcementItem[0].announcementID;
-            editTitle.Text = announcementItem[0].announcementTitle;
-            editContent.Text = announcementItem[0].announcementContent;
+            //Task<string> httpTask = Task.Run<string>(() => getEditPageResultAsync(editID).Result);
+            //Console.WriteLine(httpTask.Result);
+            getEditPageResultAsync(editID);
+            
         }
 
-        public static async Task<string> getEditPageResultAsync(string announcementid)
+        async Task getEditPageResultAsync(string announcementid)
         {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
             string result = "";
 
             HttpClient httpClient = new HttpClient();
@@ -44,15 +42,20 @@ namespace SEBeTender
 
                 result = response.Content.ReadAsStringAsync().Result;
 
-                return result;
+                List<RootObject> announcementItem = JsonConvert.DeserializeObject<List<RootObject>>(result);
+                
+                editID = announcementItem[0].announcementID;
+                editTitle.Text = announcementItem[0].announcementTitle;
+                editContent.Text = announcementItem[0].announcementContent;
+                //return result;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-            return result;
-
-
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+            //return result;
         }
 
         private void editTitle_Completed(object sender, EventArgs e)
