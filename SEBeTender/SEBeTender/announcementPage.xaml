@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.announcementPage" Title="Sarawak Energy e-Tender">
+             x:Class="SEBeTender.announcementPage" NavigationPage.TitleIcon="seblogo2.png">
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
             <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
@@ -37,7 +37,7 @@
                         <DataTemplate x:Name="dataTemplate">
                             <ViewCell>
                                 <!--Frame's background color controls the background color for each tender items #E5E7E8-->
-                                <Frame BackgroundColor="#c0d94e" Margin="5,5,5,15" Padding="0,5" CornerRadius="10" HasShadow="False">
+                                <Frame BackgroundColor="#E5E7E8" Margin="5,5,5,15" Padding="0,5" CornerRadius="10" HasShadow="False">
                                     <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="15,0,15,5" Margin="0,0,0,15" BackgroundColor="Transparent">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>

@@ -57,6 +57,7 @@ namespace SEBeTender
                     {
                         Console.WriteLine("Announcement is not null");
                         listView.ItemsSource = announcementItem;
+                        
                         upBtn.IsVisible = true;
                     } else
                     {

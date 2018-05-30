@@ -190,7 +190,13 @@
     <AndroidResource Include="Resources\drawable\test.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\SEBlogo.png" />
+    <AndroidResource Include="Resources\drawable\rsz_seblogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\seblogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\seblogo2.png" />
   </ItemGroup>
   <Import Project="..\SEBeTender\SEBeTender.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
