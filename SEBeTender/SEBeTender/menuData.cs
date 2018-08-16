@@ -87,6 +87,13 @@ namespace SEBeTender
                     TargetType = typeof(userCalendar)
                 });
 
+                this.Add(new menuItem()
+                {
+                    Title = "Survey",
+                    TargetType = typeof(SurveyPage)
+                });
+
+                //Not part of features hence removed
                 /*this.Add(new menuItem()
                 {
                     Title = "Purchased Tender Document",
