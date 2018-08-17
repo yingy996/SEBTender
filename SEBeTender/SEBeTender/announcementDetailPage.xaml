@@ -45,14 +45,14 @@
 
                     <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
 
-                    <Label Text="DatePosted: " Grid.Row="5" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <Label Text="Date Posted: " Grid.Row="5" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
                     <StackLayout Grid.Row="5" Grid.Column="1" Margin="0,5,0,0">
                         <Label x:Name="publishedDatelbl"/>
                     </StackLayout>
 
                     <BoxView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
 
-                    <Label Text="PostedBy: " Grid.Row="7" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <Label Text="Posted By: " Grid.Row="7" Grid.Column="0" FontAttributes="Bold" Margin="0,5,0,0"/>
                     <StackLayout Grid.Row="7" Grid.Column="1" Margin="0,5,0,0">
                         <Label x:Name="postedBylbl"/>
                     </StackLayout>

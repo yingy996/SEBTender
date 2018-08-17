@@ -15,7 +15,9 @@ namespace SEBeTender
 		{
             menuPage = new menuPage();
             Master = menuPage;
-            var displayPage = new tenderPage(); 
+            //var displayPage = new tenderPage(); 
+            var displayPage = new pollPage(); 
+
             Detail = new NavigationPage(displayPage);   
             
             menuPage.menu.ItemSelected += onItemSelected;  
