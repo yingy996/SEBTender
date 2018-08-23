@@ -43,6 +43,10 @@
       <DependentUpon>changePasswordPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)createPollPage.xaml.cs">
+      <DependentUpon>createPollPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)customSearchesItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)customSearchPage.xaml.cs">
       <DependentUpon>customSearchPage.xaml</DependentUpon>
@@ -99,6 +103,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)menuItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)pollPage.xaml.cs">
+      <DependentUpon>pollPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)purchasedTendersPage.xaml.cs">
       <DependentUpon>purchasedTendersPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -345,6 +353,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)relogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)pollPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)createPollPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

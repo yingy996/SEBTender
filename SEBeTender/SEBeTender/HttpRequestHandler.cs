@@ -825,5 +825,57 @@ namespace SEBeTender
 
             return result;
         }
+
+        public static async Task<string> PostAddPoll(string username, string password, string question, string option_number, string[] options)
+        {
+            string result = "";
+            var formData = new List<KeyValuePair<string, string>>();
+            formData.Add(new KeyValuePair<string, string>("username", username));
+            formData.Add(new KeyValuePair<string, string>("password", password));
+            formData.Add(new KeyValuePair<string, string>("question", question));
+            formData.Add(new KeyValuePair<string, string>("option_number", option_number));
+
+            int count = 1;
+            if (options.Count() > 0)
+            {
+                Console.WriteLine("I have options in options hehe");
+                Console.WriteLine(options[0]);
+            } else
+            {
+                Console.WriteLine("NO options in options hehe");
+            }
+            foreach(string option in options)
+            {
+                formData.Add(new KeyValuePair<string, string>("option" + count.ToString(), option));
+                Console.WriteLine("GGGOption: " + option);
+                count++;
+            }
+            /*var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password),
+                new KeyValuePair<string,string>("question", title),
+                new KeyValuePair<string,string>("option_number", title),
+                new KeyValuePair<string,string>("title", title),
+                new KeyValuePair<string,string>("content", content)
+            });*/
+            var parameters = new FormUrlEncodedContent(formData);
+
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appCreatePoll.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
     }
 }

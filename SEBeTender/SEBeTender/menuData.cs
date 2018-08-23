@@ -137,6 +137,12 @@ namespace SEBeTender
                     TargetType = typeof(adminPostAnnouncement)
                 });
 
+                this.Add(new menuItem()
+                {
+                    Title = "Poll",
+                    TargetType = typeof(pollPage)
+                });
+
                 if (userSession.adminRole == "admin")
                 {
                     this.Add(new menuItem()
