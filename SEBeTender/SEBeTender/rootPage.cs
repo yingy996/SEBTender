@@ -15,8 +15,7 @@ namespace SEBeTender
 		{
             menuPage = new menuPage();
             Master = menuPage;
-            //var displayPage = new tenderPage(); 
-            var displayPage = new pollPage(); 
+            var displayPage = new tenderPage(); 
 
             Detail = new NavigationPage(displayPage);   
             
