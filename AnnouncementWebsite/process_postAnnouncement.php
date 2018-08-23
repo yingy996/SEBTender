@@ -16,7 +16,6 @@ if (isset($_SESSION["user_login"])) {
             $announcement_title = sanitizeInput($_POST["title"]);
         }
 
-
         /* Announcement content Validation */
         if(empty($_POST["content"])){
             $announcement_contenterr = "Please enter an announcement content";
@@ -24,7 +23,6 @@ if (isset($_SESSION["user_login"])) {
         }else{
             $announcement_content = sanitizeInput($_POST["content"]);
         }
-
 
         if($error_message == "" && $errorpresence == false) {
             require_once("dbcontroller.php");
@@ -39,8 +37,6 @@ if (isset($_SESSION["user_login"])) {
             $query->bindParam(":announcement_title", $announcement_title);
             $query->bindParam(":announcement_content", $announcement_content);
             $query->bindParam(":login_user", $login_user);
-
-
 
             $result = $query->execute();
             if($result == true) {
