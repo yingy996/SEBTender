@@ -25,6 +25,9 @@
                     }
                         echo '<li><a href="index.php">Announcements</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+
+                        echo '<li><a href="poll.php">Poll</a></li>
+                        <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                 
                 //display if adminnistrator logged in
                 if (!isset($_SESSION["user_login"])){
