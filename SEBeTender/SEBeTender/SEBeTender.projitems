@@ -103,6 +103,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)menuItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)menuPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Poll.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)pollOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)pollPage.xaml.cs">
       <DependentUpon>pollPage.xaml</DependentUpon>
       <SubType>Code</SubType>

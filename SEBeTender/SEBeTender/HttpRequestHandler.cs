@@ -838,11 +838,11 @@ namespace SEBeTender
             int count = 1;
             if (options.Count() > 0)
             {
-                Console.WriteLine("I have options in options hehe");
+                Console.WriteLine("I have options in options");
                 Console.WriteLine(options[0]);
             } else
             {
-                Console.WriteLine("NO options in options hehe");
+                Console.WriteLine("NO options in options");
             }
             foreach(string option in options)
             {
@@ -876,6 +876,57 @@ namespace SEBeTender
                 Console.WriteLine(ex);
             }
             return result;
+        }
+
+        public static async Task<string> PostGetPollQuestion()
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "question")
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetPoll.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine("GET poll question: " + result);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch announcement error: " + ex);
+                return null;
+            }
+        }
+
+        public static async Task<string> PostGetPollOptions(string pollID)
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "option"),
+                new KeyValuePair<string,string>("pollID", pollID)
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetPoll.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch announcement error: " + ex);
+                return null;
+            }
         }
     }
 }

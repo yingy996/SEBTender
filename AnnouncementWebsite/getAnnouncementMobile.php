@@ -8,12 +8,9 @@ require_once("dbcontroller.php");
     $results = $query->fetchAll();
     $resultstring = "";
 
-    if(!empty($results)){
-        
-            $resultstring = json_encode($results);
-            echo $resultstring;
-        
-        
+    if(!empty($results)){        
+        $resultstring = json_encode($results);
+        echo $resultstring;  
     }
     else
     {

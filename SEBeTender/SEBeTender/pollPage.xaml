@@ -14,6 +14,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -21,23 +22,24 @@
 
                     <Label Text="Poll" FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
 
+                    <Label Text="No poll found." x:Name="errorMsg" FontAttributes="Italic" IsVisible="False" Grid.Row="1" Grid.Column="0"/>
                     <!--<Label Text="Title" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" Margin="0,5,0,0" HorizontalTextAlignment="Center"/>-->
-                    <StackLayout Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
-                        <Label x:Name="pollQuestionLbl" FontAttributes="Bold"/>
+                    <StackLayout Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
+                        <Label x:Name="pollQuestionLbl" FontAttributes="Bold" IsVisible="False"/>
                     </StackLayout>
 
-                    <BoxView Grid.Row="2" Grid.Column="0" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                    <BoxView Grid.Row="3" Grid.Column="0" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
 
                     <!-- Options -->
-                    <Frame CornerRadius="5" Grid.Row="3" Grid.Column="0" Margin="0,10,0,0" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
+                    <Frame CornerRadius="5" Grid.Row="4" Grid.Column="0" Margin="0,10,0,0" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False" x:Name="optionFrame" IsVisible="False">
                         <Picker x:Name="pollOptionPicker" Title="- Select your answer -" SelectedIndexChanged="OnPickerSelectedIndexChanged">
                             <Picker.Items>
                             </Picker.Items>
                         </Picker>
                     </Frame>
 
-                    <Button Text="Submit" Grid.Row="4" Grid.Column="0" x:Name="submitButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnSubmitButtonClicked"/>
-                    <Button Text="Create Poll" Grid.Row="5" Grid.Column="0" IsVisible="True" x:Name="createButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnCreateButtonClicked"/>
+                    <Button Text="Submit" Grid.Row="5" Grid.Column="0" x:Name="submitButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnSubmitButtonClicked" IsVisible="False"/>
+                    <Button Text="Create Poll" Grid.Row="6" Grid.Column="0" x:Name="createButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnCreateButtonClicked" IsVisible="False"/>
                 </Grid>
             </StackLayout>
         </ScrollView>

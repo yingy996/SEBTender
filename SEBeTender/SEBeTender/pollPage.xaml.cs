@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,19 +14,88 @@ namespace SEBeTender
 	public partial class pollPage : ContentPage
 	{
         string selectedOption = "";
+        Poll poll = new Poll();
+
 		public pollPage ()
 		{
 			InitializeComponent ();
-            
-            pollQuestionLbl.Text = "What is your favourite way of making bill payment?";
-            var optionList = new List<string>();
-            optionList.Add("Testing 1");
-            optionList.Add("Testing 2");
-            pollOptionPicker.ItemsSource = optionList;
 
+            retrievePoll();
             if (!String.IsNullOrEmpty(adminAuth.Username))
             {
                 checkAdminLoginStatus();
+            }
+        }
+
+        async void retrievePoll()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollQuestion());
+            while (httpTask == null)
+            {
+                httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollQuestion());
+            }
+
+            if (httpTask != null)
+            {
+                List<Poll> pollList = JsonConvert.DeserializeObject<List<Poll>>(httpTask.ToString());
+
+                //If poll is available, get the poll details, else display the error message
+                if (pollList != null)
+                {
+                    if (pollList.Count > 0)
+                    {
+                        //Get poll details
+                        poll = pollList[0];
+                        Console.WriteLine("Poll question is: " + poll.pollQuestion);
+                        string pollID = poll.pollID;
+                        string pollQuestion = poll.pollQuestion;
+
+                        //Get poll options
+                        string httpOptionTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollOptions(pollID));
+                        while (httpOptionTask == null)
+                        {
+                            httpOptionTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollOptions(pollID));
+                        }
+
+                        if (httpOptionTask != null)
+                        {
+                            List<pollOption> pollOptionList = JsonConvert.DeserializeObject<List<pollOption>>(httpOptionTask.ToString());
+                            poll.pollOptions = pollOptionList;
+                            List<string> pollOptionStrings = new List<string>();
+                            foreach(pollOption option in poll.pollOptions)
+                            {
+                                pollOptionStrings.Add(option.optionTitle);
+                            }
+                            if (pollOptionList != null)
+                            {
+                                if (pollOptionList.Count > 0)
+                                {
+                                    //Display poll details and options                                  
+                                    pollQuestionLbl.Text = pollQuestion;
+                                    pollOptionPicker.ItemsSource = pollOptionStrings;
+                                    pollQuestionLbl.IsVisible = true;
+                                    optionFrame.IsVisible = true;
+                                    submitButton.IsVisible = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        errorMsg.IsVisible = true;
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Poll Task is null ");
+                    errorMsg.IsVisible = true;
+                }
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
             }
         }
 
@@ -67,6 +137,7 @@ namespace SEBeTender
 
             if (httpResult == "loggedin")
             {
+                submitButton.IsVisible = false;
                 createButton.IsVisible = true;
             }
         }
