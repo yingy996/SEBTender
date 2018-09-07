@@ -53,6 +53,12 @@ namespace SEBeTender
 
                 this.Add(new menuItem()
                 {
+                    Title = "Poll",
+                    TargetType = typeof(pollPage)
+                });
+
+                this.Add(new menuItem()
+                {
                     Title = "Tender Document",
                     TargetType = typeof(tenderPage)
                 });
