@@ -16,7 +16,7 @@ if($result[0][0] != "") {
     $pollID = $poll["pollID"];
     $pollQuestion = $poll["pollQuestion"];
     
-    //Obtain poll options from dat.abase
+    //Obtain poll options from database
     $optionQuery = $db_handle->getConn()->prepare("SELECT * FROM poll_option WHERE pollID = :pollID ORDER BY optionTitle ASC");
     $optionQuery->bindParam(":pollID", $pollID);
     $optionQuery->execute();
@@ -28,8 +28,4 @@ if($result[0][0] != "") {
         $error_message += "Create a new poll?";
     }
 }
-
-
-
-
 ?>
