@@ -928,5 +928,78 @@ namespace SEBeTender
                 return null;
             }
         }
+
+        public static async Task<string> PostUpdatePoll(string username, string password, string question, string option_number, string[] options, Poll poll)
+        {
+            string result = "";
+
+            var formData = new List<KeyValuePair<string, string>>();
+            formData.Add(new KeyValuePair<string, string>("username", username));
+            formData.Add(new KeyValuePair<string, string>("password", password));
+            formData.Add(new KeyValuePair<string, string>("pollID", poll.pollID));
+            formData.Add(new KeyValuePair<string, string>("question", question));
+            formData.Add(new KeyValuePair<string, string>("option_number", option_number));
+
+            int count = 1;
+            foreach (string option in options)
+            {
+                formData.Add(new KeyValuePair<string, string>("option" + count.ToString(), option));
+                count++;
+            }
+
+            count = 1;
+            foreach (pollOption option in poll.pollOptions)
+            {
+                formData.Add(new KeyValuePair<string, string>("optionID" + count.ToString(), option.optionID));
+                count++;
+            }
+
+            var parameters = new FormUrlEncodedContent(formData);
+
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appEditPoll.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<string> PostDeleteOption(string username, string password, string optionID)
+        {
+            string result = "";
+
+            var formData = new List<KeyValuePair<string, string>>();
+            formData.Add(new KeyValuePair<string, string>("username", username));
+            formData.Add(new KeyValuePair<string, string>("password", password));
+            formData.Add(new KeyValuePair<string, string>("optionID", optionID));
+
+            var parameters = new FormUrlEncodedContent(formData);
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appDeleteOption.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
     }
 }

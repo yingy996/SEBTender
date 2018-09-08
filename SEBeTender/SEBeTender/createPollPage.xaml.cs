@@ -30,7 +30,6 @@ namespace SEBeTender
         void OnPickerSelectedIndexChanged(object sender, EventArgs e)
         {
             Picker picker = (Picker)sender;
-
             selectedOption = pollOptionNoPicker.Items[pollOptionNoPicker.SelectedIndex];
             int selectedOptionCount = Convert.ToInt32(selectedOption);
 
@@ -72,8 +71,6 @@ namespace SEBeTender
 
             Console.WriteLine("Selected option: " + selectedOption);
             Console.WriteLine("Layout children: " + optionListLayout.Children.Count());
-
-            
         }
 
         async void OnPublishButtonClicked(object sender, EventArgs e)

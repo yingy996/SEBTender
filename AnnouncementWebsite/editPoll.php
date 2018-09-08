@@ -13,7 +13,7 @@
         <?php 
         include("header.php");
         //include("process_postAnnouncement.php");
-        include("process_createPoll.php");
+        include("process_editPoll.php");
         ?>
 
         <div class="container-fluid">
@@ -21,7 +21,7 @@
                 <div class="col-xs-4 col-xs-offset-4">
                     <form id="publishPoll" name="publishPoll" method="post" action="" novalidate role="form">
                         <fieldset>
-                            <legend>Create New Poll</legend>
+                            <legend>Edit Poll</legend>
                             <?php if(!empty($success_message)) { ?>	
                             <div class="alert alert-success">
                                 <?php if(isset($success_message)) echo $success_message; ?></div>
@@ -53,12 +53,20 @@
                                             echo 
                                             '<div class="form-group" id="divOption' . $i . '">
                                                 <label for="option'. $i .'">Option '. $i . ':</label>
-                                                <input type="text" class="form-control" id="option'. $i .'" name="option' . $i . '"';
+                                                <input type="hidden" name="optionID' . $i . '"';
+                                                if (isset($pollOptions["optionID" . $i])) {
+                                                    echo 'value="' . $pollOptions["optionID" . $i] . '"'; 
+                                                }
+                                                echo '/>';
+                                                echo '<input type="text" class="form-control" id="option'. $i .'" name="option' . $i . '"';
                                                 if (isset($pollOptions["option" . $i])) {
                                                     echo 'value="' . $pollOptions["option" . $i] . '"';
                                                 }
-                                                echo 'required/>
-                                                <!--<button name="deleteOptionButton' . $i .'" id="deleteOptionButton' . $i .'" value="deleteOptionButton' . $i .'" class="btn btn-default">Delete</button>-->';
+                                                echo 'required/>';
+                                            if (!empty($pollOptions["optionID" . $i])) {
+                                                echo '<button name="deleteOptionButton' . $i . '" value="' . $pollOptions["optionID" . $i] .'" onclick="return confirm(\'Are you sure you want to delete this option?\');" class="btn btn-danger">Delete</button>';
+                                            }
+                                                
                                             echo '<span class="error">';
                                             
                                             if(isset($optionErrors["option" . $i])) {
@@ -71,7 +79,7 @@
                                 }
                             ?>
                             </div>
-                            <p><input type="submit" name="publishPollButton" class="btn btn-default" id="publishPollButton" value="Publish Poll"/></p>
+                            <p><input type="submit" name="updatePollButton" class="btn btn-default" id="updatePollButton" value="Update"/></p>
 
                         </fieldset>
 

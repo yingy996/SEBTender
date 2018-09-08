@@ -15,7 +15,6 @@ if (isset($_SESSION["user_login"])) {
         $pollOptionNumber = sanitizeInput($_POST["option_number"]);
     }
 
-    //Poll options validation
     foreach ($_POST as $name => $value) {
         if ($name != "question" && $name != "option_number" && $name != "publishPollButton") {
             $pollOptions[$name] = $value;
@@ -86,7 +85,7 @@ if (isset($_SESSION["user_login"])) {
                 foreach($pollOptions as $name => $value) {
                     $isInsertSuccess = false;
                     do {
-                        //Generate Unique ID for poll question
+                        //Generate Unique ID for poll option
                         $digits = 7;
                         $randomOptionID = rand(pow(10, $digits-1), pow(10, $digits)-1);
                         $isOptionIDUnique = false;
