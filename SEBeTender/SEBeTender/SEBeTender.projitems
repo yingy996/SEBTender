@@ -140,6 +140,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Survey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)surveyOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)surveyPage.xaml.cs">
+      <DependentUpon>surveyPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)surveyQuestion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)surveyQuestionPage.xaml.cs">
+      <DependentUpon>surveyQuestionPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)tenderBookmark.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tenderBookmarkPage.xaml.cs">
       <DependentUpon>tenderBookmarkPage.xaml</DependentUpon>
@@ -377,6 +388,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)editPoll.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)surveyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)surveyQuestionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
