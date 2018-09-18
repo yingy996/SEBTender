@@ -105,6 +105,7 @@ namespace SEBeTender
                     //for future automated login (user just need to login for once and will be kept logged in afterward)
                     Settings.Username = username;
                     Settings.Password = password;
+                    Settings.Role = "user";
                 } else
                 {
                     //if login request failed, return error message
@@ -134,6 +135,10 @@ namespace SEBeTender
                 {
                     result = await response.Content.ReadAsStringAsync();
                     Console.WriteLine("Login success");
+                    //for future automated login (user just need to login for once and will be kept logged in afterward)
+                    Settings.Username = username;
+                    Settings.Password = password;
+                    Settings.Role = "admin";
                 } else
                 {
                     Console.WriteLine("Status code: " + response.IsSuccessStatusCode.ToString());

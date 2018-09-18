@@ -19,14 +19,21 @@ namespace SEBeTender
         {
             InitializeComponent();
 
-            if (checkUserLogin() == false)
+            if (checkUserLogin() == "false")
             {
                 //User not logged in, show default tender listing page
                 MainPage = new SEBeTender.rootPage();
             } else
             {
                 //User logged in, show logged in menu and 'available tenders for purchase' page
-                MainPage = new SEBeTender.rootPage(true);
+                if (checkUserLogin() == "user")
+                {
+                    MainPage = new SEBeTender.rootPage(true);
+                } else
+                {
+                    MainPage = new SEBeTender.rootPage(false);
+                }
+                
             }
             
             //MainPage = new MainPage();    
@@ -45,24 +52,44 @@ namespace SEBeTender
             }
        }
 
-        private static bool checkUserLogin()
+        private static string checkUserLogin()
         {
             if (String.IsNullOrEmpty(Settings.Username)) //user not logged in
             {
-                return false;
+                return "false";
             } else
             {
-                //Send HTTP request to log user in
-                Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostUserLogin(Settings.Username, Settings.Password));
-                var httpResult = httpTask.Result.ToString();
-
-                if (httpResult == "Success")
+                if (Settings.Role == "user")
                 {
-                    return true;
+                    //Send HTTP request to log user in
+                    Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostUserLogin(Settings.Username, Settings.Password));
+                    var httpResult = httpTask.Result.ToString();
+
+                    if (httpResult == "Success")
+                    {
+                        return "user";
+                    }
+                    else
+                    {
+                        return "false";
+                    }
                 } else
                 {
-                    return false;
+                    //Login as admin
+                    Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostAdminLogin(Settings.Username, Settings.Password));
+                    var httpResult = httpTask.Result.ToString();
+
+                    if (httpResult != "admin" && httpResult != "editor")
+                    {
+                        adminAuth.saveCredentials(Settings.Username, Settings.Password);
+                        userSession.adminRole = httpResult;
+                        return "admin";
+                    } else
+                    {
+                        return "false";
+                    }
                 }
+
             }
         }
 
