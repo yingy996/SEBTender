@@ -130,14 +130,18 @@ namespace SEBeTender
             {
                 var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appLogin.php", parameters);
 
-                if (response.IsSuccessStatusCode)
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     result = await response.Content.ReadAsStringAsync();
-                }            
+                    Console.WriteLine("Login success");
+                } else
+                {
+                    Console.WriteLine("Status code: " + response.IsSuccessStatusCode.ToString());
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Admin login error: " + ex);
             }
             return result;
         }
