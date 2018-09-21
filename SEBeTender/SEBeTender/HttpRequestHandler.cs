@@ -1001,5 +1001,31 @@ namespace SEBeTender
             }
             return result;
         }
+
+        //get list of surveys
+        public static async Task<string> PostGetSurveyQuestions()
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "surveys")
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine("GET survey titles: " + result);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch surveys error: " + ex);
+                return null;
+            }
+        }
     }
 }

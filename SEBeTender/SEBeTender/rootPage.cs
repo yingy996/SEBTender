@@ -34,7 +34,7 @@ namespace SEBeTender
 
                 Master = menuPage;
                 //var displayPage = new tenderEligiblePage();
-                var displayPage = new surveyQuestionPage();
+                var displayPage = new surveyList();
                 Detail = new NavigationPage(displayPage);
 
                 menuPage.menu.ItemSelected += onItemSelected;
