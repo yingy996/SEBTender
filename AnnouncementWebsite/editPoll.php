@@ -50,29 +50,96 @@
                                         echo '<div class="alert alert-danger">"The number of option must be at least 2."</div>';
                                     } else {
                                         for($i = 1; $i <= $optionNumber; $i++) {
-                                            echo 
-                                            '<div class="form-group" id="divOption' . $i . '">
-                                                <label for="option'. $i .'">Option '. $i . ':</label>
-                                                <input type="hidden" name="optionID' . $i . '"';
-                                                if (isset($pollOptions["optionID" . $i])) {
-                                                    echo 'value="' . $pollOptions["optionID" . $i] . '"'; 
+                                            if ($i == $optionNumber){
+                                                //Display the "Other" option is the option is allowed
+                                                if ($isOtherAllowed == 1 || !empty($_POST["other"])){
+                                                    echo 
+                                                    '<div class="form-group" id="divOption' . $i . '">
+                                                        <label for="option'. $i .'">Option '. $i . ':</label>
+                                                        <input type="hidden" name="other" value="other"/>';
+
+                                                        echo '<input type="text" disabled class="form-control" id="option'. $i .'" name="other" placeholder="Other..."/>';
+
+                                                        echo '<button name="deleteOptionButton' . $i . '" value="other" onclick="return confirm(\'Are you sure you want to delete this option?\');" class="btn btn-danger">Delete</button>';
+
+                                                    echo '</div>';
+                                                } else {
+                                                    //Display checkbox to allow user to set the option as "Other" option
+                                                    echo 
+                                                    '<div class="form-group" id="divOption' . $i . '">
+                                                        <label for="option'. $i .'">Option '. $i . ':</label>
+                                                        <input type="hidden" name="optionID' . $i . '"';
+                                                        if (isset($pollOptions["optionID" . $i])) {
+                                                            echo 'value="' . $pollOptions["optionID" . $i] . '"'; 
+                                                        }
+                                                        echo '/>';
+                                                        echo '<input type="text" class="form-control" id="option'. $i .'" name="option' . $i . '"';
+                                                        if (isset($pollOptions["option" . $i])) {
+                                                            echo 'value="' . $pollOptions["option" . $i] . '"';
+                                                        }
+                                                        echo 'required/>';
+                                                    if (!empty($pollOptions["optionID" . $i])) {
+                                                        echo '<button name="deleteOptionButton' . $i . '" value="' . $pollOptions["optionID" . $i] .'" onclick="return confirm(\'Are you sure you want to delete this option?\');" class="btn btn-danger">Delete</button>';
+                                                    } else {
+                                                        if ($i == $optionNumber) {
+                                                            //Display checkbox when user 
+                                                            echo 
+                                                            '<div class="form-check">
+                                                                  <input class="form-check-input" type="checkbox" id="isOther" name="isOther" value="isOther" onChange="document.getElementById(\'option'. $i .'\').disabled = this.checked;">
+                                                                  <label class="form-check-label" for="isOther">
+                                                                    Set as "Other" input
+                                                                  </label>
+                                                            </div>';
+                                                        }                                                
+                                                    }
+
+                                                    echo '<span class="error">';
+
+                                                    if(isset($optionErrors["option" . $i])) {
+                                                        echo "<p class='alert alert-danger'>" . $optionErrors["option" . $i] . "</p>";
+                                                    }
+                                                    echo '</span></div>';
                                                 }
-                                                echo '/>';
-                                                echo '<input type="text" class="form-control" id="option'. $i .'" name="option' . $i . '"';
-                                                if (isset($pollOptions["option" . $i])) {
-                                                    echo 'value="' . $pollOptions["option" . $i] . '"';
+                                            } else {
+                                                echo 
+                                                '<div class="form-group" id="divOption' . $i . '">
+                                                    <label for="option'. $i .'">Option '. $i . ':</label>
+                                                    <input type="hidden" name="optionID' . $i . '"';
+                                                    if (isset($pollOptions["optionID" . $i])) {
+                                                        echo 'value="' . $pollOptions["optionID" . $i] . '"'; 
+                                                    }
+                                                    echo '/>';
+                                                    echo '<input type="text" class="form-control" id="option'. $i .'" name="option' . $i . '"';
+                                                    if (isset($pollOptions["option" . $i])) {
+                                                        echo 'value="' . $pollOptions["option" . $i] . '"';
+                                                    }
+                                                    echo 'required/>';
+                                                if (!empty($pollOptions["optionID" . $i])) {
+                                                    echo '<button name="deleteOptionButton' . $i . '" value="' . $pollOptions["optionID" . $i] .'" onclick="return confirm(\'Are you sure you want to delete this option?\');" class="btn btn-danger">Delete</button>';
+                                                } else {
+                                                    if ($i == $optionNumber) {
+                                                        //Display checkbox when user 
+                                                        echo 
+                                                        '<div class="form-check">
+                                                              <input class="form-check-input" type="checkbox" id="isOther" name="isOther" value="isOther" onChange="document.getElementById(\'option'. $i .'\').disabled = this.checked;">
+                                                              <label class="form-check-label" for="isOther">
+                                                                Set as "Other" input
+                                                              </label>
+                                                        </div>';
+                                                    }                                                
                                                 }
-                                                echo 'required/>';
-                                            if (!empty($pollOptions["optionID" . $i])) {
-                                                echo '<button name="deleteOptionButton' . $i . '" value="' . $pollOptions["optionID" . $i] .'" onclick="return confirm(\'Are you sure you want to delete this option?\');" class="btn btn-danger">Delete</button>';
+
+                                                echo '<span class="error">';
+
+                                                if(isset($optionErrors["option" . $i])) {
+                                                    echo "<p class='alert alert-danger'>" . $optionErrors["option" . $i] . "</p>";
+                                                }
+                                                echo '</span></div>';
                                             }
-                                                
-                                            echo '<span class="error">';
+                                        }
+                                        
+                                        if ($isOtherAllowed == 1){
                                             
-                                            if(isset($optionErrors["option" . $i])) {
-                                                echo "<p class='alert alert-danger'>" . $optionErrors["option" . $i] . "</p>";
-                                            }
-                                            echo '</span></div>';
                                         }
                                     }
                                     

@@ -7,7 +7,6 @@
 /*--- Custom Navigation bar ---*/
 .navbar-default {
     background-color: #a4b62c;
-    border-color: #b2dfdd;
 }
 
 /*Navigation bar brand*/
@@ -22,24 +21,24 @@
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-    color: #2f8e86;
+    color: #2e2715;
 }
 
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
-    color: #2f8e86;
-    background-color: #b2dfdd;
+    color: #2e2715;
+    background-color: #a4b62c;
 }
 
 /*Navigation bar icon in xs devices*/
 .navbar-default .navbar-toggle {
-    border-color: #b2dfdd;
+    
 }
 
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-    background-color: #b2dfdd;
+    background-color: #769f09;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
@@ -51,7 +50,7 @@
 }
 
 .navbar-default .navbar-link:hover {
-    color: #2f8e86;
+    color: #2e2715;
 }
 
 

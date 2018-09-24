@@ -22,36 +22,71 @@
                         <fieldset>
                             <legend>Poll</legend>
                             <?php if(!empty($error_message)) { ?>	
-                            <div class="alert alert-danger"><?php if(isset($error_message)) echo $error_message; ?></div>
-                            <?php } ?>
+                            <div>
+                                <p class="h5">
+                                    <em>
+                                        <?php echo $error_message; ?>  
+                                    </em>                                    
+                                </p>
+                                
+                            </div>
+                            <?php ; } ?>
+                            <p>Create new Poll: <a href="createPoll.php" class="btn btn-default">Create Poll</a></p>
+                            <hr>
                             <div class="form-group">
                                 <p class="h4">
                                     <?php 
                                     if ($error_message == ""){
                                         echo $pollQuestion; 
-                                    } else {
-                                        echo $error_message;
-                                    }                              
+                                    }                            
                                     ?>
                                 </p>        
                             </div>
+                            
 
                             <?php
                             //Display poll option if poll is available
                             if ($error_message == ""){
                                 if (count($optionResults) > 0) {
                                     foreach ($optionResults as $option) {
-                                        echo 
-                                        '<div class="radio">
-                                            <label><input type="radio" name="pollRadio" value="'. $option["optionID"] .'"/>' . $option["optionTitle"] . '</label>
-                                        </div>';
+                                        if ($questionType == "radio") {
+                                            echo 
+                                                '<div class="radio">
+                                                    <label><input type="radio" name="pollRadio" value="'. $option["optionID"] .'"/>' . $option["optionTitle"] . '</label>
+                                                </div>';
+                                        } else {
+                                            echo
+                                                '<div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="' . $option["optionID"] . '">
+                                                    <label class="form-check-label" for="' . $option["optionID"] . '">
+                                                    '. $option["optionTitle"] .'
+                                                    </label>
+                                                </div>';
+                                        }
+                                        
+                                    }
+                                    
+                                    if ($isOtherAllowed == 1){
+                                        if ($questionType == "radio") {
+                                            echo 
+                                            '<div class="form-inline">
+                                                <input type="radio" name="pollRadio" value="other"/>
+                                                <input type="text" class="form-control" name="other" placeholder="Other..." required/>
+                                            </div>';
+                                        } else {
+                                            echo 
+                                            '<div class="form-inline">
+                                                <input class="form-check-input" type="checkbox" value=""/>
+                                                <input type="text" class="form-control" name="other" placeholder="Other..." required/>
+                                            </div>';
+                                        }
+                                        
                                     }
                                 }
                             }
                             ?>
                             
-                            <br/>
-                            
+                            <br/>                            
                         </fieldset>
                     </form>
                 </div>
@@ -77,7 +112,7 @@
                         // Delete button for logged in user
                         echo 
                         '<div class="text-right"><form action="process_closePoll.php" method="post">
-                            <input type="hidden" id ="close_pollID" name="close_pollID" value="' . $pollID . '"/>
+                            <input type="hidden" id="close_pollID" name="close_pollID" value="' . $pollID . '"/>
                             <input type="hidden" name="login_user" value="' . $login_user . '"/>
                             <input type="submit" id="closeButton" class="btn btn-danger" value="Close Poll" onclick="return confirm(\'Are you sure you want to close this poll?\');"/>           
                         </form></div>';

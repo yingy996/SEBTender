@@ -2,8 +2,10 @@
 if (isset($_SESSION["user_login"])) {
     $pollQuestion = $pollOptionNumber = "";
     $pollQuestion_Error = $pollOptionNumber_Error = "";
+    $questionType = $questionType_Error = "";
     $errorpresence = false;
     $error_message = "";
+    $isOtherAllowed = 0;
     $pollOptions = array();
     $optionErrors = array();
       
@@ -14,13 +16,21 @@ if (isset($_SESSION["user_login"])) {
     if(!empty($_POST["option_number"])){
         $pollOptionNumber = sanitizeInput($_POST["option_number"]);
     }
+    
+    if(!empty($_POST["isOther"])){
+        $isOtherAllowed = 1;
+    }
+    
+    if(!empty($_POST["questionType"])){
+        $questionType = sanitizeInput($_POST["questionType"]);
+    }
 
     foreach ($_POST as $name => $value) {
-        if ($name != "question" && $name != "option_number" && $name != "publishPollButton") {
+        if ($name != "question" && $name != "option_number" && $name != "publishPollButton" && $name != "questionType" && $name != "isOther") {
             $pollOptions[$name] = $value;
         }
     }
-    
+       
     if(!empty($_POST["publishPollButton"])) {
         //Poll question input validation
         if(empty($_POST["question"])){
@@ -33,9 +43,14 @@ if (isset($_SESSION["user_login"])) {
             $errorpresence = true;
         }
         
+        if(empty($_POST["questionType"])){
+            $questionType_Error = "Please select the question type";
+            $errorpresence = true;
+        }
+        
         //Poll options validation
         foreach ($_POST as $name => $value) {
-            if ($name != "question" && $name != "option_number" && $name != "publishPollButton") {
+            if ($name != "question" && $name != "option_number" && $name != "publishPollButton" && $name != "questionType" && $name != "isOther") {
                 if (empty($value)) {
                     $optionErrors[$name] = "Option must not be empty";
                     $errorpresence = true;
@@ -67,11 +82,13 @@ if (isset($_SESSION["user_login"])) {
                }
             } while(!$isPollIDUnique);
 
-            $insertPollQuery = $db_handle->getConn()->prepare("INSERT INTO poll_question (pollID, pollQuestion, postedBy, publishedDate, editedDate, editedBy, endDate, isEnded) VALUES
-            (:pollID, :pollQuestion, :login_user, NOW(), NULL, NULL, NULL, 0)");
+            $insertPollQuery = $db_handle->getConn()->prepare("INSERT INTO poll_question (pollID, pollQuestion, questionType, isOtherAllowed, postedBy, publishedDate, editedDate, editedBy, endDate, isEnded) VALUES
+            (:pollID, :pollQuestion, :questionType, :isOtherAllowed, :login_user, NOW(), NULL, NULL, NULL, 0)");
             
             $insertPollQuery->bindParam(":pollID", $randomPollID);
             $insertPollQuery->bindParam(":pollQuestion", $pollQuestion);
+            $insertPollQuery->bindParam(":questionType", $questionType);
+            $insertPollQuery->bindParam(":isOtherAllowed", $isOtherAllowed);
             $insertPollQuery->bindParam(":login_user", $login_user); 
             $insertPollResult = $insertPollQuery->execute();
             
