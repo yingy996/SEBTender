@@ -11,7 +11,7 @@ if(isset($_POST["infoToObtain"])) {
         $result = $query->fetchAll();
         
         //If there are poll present, obtain the poll details, else, display error message
-        if($result[0][0] != "") {
+        if($result != null) {
             $resultString = json_encode($result);
             echo $resultString;
         } else {

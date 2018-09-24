@@ -34,8 +34,6 @@
             <?php 
             $index = 0;	
 
-
-
             if(count($results) > 0){
                 foreach($results as $announcement){
 

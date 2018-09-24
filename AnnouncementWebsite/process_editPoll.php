@@ -9,6 +9,7 @@ $pollOptions = array();
 $optionErrors = array();
 $isDeleteButtonClicked = false;
 $optionToDelete = "";
+$isOtherAllowed = 0;
 
 if (!isset($_SESSION["user_login"])) {
     header("location: login.php");
@@ -41,6 +42,7 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
         $poll = $result[0];
         $pollID = $poll["pollID"];
         $pollQuestion = $poll["pollQuestion"];
+        $isOtherAllowed = $poll["isOtherAllowed"];
 
         //Obtain poll options from database
         $optionQuery = $db_handle->getConn()->prepare("SELECT * FROM poll_option WHERE pollID = :pollID ORDER BY optionTitle ASC");
@@ -49,6 +51,9 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
 
         $optionResults = $optionQuery->fetchAll();
         $pollOptionNumber = count($optionResults);
+        if ($isOtherAllowed == 1) {
+            $pollOptionNumber++;
+        }
         
         $count = 1;
         foreach($optionResults as $option) {
@@ -76,7 +81,7 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
     }
 
     foreach ($_POST as $name => $value) {
-        if ($name != "question" && $name != "option_number" && $name != "updatePollButton" && $name != "addOptionButton") {
+        if ($name != "question" && $name != "option_number" && $name != "updatePollButton" && $name != "addOptionButton" && $name != "isOther" && $name != "other") {
             $pollOptions[$name] = sanitizeInput($value);
         }
     }
@@ -96,7 +101,7 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
         $count = 0;
         //Poll options validation
         foreach ($_POST as $name => $value) {
-            if ($name != "question" && $name != "option_number" && $name != "updatePollButton" && $name != "addOptionButton") {
+            if ($name != "question" && $name != "option_number" && $name != "updatePollButton" && $name != "addOptionButton" && $name != "isOther" && $name != "other") {
                 if(substr($name, 0, 8) != "optionID") {
                     if (empty($value)) {
                         $optionErrors[$name] = "Option must not be empty";
@@ -107,7 +112,9 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
                 }                
             }
         }
-        
+        if (!empty($_POST["isOther"]) || !empty($_POST["other"])) {
+            $count++;
+        }
         if($count != $pollOptionNumber) {
             $errorpresence = true;
             $error_message = "Option field(s) must not be empty";
@@ -117,8 +124,13 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
         if($error_message == "" && $errorpresence == false) {
             //if no error present, update the poll details
             //$db_handle = new DBController();
-            $updateQuery = $db_handle->getConn()->prepare("UPDATE poll_question SET pollQuestion = :pollQuestion, editedDate = NOW(), editedBy = :login_user WHERE pollID = :pollID");
+            $updateQuery = $db_handle->getConn()->prepare("UPDATE poll_question SET pollQuestion = :pollQuestion, isOtherAllowed = :isOtherAllowed, editedDate = NOW(), editedBy = :login_user WHERE pollID = :pollID");
             $updateQuery->bindParam(":pollQuestion", $pollQuestion);
+            $isOther = 0;
+            if (!empty($_POST["other"]) || !empty($_POST["isOther"])) {
+                $isOther = 1;
+            } 
+            $updateQuery->bindParam(":isOtherAllowed", $isOther);
             $updateQuery->bindParam(":login_user", $login_user);
             $updateQuery->bindParam(":pollID", $pollID);
 
@@ -134,37 +146,39 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
                     $selectOptionResult = $selectOptionQuery->fetchAll();
                     $total = count($selectOptionResult);
                     if($total == 0) {
-                        //Insert the new option into the database
-                        $isInsertSuccess = false;
-                        do {
-                            //Generate Unique ID for poll option
-                            $digits = 7;
-                            $randomOptionID = rand(pow(10, $digits-1), pow(10, $digits)-1);
-                            $isOptionIDUnique = false;
-
+                        if ($i != $pollOptionNumber || ($i == $pollOptionNumber && empty($_POST["isOther"]) && empty($_POST["other"]))) {
+                            //Insert the new option into the database
+                            $isInsertSuccess = false;
                             do {
-                               $selectOptionQuery = $db_handle->getConn()->prepare("SELECT optionID FROM poll_option WHERE optionID = :optionID");
-                               $selectOptionQuery->bindParam(":optionID", $randomOptionID);
-                               $selectOptionQuery->execute();
-                               $selectOptionResult = $selectOptionQuery->fetchAll();
-                               $total = count($selectOptionResult);
-                               if($total == 0) {
-                                   $isOptionIDUnique = true;
-                               } else {
-                                   $randomOptionID = rand(pow(10, $digits-1), pow(10, $digits)-1);
-                               }
-                            } while(!$isOptionIDUnique);
+                                //Generate Unique ID for poll option
+                                $digits = 7;
+                                $randomOptionID = rand(pow(10, $digits-1), pow(10, $digits)-1);
+                                $isOptionIDUnique = false;
 
-                            $insertOptionQuery = $db_handle->getConn()->prepare("INSERT INTO poll_option (optionID, optionTitle, pollID, votesCount) VALUES
-                            (:optionID, :optionTitle, :pollID, 0)");
+                                do {
+                                   $selectOptionQuery = $db_handle->getConn()->prepare("SELECT optionID FROM poll_option WHERE optionID = :optionID");
+                                   $selectOptionQuery->bindParam(":optionID", $randomOptionID);
+                                   $selectOptionQuery->execute();
+                                   $selectOptionResult = $selectOptionQuery->fetchAll();
+                                   $total = count($selectOptionResult);
+                                   if($total == 0) {
+                                       $isOptionIDUnique = true;
+                                   } else {
+                                       $randomOptionID = rand(pow(10, $digits-1), pow(10, $digits)-1);
+                                   }
+                                } while(!$isOptionIDUnique);
 
-                            $insertOptionQuery->bindParam(":optionID", $randomOptionID);
-                            $insertOptionQuery->bindParam(":optionTitle", $pollOptions["option" . $i]);
-                            $insertOptionQuery->bindParam(":pollID", $pollID); 
-                            $insertOptionResult = $insertOptionQuery->execute();
+                                $insertOptionQuery = $db_handle->getConn()->prepare("INSERT INTO poll_option (optionID, optionTitle, pollID, votesCount) VALUES
+                                (:optionID, :optionTitle, :pollID, 0)");
 
-                            $isInsertSuccess = $insertOptionResult;
-                        } while (!$isInsertSuccess);
+                                $insertOptionQuery->bindParam(":optionID", $randomOptionID);
+                                $insertOptionQuery->bindParam(":optionTitle", $pollOptions["option" . $i]);
+                                $insertOptionQuery->bindParam(":pollID", $pollID); 
+                                $insertOptionResult = $insertOptionQuery->execute();
+
+                                $isInsertSuccess = $insertOptionResult;
+                            } while (!$isInsertSuccess);
+                        }
                     } else {
                         //Update the option
                         $updateOptionQuery = $db_handle->getConn()->prepare("UPDATE poll_option SET optionTitle = :optionTitle WHERE optionID = :optionID");
@@ -191,24 +205,36 @@ if(empty($_POST["updatePollButton"]) && empty($_POST["addOptionButton"]) && $isD
     //When user click on 'Delete' button on option, delete the option from database
     //$_POST["deleteOptionButton"] is set above in foreach by getting the delete button clicked
     if($isDeleteButtonClicked == true && $optionToDelete != "") {
-        //Check if the option is present in database
-        $selectQuery = $db_handle->getConn()->prepare("SELECT optionID FROM poll_option WHERE optionID = :optionID");
-        $selectQuery->bindParam(":optionID", $optionToDelete);
-        $selectQuery->execute();
-        $selectResult = $selectQuery->fetchAll();
-        
-        if(count($selectResult) > 0) {
-            //Delete the option from database
-            $deleteQuery = $db_handle->getConn()->prepare("DELETE FROM poll_option WHERE optionID = :optionID");
-            $deleteQuery->bindParam(":optionID", $optionToDelete);
-            $deleteResult = $deleteQuery->execute();
-            
-            if ($deleteResult) {
+        if ($optionToDelete != "other"){
+            //Check if the option is present in database
+            $selectQuery = $db_handle->getConn()->prepare("SELECT optionID FROM poll_option WHERE optionID = :optionID");
+            $selectQuery->bindParam(":optionID", $optionToDelete);
+            $selectQuery->execute();
+            $selectResult = $selectQuery->fetchAll();
+
+            if(count($selectResult) > 0) {
+                //Delete the option from database
+                $deleteQuery = $db_handle->getConn()->prepare("DELETE FROM poll_option WHERE optionID = :optionID");
+                $deleteQuery->bindParam(":optionID", $optionToDelete);
+                $deleteResult = $deleteQuery->execute();
+
+                if ($deleteResult) {
+                    $success_message = "Poll option successfully deleted!";
+                    header("Refresh:1");
+                }
+            } else {
+                $error_message = "Poll option does not exist! Please try again.";
+            }
+        } else {
+            $updateQuery = $db_handle->getConn()->prepare("UPDATE poll_question SET isOtherAllowed = 0, editedDate = NOW(), editedBy = :login_user WHERE pollID = :pollID");
+            $updateQuery->bindParam(":login_user", $login_user);
+            $updateQuery->bindParam(":pollID", $pollID);
+            $updateResult = $updateQuery->execute();
+
+            if ($updateResult) {
                 $success_message = "Poll option successfully deleted!";
                 header("Refresh:1");
             }
-        } else {
-            $error_message = "Poll option does not exist! Please try again.";
         }
     }
 } 
