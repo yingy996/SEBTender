@@ -8,6 +8,7 @@ namespace SEBeTender
     {
         private string reference = "", title = "", originatingStation = "", closingDate = "", biddingClosingDate = "", feeBeforeGST = "", feeGST = "", feeAfterGST = "", tendererClass = "", name = "", officePhone = "", extension = "", mobilePhone = "", email = "", fax = "", checkedValue = "", addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
         private string bookmarkImage = "bookmark.png";
+        private string tenderEligibility = "";
         private Dictionary<string, string> fileLinks = new Dictionary<string, string>();
 
         public string Reference
@@ -122,6 +123,12 @@ namespace SEBeTender
         {
             get { return bookmarkImage; }
             set { bookmarkImage = value; }
+        }
+
+        public string Eligibility
+        {
+            get { return tenderEligibility; }
+            set { tenderEligibility = value; }
         }
     }
 }

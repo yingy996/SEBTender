@@ -62,7 +62,8 @@
                                             <Label Text="{Binding OriginatingStation}" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
                                             <Label Text="{Binding FeeAfterGST}" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                                            <Image Source="{Binding BookmarkImage}" x:Name="bookmarkImg" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="End" VerticalOptions="Center" Margin="0,20,10,0">
+                                            <Label Text="{Binding Eligibility}" TextColor="DodgerBlue" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" />
+                                            <Image Source="{Binding BookmarkImage}" x:Name="bookmarkImg" Grid.Row="5" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" Margin="0,20,10,0">
                                                 <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="OnBookmarkTapped" CommandParameter="{Binding .}" />
                                                 </Image.GestureRecognizers>

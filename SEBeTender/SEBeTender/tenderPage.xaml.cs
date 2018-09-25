@@ -28,7 +28,7 @@ namespace SEBeTender
         //store the current tender page which will be inserted into the tender database column
         private int Page = 1;
 
-		public tenderPage ()
+        public tenderPage ()
 		{
             BindingContext = this;
 
@@ -44,7 +44,7 @@ namespace SEBeTender
             nextLblTapRecognizer.Tapped += onNextPageTapped;
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
             nextPage.IsVisible = false;
-
+            
             retrieveAndDisplayFirstPageTenders();
 
             listView.SeparatorVisibility = SeparatorVisibility.None;
@@ -64,9 +64,13 @@ namespace SEBeTender
                 {
                     List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
                     List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+
+                    List<tenderItem> getEligibilityTask = await Task.Run<List<tenderItem>>(() => GetTenderEligiblity());
+                    List<tenderItem> eligibleTenders = getEligibilityTask;
+
                     if (tenderBookmarks.Count > 0)
                     {
-                        foreach (var tenderItem in dbtenders1)
+                        foreach (tenderItem tenderItem in dbtenders1)
                         {
                             foreach (var tenderBookmark in tenderBookmarks)
                             {
@@ -76,8 +80,43 @@ namespace SEBeTender
                                     break;
                                 }
                             }
+
+                            /*
+                            foreach (tenderItem eligibleTender in eligibleTenders)
+                            {
+                                if (tenderItem.Reference == eligibleTender.Reference)
+                                {
+                                    tenderItem.Eligibility = "Eligible";
+                                    break;
+                                }
+                                else
+                                {
+                                    tenderItem.Eligibility = "Not Eligible";
+                                    break;
+                                }
+                            }*/
+
                         }
 
+                    }
+
+                    if (eligibleTenders.Count > 0)
+                    {
+                        foreach (tenderItem tenderItem in dbtenders1)
+                        {
+                            foreach (tenderItem eligibleItem in eligibleTenders)
+                            {
+                                if (tenderItem.Reference == eligibleItem.Reference)
+                                {
+                                    tenderItem.Eligibility = "Eligible";
+                                }
+                                else
+                                {
+                                    tenderItem.Eligibility = "Not Eligible";
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
 
@@ -105,9 +144,17 @@ namespace SEBeTender
                 {
                     List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
                     List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+
+                    List<tenderItem> getEligibilityTask = await Task.Run<List<tenderItem>>(() => GetTenderEligiblity());
+                    List<tenderItem> eligibleTenders = getEligibilityTask;
+                    //string httpEligible = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp"));
+                    //var httpEligibleResult = httpEligible;
+                    //var eligible = await DataExtraction.getWebData(httpEligibleResult, "eligibelTenderPage");
+                    //List<tenderItem> eligibleTenders = (List<tenderItem>)eligible;
+
                     if (tenderBookmarks.Count > 0)
                     {
-                        foreach (var tenderItem in tenderItems)
+                        foreach (tenderItem tenderItem in tenderItems)
                         {
                             foreach (var tenderBookmark in tenderBookmarks)
                             {
@@ -117,9 +164,45 @@ namespace SEBeTender
                                     break;
                                 }
                             }
+
+                            /*
+                            foreach (tenderItem eligibleTender in eligibleTenders)
+                            {
+                                if (tenderItem.Reference == eligibleTender.Reference)
+                                {
+                                    tenderItem.Eligibility = "Eligible";
+                                    break;
+                                }
+                                else
+                                {
+                                    tenderItem.Eligibility = "Not Eligible";
+                                    break;
+                                }
+                            }*/
+                            
                         }
 
                     }
+
+                    if (eligibleTenders.Count > 0)
+                    {
+                        foreach (tenderItem tenderItem in tenderItems)
+                        {
+                            foreach (tenderItem eligibleItem in eligibleTenders)
+                            { 
+                                if (tenderItem.Reference == eligibleItem.Reference)
+                                {
+                                    tenderItem.Eligibility = "Eligible";
+                                }
+                                else
+                                {
+                                    tenderItem.Eligibility = "Not Eligible";
+                                }
+                                break;
+                            }
+                        }
+                    }
+
                 }
                 
                 listView.ItemsSource = tenderItems;
@@ -176,9 +259,13 @@ namespace SEBeTender
             {
                 List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
                 List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+
+                List<tenderItem> getEligibilityTask = await Task.Run<List<tenderItem>>(() => GetTenderEligiblity());
+                List<tenderItem> eligibleTenders = getEligibilityTask;
+
                 if (tenderBookmarks.Count > 0)
                 {
-                    foreach (var tenderItem in dbtenders1)
+                    foreach (tenderItem tenderItem in dbtenders1)
                     {
                             foreach (var tenderBookmark in tenderBookmarks)
                             {
@@ -188,13 +275,46 @@ namespace SEBeTender
                                     break;
                                 }
                             }
-                     }
+                            /*
+                            foreach (tenderItem eligibleTender in eligibleTenders)
+                            {
+                                if (tenderItem.Reference == eligibleTender.Reference)
+                                {
+                                    tenderItem.Eligibility = "Eligible";
+                                    break;
+                                }
+                                else
+                                {
+                                    tenderItem.Eligibility = "Not Eligible";
+                                    break;
+                                }
+                            }*/
+                    }
 
-                 }
+                }
+
+                if (eligibleTenders.Count > 0)
+                {
+                    foreach (tenderItem tenderItem in dbtenders1)
+                    {
+                        foreach (tenderItem eligibleItem in eligibleTenders)
+                        {
+                            if (tenderItem.Reference == eligibleItem.Reference)
+                            {
+                                tenderItem.Eligibility = "Eligible";
+                            }
+                            else
+                            {
+                                tenderItem.Eligibility = "Not Eligible";
+                            }
+                            break;
+                        }
+                    }
+                }
             }
 
             //await DisplayAlert("Update Tenders", "Refresh Tenders", "Okay");
-            listView.ItemsSource = tenderItems;
+            listView.ItemsSource = dbtenders1;
 
             activityIndicator.IsRunning = false;
             activityIndicator.IsVisible = false;
@@ -232,6 +352,8 @@ namespace SEBeTender
                 dbTenderItem.AddToCartQuantity = item.AddToCartQuantity;
                 dbTenderItem.BookmarkImage = item.BookmarkImage;
                 dbTenderItem.Page = page;
+                dbTenderItem.Eligibility = item.Eligibility;
+
                 dbTenderItems.Add(dbTenderItem);
             }
 
@@ -267,6 +389,7 @@ namespace SEBeTender
                 tenderitem.CheckedValue = item.CheckedValue;
                 tenderitem.AddToCartQuantity = item.AddToCartQuantity;
                 tenderitem.BookmarkImage = item.BookmarkImage;
+                tenderitem.Eligibility = item.Eligibility;
 
                 tenderItems.Add(tenderitem);
             }
@@ -641,6 +764,75 @@ namespace SEBeTender
 
             //send request to database everyone user tap on bookmark 
             
+        }
+
+        async Task<List<tenderItem>> GetTenderEligiblity()
+        {
+            List<tenderItem> eligibleItems = new List<tenderItem>();
+
+            //check user login status
+            if (userSession.username != "")
+            {
+                //send http response
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
+                var httpResult = httpTask;
+
+                //extract eligible tenders
+                var tenders = await DataExtraction.getWebData(httpResult, "eligibelTenderPage");
+                eligibleItems = (List<tenderItem>)tenders;
+            } else
+            {
+                eligibleItems = null;
+            }
+
+            /*
+            foreach (tenderItem item in eligibleItems)
+            {
+                Console.WriteLine(" Eligible item: " + item.Reference + ", ");
+            }*/
+
+            Console.WriteLine(eligibleItems.Count);
+
+            int i = 0;
+            while (i < eligibleItems.Count)
+            {
+                Console.WriteLine(eligibleItems[i].Reference);
+                i++;
+            }
+            /*
+            List<tenderItem> dbtenders1 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
+            List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
+
+            foreach (tenderItem item in eligibleItems)
+            { 
+                foreach (tenderItem db1 in dbtenders1)
+                {
+                    if (item.Reference == db1.Reference)
+                    {
+                        db1.Eligibility = "Eligible";
+                    } else
+                    {
+                        db1.Eligibility = "Not Eligible";
+                    }
+                }
+
+                foreach (tenderItem db2 in dbtenders2)
+                {
+                    if (item.Reference == db2.Reference)
+                    {
+                        db2.Eligibility = "Eligible";
+                    }
+                    else
+                    {
+                        db2.Eligibility = "Not Eligible";
+                    }
+                }
+            }
+
+            await saveToTenderDb(dbtenders1, 1);
+            await saveToTenderDb(dbtenders2, 2);
+            */
+            return eligibleItems;
         }
     }
 }
