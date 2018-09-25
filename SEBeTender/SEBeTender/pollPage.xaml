@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.pollPage">
+             x:Class="SEBeTender.pollPage" Title="Pocket Tender">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10,10,10,10">
@@ -43,7 +43,7 @@
                     <Button Text="Submit" Grid.Row="5" Grid.Column="0" x:Name="submitButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnSubmitButtonClicked" IsVisible="False"/>
                     <Button Text="Create Poll" Grid.Row="6" Grid.Column="0" x:Name="createButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnCreateButtonClicked" IsVisible="False"/>
                     <Button Text="Edit Poll" Grid.Row="7" Grid.Column="0" x:Name="editButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnEditButtonClicked" IsVisible="False"/>
-                    <Button Text="Close Poll" Grid.Row="8" Grid.Column="0" x:Name="closeButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnEditButtonClicked" IsVisible="False"/>
+                    <Button Text="Close Poll" Grid.Row="8" Grid.Column="0" x:Name="closeButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="OnCloseButtonClicked" IsVisible="False"/>
                 </Grid>
             </StackLayout>
         </ScrollView>

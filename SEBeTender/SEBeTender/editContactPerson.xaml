@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SEBeTender.editContactPerson" NavigationPage.TitleIcon="seblogo2.png">
+             x:Class="SEBeTender.editContactPerson" Title="Pocket Tender">
     <ContentPage.Content>
         <StackLayout>
             <ScrollView VerticalOptions="FillAndExpand" Padding="10">

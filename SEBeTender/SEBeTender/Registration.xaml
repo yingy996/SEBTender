@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
-             x:Class="SEBeTender.Registration">
+             x:Class="SEBeTender.Registration" Title="Pocket Tender">
     <ContentPage.Content>
         <cv:CarouselViewControl x:Name="carousel"
             ItemsSource="{Binding MyItemsSource}"

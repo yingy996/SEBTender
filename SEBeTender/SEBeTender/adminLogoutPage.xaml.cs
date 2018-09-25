@@ -55,7 +55,6 @@ namespace SEBeTender
                     page.changePage(loginPage);
     
                     //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) };
-
                 }
                 else
                 {
