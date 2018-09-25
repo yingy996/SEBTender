@@ -15,8 +15,8 @@ namespace SEBeTender
 		{
             menuPage = new menuPage();
             Master = menuPage;
-            var displayPage = new tenderPage(); 
-            //var displayPage = new surveyQuestionPage(); 
+            //var displayPage = new tenderPage(); 
+            var displayPage = new accountRegistrationPage(); 
 
             Detail = new NavigationPage(displayPage);   
             
@@ -33,8 +33,8 @@ namespace SEBeTender
                 menuPage.menu.ItemsSource = data;
 
                 Master = menuPage;
-                var displayPage = new tenderEligiblePage();
-                //var displayPage = new surveyQuestionPage();
+                //var displayPage = new tenderEligiblePage();
+                var displayPage = new accountRegistrationPage();
                 Detail = new NavigationPage(displayPage);
 
                 menuPage.menu.ItemSelected += onItemSelected;
