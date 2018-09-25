@@ -12,7 +12,7 @@ namespace SEBeTender
         public ListView menu { get; set; }
 		public menuPage ()
 		{            
-            Title = "Sarawak Energy e-Tender";
+            Title = "Pocket Tender";
             Icon = "menuicon.png";
             //BackgroundColor = Color.FromHex("4295d1");
             BackgroundColor = Color.FromHex("#3C83B8");
@@ -27,7 +27,7 @@ namespace SEBeTender
                     //TextColor = Color.FromHex("2C4D66"),
                     TextColor = Color.White,
                     
-                    Text = "Sarawak Energy e-Tender",
+                    Text = "Pocket Tender",
                     FontAttributes = FontAttributes.Bold,
                     FontSize = 18
                 }

@@ -23,6 +23,7 @@ namespace SEBeTender
                     Account adminAccount = new Account { Username = username };
                     adminAccount.Properties.Add("Password", password);
                     AccountStore.Create().Save(adminAccount, App.AppName);
+                    Console.WriteLine("Admin saved! " + username);
                 }
             }           
         }

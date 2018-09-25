@@ -87,7 +87,7 @@ namespace SEBeTender
                         return "false";
                     } else
                     {
-                        adminAuth.saveCredentials(Settings.Username, Settings.Password);
+                        adminAuth.saveCredentials(Settings.Username, Settings.Password);                        
                         userSession.adminRole = httpResult;
                         return "admin";                       
                     }

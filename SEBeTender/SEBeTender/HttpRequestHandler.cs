@@ -1034,5 +1034,32 @@ namespace SEBeTender
             }
             return result;
         }
+
+        public static async Task<string> PostClosePoll(string pollID, string username, string password)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("pollID", pollID),
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password)
+            });
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                //Send HTTP request to close poll
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appClosePoll.php", parameters);
+
+                result = await response.Content.ReadAsStringAsync();
+                
+                Console.WriteLine(result);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
     }
 }
