@@ -587,7 +587,7 @@ namespace SEBeTender
         async void OnBookmarkTapped(object sender, EventArgs eventArgs)
         {
             //check if user is logged in
-            if (userSession.userLoginCookie == "")
+            if (userSession.username == "")
             {
                 DisplayAlert("Login required", "Please login first to bookmark this item.", "OK");
             } else
