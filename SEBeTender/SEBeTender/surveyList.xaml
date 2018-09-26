@@ -53,7 +53,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Image="smallUpBtn.png" BackgroundColor="White" x:Name="upBtn" IsVisible="False" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" WidthRequest="20" HeightRequest="20" BorderRadius="50" Clicked="onUpButtonClicked"/>
+            <!--<Button Image="smallUpBtn.png" BackgroundColor="White" x:Name="upBtn" IsVisible="False" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" WidthRequest="20" HeightRequest="20" BorderRadius="50" Clicked="onUpButtonClicked"/>-->
         </Grid>
     </StackLayout>
     </ContentPage.Content>

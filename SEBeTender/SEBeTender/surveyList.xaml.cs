@@ -21,6 +21,9 @@ namespace SEBeTender
 
             retrieveSurvey();
 
+            listView.SeparatorVisibility = SeparatorVisibility.None;
+            listView.ItemSelected += onItemSelected;
+
         }
 
         async void retrieveSurvey()
@@ -28,10 +31,10 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
 
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestions());
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveys());
             while (httpTask == null)
             {
-                httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestions());
+                httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveys());
             }
 
             activityIndicator.IsVisible = false;
@@ -42,19 +45,32 @@ namespace SEBeTender
             {
                 List<Survey> surveyList = JsonConvert.DeserializeObject<List<Survey>>(httpTask.ToString());
 
-                //If survey is available, get the survey details, else display the error message
+                //If surveys is available, get the survey details, else display the error message
                 if (surveyList != null)
                 {
-                    if (surveyList.Count > 0)
+                    for(int i=0; i<surveyList.Count(); i++) 
                     {
                         //Get survey details
-                        survey = surveyList[0];
-                        Console.WriteLine("Survey Title is: " + survey.surveyTitle);
-                        string surveyID = survey.surveyID;
-                        string surveydescription = survey.description;
-                        List<surveyQuestion> surveyQuestions = survey.surveyQuestions;
-                        listView.ItemsSource = surveyQuestions;
+                        
+                        string surveyID = surveyList[i].surveyID;
+                        string surveydescription = surveyList[i].description;
+
+                        string httpTaskquestions = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestions(surveyList[i].surveyID));
+                        while (httpTaskquestions == null)
+                        {
+                            httpTaskquestions = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestions(surveyList[i].surveyID));
+                        }
+
+                        //if survey question is available, get the list of questions for this particular survey
+                        if (httpTaskquestions != null)
+                        {
+                            surveyList[i].surveyQuestions = JsonConvert.DeserializeObject<List<surveyQuestion>>(httpTaskquestions.ToString());
+                        }
+
+
+                        
                     }
+                    listView.ItemsSource = surveyList;
                 }
             }
         }
@@ -64,10 +80,11 @@ namespace SEBeTender
             listView.SelectedItem = null;
             var item = e.SelectedItem as Survey;
 
+            
             if (item != null)
             {
                 listView.SelectedItem = null;
-                await Navigation.PushAsync(new surveyPage(item));
+                await Navigation.PushAsync(new surveyQuestionPage(item));
             }
         }
     }

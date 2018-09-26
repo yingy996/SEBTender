@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,19 @@ namespace SEBeTender
         string userAnswer = "";
 		public surveyQuestionPage ()
 		{
-			InitializeComponent ();
+			
 
-            //Create survey item for demo
+        }
+
+        public surveyQuestionPage(Survey surveyitem)
+        {
+            InitializeComponent();
+
+            survey = surveyitem;
+            
+            
+            getQuestionAnswers();
+            /*//Create survey item for demo
             surveyQuestion surveyQuestion1 = new surveyQuestion();
             surveyQuestion1.questionID = "11111111";
             surveyQuestion1.questionTitle = "What is your favourite food?";
@@ -63,14 +74,138 @@ namespace SEBeTender
             survey.surveyQuestions = new List<surveyQuestion>();
             survey.surveyQuestions.Add(surveyQuestion1);
             survey.surveyQuestions.Add(surveyQuestion2);
-            survey.surveyQuestions.Add(surveyQuestion3);
+            survey.surveyQuestions.Add(surveyQuestion3);*/
 
             //Display survey question
             surveyTitleLbl.Text = survey.surveyTitle;
             surveyDescLbl.Text = survey.description;
             backButton.IsVisible = false;
-
         }
+
+        async void getQuestionAnswers()
+        {
+            //Console.WriteLine("NUMBER OF QUESTIONS" + survey.surveyQuestions.Count());
+            for (int i = 0; i < survey.surveyQuestions.Count(); i++)
+            {
+                
+                Console.WriteLine("Question Type" + survey.surveyQuestions[i].questionType);
+                string currentnumber = i.ToString();
+                /*surveyQuestion surveyQuestion = new surveyQuestion();
+                surveyQuestion.questionID = survey.surveyQuestions[i].questionID;
+                surveyQuestion.questionTitle = survey.surveyQuestions[i].questionTitle;
+                surveyQuestion.questionType = survey.surveyQuestions[i].questionType;
+                surveyQuestion.surveyID = survey.surveyQuestions[i].surveyID;*/
+
+                List<surveyOption> surveyOptions = new List<surveyOption>();
+
+                /*if (survey.surveyQuestions[i].questionType == "shortsentence")
+                {
+                    survey.surveyQuestions.Add(surveyQuestion);
+                }else if(survey.surveyQuestions[i].questionType == "longsentence")
+                {
+                    survey.surveyQuestions.Add(surveyQuestion);
+                }else*/
+                if (survey.surveyQuestions[i].questionType == "dropdown")
+                {
+                    Console.WriteLine("question ID" + survey.surveyQuestions[i].questionID);
+                    string httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+                    
+                    while (httpTaskanswers == null)
+                    {
+                        httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+                    }
+                    Console.WriteLine("CHECK DROPDOWN TASK STRING" + httpTaskanswers);
+                    Console.WriteLine("INSIDE DROPDOWN");
+                    //if survey question dropdown/radiobutton/checkbox is available, get the list of answers for this particular question
+                    if (httpTaskanswers != null)
+                    {
+                        
+                        survey.surveyQuestions[i].surveyOptions = JsonConvert.DeserializeObject<List<surveyOption>>(httpTaskanswers.ToString());
+                       
+                    }
+                    
+                    
+                    /*for(int x=0; x< survey.surveyQuestions[i].surveyOptions.Count(); x++)
+                    {
+                        surveyOption option = new surveyOption();
+                        option.answerID = survey.surveyQuestions[i].surveyOptions[x].answerID;
+                        option.answerTitle = survey.surveyQuestions[i].surveyOptions[x].answerTitle;
+                        option.questionID = survey.surveyQuestions[i].surveyOptions[x].questionID;
+                        option.surveyID = survey.surveyQuestions[i].surveyOptions[x].surveyID;
+                        surveyOptions.Add(option);
+
+                    }
+                    survey.surveyQuestions[i].surveyOptions = surveyOptions;*/
+                    
+
+                }
+                else if (survey.surveyQuestions[i].questionType == "checkboxes")
+                {
+                    string httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+                    while (httpTaskanswers == null)
+                    {
+                        httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+                    }
+
+                    //if survey question dropdown/radiobutton/checkbox is available, get the list of answers for this particular question
+                    if (httpTaskanswers != null)
+                    {
+                        survey.surveyQuestions[i].surveyOptions = JsonConvert.DeserializeObject<List<surveyOption>>(httpTaskanswers.ToString());
+
+                    }
+                    Console.WriteLine("INSIDE CHECKBOX");
+
+
+                    /*for (int x = 0; x < survey.surveyQuestions[i].surveyOptions.Count(); x++)
+                    {
+                        surveyOption option = new surveyOption();
+                        option.answerID = survey.surveyQuestions[i].surveyOptions[x].answerID;
+                        option.answerTitle = survey.surveyQuestions[i].surveyOptions[x].answerTitle;
+                        option.questionID = survey.surveyQuestions[i].surveyOptions[x].questionID;
+                        option.surveyID = survey.surveyQuestions[i].surveyOptions[x].surveyID;
+                        surveyOptions.Add(option);
+
+                    }
+                    survey.surveyQuestions[i].surveyOptions = surveyOptions;
+                    //survey.surveyQuestions.Add(surveyQuestion);*/
+
+                }
+                else if (survey.surveyQuestions[i].questionType == "radiobutton")
+                {
+                    string httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+                    while (httpTaskanswers == null)
+                    {
+                        httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+                    }
+
+                    //if survey question dropdown/radiobutton/checkbox is available, get the list of answers for this particular question
+                    if (httpTaskanswers != null)
+                    {
+                        survey.surveyQuestions[i].surveyOptions = JsonConvert.DeserializeObject<List<surveyOption>>(httpTaskanswers.ToString());
+
+                    }
+                    Console.WriteLine("INSIDE RADIOBUTTON");
+
+                    /*for (int x = 0; x < survey.surveyQuestions[i].surveyOptions.Count(); x++)
+                    {
+                        surveyOption option = new surveyOption();
+                        option.answerID = survey.surveyQuestions[i].surveyOptions[x].answerID;
+                        option.answerTitle = survey.surveyQuestions[i].surveyOptions[x].answerTitle;
+                        option.questionID = survey.surveyQuestions[i].surveyOptions[x].questionID;
+                        option.surveyID = survey.surveyQuestions[i].surveyOptions[x].surveyID;
+                        surveyOptions.Add(option);
+
+                    }
+                    survey.surveyQuestions[i].surveyOptions = surveyOptions;*/
+
+                    //survey.surveyQuestions.Add(surveyQuestion);
+
+                }
+
+            }
+        }
+
+      
 
         void onNextButtonClicked(object sender, EventArgs e)
         {
@@ -115,9 +250,13 @@ namespace SEBeTender
 
             if (!isErrorPresent)
             {
+                //Console.WriteLine("CURRENTQUESTIONCOUNT" + currentQuestionCount);
                 //Display the question when no error present
-                surveyQuestion surveyQuestion = survey.surveyQuestions[currentQuestionCount];
-                pollQuestionLbl.Text = surveyQuestion.questionTitle;
+                surveyQuestion surveyQuestion = new surveyQuestion();
+                surveyQuestion = survey.surveyQuestions[currentQuestionCount];
+                surveyQuestion.surveyOptions = survey.surveyQuestions[currentQuestionCount].surveyOptions;
+                //Console.WriteLine("first answer" + surveyQuestion.surveyOptions[currentQuestionCount]);
+                surveyQuestionLbl.Text = surveyQuestion.questionTitle;
                 if (currentQuestionCount != 0)
                 {
                     //Delete the last child (answer field)
@@ -180,7 +319,7 @@ namespace SEBeTender
                     stackLayout.Children.Add(frame);
                     questionLayout.Children.Add(stackLayout);
                 }
-                else if (surveyQuestion.questionType == "paragraph")
+                else if (surveyQuestion.questionType == "longsentence")
                 {
                     StackLayout stackLayout = new StackLayout();
 
@@ -380,7 +519,7 @@ namespace SEBeTender
 
             //Display previous question
             surveyQuestion surveyQuestion = survey.surveyQuestions[currentQuestionCount];
-            pollQuestionLbl.Text = surveyQuestion.questionTitle;
+            surveyQuestionLbl.Text = surveyQuestion.questionTitle;
 
             //Create the answer field
             if (surveyQuestion.questionType == "dropdown")
@@ -434,7 +573,7 @@ namespace SEBeTender
                 stackLayout.Children.Add(frame);
                 questionLayout.Children.Add(stackLayout);
             }
-            else if (surveyQuestion.questionType == "paragraph")
+            else if (surveyQuestion.questionType == "longsentence")
             {
                 StackLayout stackLayout = new StackLayout();
 

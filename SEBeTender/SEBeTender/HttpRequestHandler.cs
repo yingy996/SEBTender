@@ -1007,7 +1007,7 @@ namespace SEBeTender
         }
 
         //get list of surveys
-        public static async Task<string> PostGetSurveyQuestions()
+        public static async Task<string> PostGetSurveys()
         {
             var parameters = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string,string>("infoToObtain", "surveys")
@@ -1028,6 +1028,60 @@ namespace SEBeTender
             catch (Exception ex)
             {
                 Console.WriteLine("Fetch surveys error: " + ex);
+                return null;
+            }
+        }
+
+        //get list of survey questions
+        public static async Task<string> PostGetSurveyQuestions(string surveyID)
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "questions"),
+                new KeyValuePair<string,string>("surveyID", surveyID)
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine("GET survey questions: " + result);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch survey questions error: " + ex);
+                return null;
+            }
+        }
+
+        //get list of survey question dropdown/radiobox/checkbox answers
+        public static async Task<string> PostGetSurveyQuestionAnswers(string questionID)
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "answers"),
+                new KeyValuePair<string,string>("questionID", questionID)
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine("GET survey question dropdown/checkbox/radiobox answers: " + result);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch survey dropdown/checkbox/radiobox error: " + ex);
                 return null;
             }
         }

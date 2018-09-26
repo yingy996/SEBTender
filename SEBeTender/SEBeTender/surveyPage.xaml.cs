@@ -26,7 +26,19 @@ namespace SEBeTender
         public surveyPage(Survey surveyitem)
         {
             InitializeComponent();
-            retrieveSurvey();
+
+            /*editButton.IsVisible = false;
+            deleteButton.IsVisible = false;*/
+
+            //surveyTitleLbl.Text = surveyitem.surveyTitle;
+            /*announcementContentlbl.Text = announcementItem.announcementContent;
+            publishedDatelbl.Text = announcementItem.publishedDate;
+            postedBylbl.Text = announcementItem.postedBy;
+            editedDatelbl.Text = announcementItem.editedDate.ToString();
+            editedBylbl.Text = announcementItem.editedBy.ToString();
+
+            announcementid = announcementItem.announcementID;*/
+            //retrieveSurvey();
         }
 
         async void retrieveSurvey()
