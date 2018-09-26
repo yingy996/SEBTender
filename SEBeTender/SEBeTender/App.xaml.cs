@@ -68,8 +68,10 @@ namespace SEBeTender
                     Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.PostUserLogin(Settings.Username, Settings.Password));
                     var httpResult = httpTask.Result.ToString();
                     Console.WriteLine("User runned");
-                    if (httpResult == "Success")
+                    Console.WriteLine("HTTP Result: " + httpResult);
+                    if (httpResult == "Login successful!")
                     {
+                        Console.WriteLine("User returned");
                         return "user";
                     }
                     else

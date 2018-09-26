@@ -50,9 +50,10 @@ namespace SEBeTender
                 //Send HTTP request to log user in 
                 string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostUserLogin(username, password));
                 var httpResult = httpTask.ToString();
+
                 activityIndicator.IsVisible = false;
                 activityIndicator.IsRunning = false;
-                if (httpResult == "Success")
+                if (httpResult == "Login successful!")
                 {
                     //Navigate to tender page
                     errorLbl.TextColor = Color.Green;
@@ -61,7 +62,6 @@ namespace SEBeTender
                     await Task.Delay(1000);
                     //errorLbl.TextColor = Color.Red;
                     
-
                     //await Navigation.PushAsync(new tenderPage());
                     //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new tenderEligiblePage()) };
                     App.Current.MainPage = new rootPage(true);
