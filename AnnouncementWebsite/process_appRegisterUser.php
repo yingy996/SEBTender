@@ -12,6 +12,9 @@ if (empty($_POST["name"])) {
     $errorpresence = true;
 } else {
     if (!preg_match("/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/", $_POST["name"])) {
+        $errorMessage .= "Wrong format for name. e.g. Anthony Tan";
+        $errorpresence = true;
+    } else {
         $name = sanitizeInput($_POST["name"]);
     }
 }
@@ -64,7 +67,7 @@ if($_POST["password"] != $_POST["confPassword"]){
 
 //Register user if inputs are valid
 if (!$errorpresence) {
-    
+    $db_handle = new DBController();
     //validate uniqueness of username
     $checkUsernameQuery = $db_handle->getConn()->prepare("SELECT username FROM user WHERE username= :username");
     $checkUsernameQuery->bindParam(":username", $username);
