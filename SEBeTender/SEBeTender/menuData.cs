@@ -37,7 +37,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "Registration",
-                TargetType = typeof(registrationPage)
+                TargetType = typeof(accountRegistrationPage)
             });
         }
 

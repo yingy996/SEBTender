@@ -1061,5 +1061,33 @@ namespace SEBeTender
             }
             return result;
         }
+
+        public static async Task<String> PostRegisterNewUser(string name, string email, string username, string password, string confPassword)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("name", name),
+                    new KeyValuePair<string,string>("email", email),
+                    new KeyValuePair<string,string>("username", username),
+                    new KeyValuePair<string,string>("password", password),
+                    new KeyValuePair<string,string>("confPassword", confPassword)
+                });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appRegisterUser.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
     }
 }

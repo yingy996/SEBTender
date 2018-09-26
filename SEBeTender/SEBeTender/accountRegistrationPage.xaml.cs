@@ -22,9 +22,57 @@ namespace SEBeTender
         {
             bool isErrorPresent = false;
             string errorMessage = "";
-            
+
             //Validate inputs
-            if (fullNameEntry.Text == "")
+            if (confPasswordEntry.Text != passwordEntry.Text)
+            {
+                isErrorPresent = true;
+                errorMessage = "Confirm password does not match";
+            }
+
+            if (String.IsNullOrEmpty(passwordEntry.Text))
+            {
+                isErrorPresent = true;
+                errorMessage = "Please enter your Password";
+            }
+            else
+            {
+                if (!Regex.IsMatch(passwordEntry.Text, @"^[a-zA-Z0-9]*$"))
+                {
+                    isErrorPresent = true;
+                    errorMessage = "Wrong format for Password. Password may only contain alphabets and numbers.";
+                }
+            }
+
+            if (String.IsNullOrEmpty(usernameEntry.Text))
+            {
+                isErrorPresent = true;
+                errorMessage = "Please enter your Username";
+            }
+            else
+            {
+                if (!Regex.IsMatch(usernameEntry.Text, @"^[a-zA-Z0-9]*$"))
+                {
+                    isErrorPresent = true;
+                    errorMessage = "Wrong format for Username. Username may only contain alphabets and numbers.";
+                }
+            }
+
+            if (String.IsNullOrEmpty(emailEntry.Text))
+            {
+                isErrorPresent = true;
+                errorMessage = "Please enter your Email";
+            }
+            else
+            {
+                if (!Regex.IsMatch(emailEntry.Text, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"))
+                {
+                    isErrorPresent = true;
+                    errorMessage = "Wrong format for Email. e.g. anthony@mail.com";
+                }
+            }
+
+            if (String.IsNullOrEmpty(fullNameEntry.Text))
             {
                 isErrorPresent = true;
                 errorMessage = "Please enter your Full Name";
@@ -37,52 +85,6 @@ namespace SEBeTender
                 }
             }
 
-            if (emailEntry.Text == "")
-            {
-                isErrorPresent = true;
-                errorMessage = "Please enter your Full Name";
-            } else
-            {
-                if (!Regex.IsMatch(emailEntry.Text, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"))
-                {
-                    isErrorPresent = true;
-                    errorMessage = "Wrong format for Email. e.g. anthony@mail.com";
-                }
-            }
-
-            if (usernameEntry.Text == "")
-            {
-                isErrorPresent = true;
-                errorMessage = "Please enter your Full Name";
-            } else
-            {
-                if (!Regex.IsMatch(usernameEntry.Text, @"^[a-zA-Z0-9]*$"))
-                {
-                    isErrorPresent = true;
-                    errorMessage = "Wrong format for Username. Username may only contain alphabets and numbers.";
-                }
-            }
-
-            if (passwordEntry.Text == "")
-            {
-                isErrorPresent = true;
-                errorMessage = "Please enter your Full Name";
-            }
-            else
-            {
-                if (!Regex.IsMatch(passwordEntry.Text, @"^[a-zA-Z0-9]*$"))
-                {
-                    isErrorPresent = true;
-                    errorMessage = "Wrong format for Password. Password may only contain alphabets and numbers.";
-                }
-            }
-
-            if (confPasswordEntry.Text != passwordEntry.Text)
-            {
-                isErrorPresent = true;
-                errorMessage = "Confirm password does not match";
-            }
-
             if (isErrorPresent)
             {
                 //Display error message if inputs have error
@@ -93,7 +95,7 @@ namespace SEBeTender
                 activityIndicator.IsVisible = true;
                 activityIndicator.IsRunning = true;
 
-                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostAddPoll(adminAuth.Username, adminAuth.Password, pollQuestionInput.Text, selectedOption, options));
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostRegisterNewUser(fullNameEntry.Text, emailEntry.Text, usernameEntry.Text, passwordEntry.Text, confPasswordEntry.Text));
                 string httpResult = httpTask.ToString();
 
                 if (httpResult == "Registration successful")
