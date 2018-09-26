@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.accountRegistrationPage" Title="Pocket Tender">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10,10,10,10">
+                <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+                <Grid x:Name="displayGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Register an Account" FontSize="20" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
+                    <Label Text="Complete the form below to register an account." Grid.Row="1" Grid.Column="0"/>
+                    <Entry Placeholder="Full name" x:Name="fullNameEntry" Grid.Row="2" Grid.Column="0"></Entry>
+                    <Entry Placeholder="Email" x:Name="emailEntry" Keyboard="Email" Grid.Row="3" Grid.Column="0"></Entry>
+                    <Entry Placeholder="Username" x:Name="usernameEntry" Grid.Row="4" Grid.Column="0"></Entry>
+                    <Entry Placeholder="Password" x:Name="passwordEntry" IsPassword="True" Grid.Row="5" Grid.Column="0"></Entry>
+                    <Entry Placeholder="Confirm Password" x:Name="confPasswordEntry" IsPassword="True" Grid.Row="6" Grid.Column="0"></Entry>
+
+                    <Button Text="Register" Grid.Row="7" Grid.Column="0" x:Name="registerButton" BackgroundColor="#c0d94e" Clicked="OnRegisterButtonClicked"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
