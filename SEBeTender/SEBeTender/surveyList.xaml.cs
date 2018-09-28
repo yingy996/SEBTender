@@ -31,6 +31,7 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
 
+            //Retrieve list of survey from server
             string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveys());
             while (httpTask == null)
             {

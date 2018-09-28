@@ -220,6 +220,12 @@
   <ItemGroup>
     <BundleResource Include="Resources\SEBlogo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\radiocheckedbg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\radiocheckmark.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\SEBeTender\SEBeTender.projitems" Label="Shared" />
 </Project>

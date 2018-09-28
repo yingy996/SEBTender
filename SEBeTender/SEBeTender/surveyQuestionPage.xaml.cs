@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SEBeTender.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,7 +89,7 @@ namespace SEBeTender
             for (int i = 0; i < survey.surveyQuestions.Count(); i++)
             {
                 
-                Console.WriteLine("Question Type" + survey.surveyQuestions[i].questionType);
+                
                 string currentnumber = i.ToString();
                 /*surveyQuestion surveyQuestion = new surveyQuestion();
                 surveyQuestion.questionID = survey.surveyQuestions[i].questionID;
@@ -107,15 +108,14 @@ namespace SEBeTender
                 }else*/
                 if (survey.surveyQuestions[i].questionType == "dropdown")
                 {
-                    Console.WriteLine("question ID" + survey.surveyQuestions[i].questionID);
+                    
                     string httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
                     
                     while (httpTaskanswers == null)
                     {
                         httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
                     }
-                    Console.WriteLine("CHECK DROPDOWN TASK STRING" + httpTaskanswers);
-                    Console.WriteLine("INSIDE DROPDOWN");
+                    
                     //if survey question dropdown/radiobutton/checkbox is available, get the list of answers for this particular question
                     if (httpTaskanswers != null)
                     {
@@ -142,6 +142,7 @@ namespace SEBeTender
                 else if (survey.surveyQuestions[i].questionType == "checkboxes")
                 {
                     string httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+
                     while (httpTaskanswers == null)
                     {
                         httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
@@ -150,10 +151,11 @@ namespace SEBeTender
                     //if survey question dropdown/radiobutton/checkbox is available, get the list of answers for this particular question
                     if (httpTaskanswers != null)
                     {
+
                         survey.surveyQuestions[i].surveyOptions = JsonConvert.DeserializeObject<List<surveyOption>>(httpTaskanswers.ToString());
 
                     }
-                    Console.WriteLine("INSIDE CHECKBOX");
+
 
 
                     /*for (int x = 0; x < survey.surveyQuestions[i].surveyOptions.Count(); x++)
@@ -173,6 +175,7 @@ namespace SEBeTender
                 else if (survey.surveyQuestions[i].questionType == "radiobutton")
                 {
                     string httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+
                     while (httpTaskanswers == null)
                     {
                         httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
@@ -181,10 +184,11 @@ namespace SEBeTender
                     //if survey question dropdown/radiobutton/checkbox is available, get the list of answers for this particular question
                     if (httpTaskanswers != null)
                     {
+
                         survey.surveyQuestions[i].surveyOptions = JsonConvert.DeserializeObject<List<surveyOption>>(httpTaskanswers.ToString());
 
                     }
-                    Console.WriteLine("INSIDE RADIOBUTTON");
+
 
                     /*for (int x = 0; x < survey.surveyQuestions[i].surveyOptions.Count(); x++)
                     {
@@ -254,7 +258,7 @@ namespace SEBeTender
                 //Display the question when no error present
                 surveyQuestion surveyQuestion = new surveyQuestion();
                 surveyQuestion = survey.surveyQuestions[currentQuestionCount];
-                surveyQuestion.surveyOptions = survey.surveyQuestions[currentQuestionCount].surveyOptions;
+                //surveyQuestion.surveyOptions = survey.surveyQuestions[currentQuestionCount].surveyOptions;
                 //Console.WriteLine("first answer" + surveyQuestion.surveyOptions[currentQuestionCount]);
                 surveyQuestionLbl.Text = surveyQuestion.questionTitle;
                 if (currentQuestionCount != 0)
@@ -268,7 +272,7 @@ namespace SEBeTender
                 }
 
                 //Create the answer field
-                if (surveyQuestion.questionType == "dropdown")
+                if (surveyQuestion.questionType == "dropdown" || surveyQuestion.questionType == "radiobutton")
                 {
                     StackLayout stackLayout = new StackLayout();
 
@@ -285,20 +289,24 @@ namespace SEBeTender
                     picker.ItemsSource = surveyQuestion.surveyOptions;
                     picker.ItemDisplayBinding = new Binding("answerTitle");
 
-                    foreach (surveyOption option in picker.ItemsSource)
+                    if (picker.ItemsSource != null)
                     {
-                        if (option.answerTitle == survey.surveyQuestions[currentQuestionCount].responseAnswer)
+                        foreach (surveyOption option in picker.ItemsSource)
                         {
-                            picker.SelectedItem = option;
-                            break;
+                            if (option.answerTitle == survey.surveyQuestions[currentQuestionCount].responseAnswer)
+                            {
+                                picker.SelectedItem = option;
+                                break;
+                            }
                         }
                     }
+
 
                     frame.Content = picker;
                     stackLayout.Children.Add(frame);
                     questionLayout.Children.Add(stackLayout);
                 }
-                else if (surveyQuestion.questionType == "shortAnswer")
+                else if (surveyQuestion.questionType == "shortsentence")
                 {
                     StackLayout stackLayout = new StackLayout();
 
@@ -341,13 +349,55 @@ namespace SEBeTender
                     stackLayout.Children.Add(frame);
                     questionLayout.Children.Add(stackLayout);
                 }
-                else if (surveyQuestion.questionType == "checkbox")
-                {
+                else if (surveyQuestion.questionType == "checkboxes")
+                {             
+                    //var layout = new StackLayout() { Orientation = StackOrientation.Horizontal };
 
+                    //Console.WriteLine("TESTINGGGGGGGG" + surveyQuestion.surveyOptions[0].answerTitle);
+                    if (surveyQuestion.surveyOptions != null)
+                    {                       
+                        for (int y = 0; y < surveyQuestion.surveyOptions.Count(); y++)
+                        {
+                            StackLayout stackLayout = new StackLayout() { Orientation = StackOrientation.Horizontal };
+
+                            Switch switcher = new Switch();
+                            switcher.StyleId = surveyQuestion.surveyOptions[y].answerID;
+
+                            stackLayout.Children.Add(switcher);
+                            stackLayout.Children.Add(new Label()
+                            {
+                                Text = surveyQuestion.surveyOptions[y].answerTitle
+                            });
+
+                            questionLayout.Children.Add(stackLayout);
+                        }
+                    }
+
+                    
                 }
                 else
                 {
+                    
 
+
+
+                    /*frame.Content = switcher;
+                    stackLayout.Children.Add(frame);
+                    questionLayout.Children.Add(stackLayout);*/
+                    /*switcher.
+                    picker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
+                    picker.ItemsSource = surveyQuestion.surveyOptions;
+                    picker.ItemDisplayBinding = new Binding("answerTitle");*/
+
+                    /*RadioButton radioButton = new RadioButton();
+                    radioButton.BindingContext = surveyQuestion.surveyOptions;
+                    radioButton.SetBinding(RadioButton.IsCheckedProperty, "IsSelected", BindingMode.TwoWay);
+                    radioButton.SetBinding(RadioButton.IsVisibleProperty, "IsVisible");
+                    radioButton.SetBinding(RadioButton.TitleProperty, "answerTitle");
+                    radioButton.BorderImageSource = "radiocheckedbg";
+                    radioButton.CheckedBackgroundImageSource = "radiocheckedbg";
+                    radioButton.CheckmarkImageSource = "radiocheckmark";
+                    */
                 }
             }
             
@@ -552,7 +602,7 @@ namespace SEBeTender
                 stackLayout.Children.Add(frame);
                 questionLayout.Children.Add(stackLayout);
             }
-            else if (surveyQuestion.questionType == "shortAnswer")
+            else if (surveyQuestion.questionType == "shortsentence")
             {
                 StackLayout stackLayout = new StackLayout();
 
@@ -595,7 +645,7 @@ namespace SEBeTender
                 stackLayout.Children.Add(frame);
                 questionLayout.Children.Add(stackLayout);
             }
-            else if (surveyQuestion.questionType == "checkbox")
+            else if (surveyQuestion.questionType == "checkboxes")
             {
 
             }

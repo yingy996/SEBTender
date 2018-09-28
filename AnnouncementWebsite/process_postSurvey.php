@@ -38,7 +38,7 @@ if (isset($_SESSION["user_login"])) {
             $survey_description = sanitizeInput($_POST["content"]);
         }
         
-    
+        /* Get all user inputs and prepare into variable for later insertion into database */
         $questioncount = 0;
         $nextquestionavailable = true;
         while($nextquestionavailable == true){
@@ -90,6 +90,7 @@ if (isset($_SESSION["user_login"])) {
             $randomsurveyID = rand(pow(10, $digits-1), pow(10, $digits)-1);
             
             $isSurveyIDUnique = false;
+            //Check uniqueness of survey ID, if unique then proceed if not change
             while($isSurveyIDUnique == false){
                 $selectsurveyquery = $db_handle->getConn()->prepare("SELECT surveyID FROM survey WHERE surveyID = :randomsurveyID");
                 $selectsurveyquery->bindParam(":randomsurveyID", $randomsurveyID);
@@ -103,7 +104,7 @@ if (isset($_SESSION["user_login"])) {
                 }
             }
             
-            
+            //Insert surveys into database
             $surveyquery = $db_handle->getConn()->prepare("INSERT INTO survey (surveyID, surveyTitle, description, publishedBy, startDate, endDate, noOfResponse, isEnded) VALUES (:randomsurveyID, :survey_title, :survey_description, :login_user, NOW(), :end_date, :numberofresponse, :isended)");
                 
             $surveyquery->bindParam(":randomsurveyID", $randomsurveyID);
@@ -125,7 +126,10 @@ if (isset($_SESSION["user_login"])) {
                     $currentanswerType = $answer_type[$answertypeName]; 
                     $randomquestionID = rand(pow(10, $digits-1), pow(10, $digits)-1);
                     
+                    /* Check uniquness of question id, if unique then proceed*/
                     $isQuestionIDUnique = false;
+                    /* Check uniquness of question id, if unique then proceed*/
+                    
                     while($isQuestionIDUnique == false){
                         $selectquestionquery = $db_handle->getConn()->prepare("SELECT questionID FROM survey_question WHERE questionID = :randomquestionID");
                         $selectquestionquery->bindParam(":randomquestionID", $randomquestionID);
@@ -138,7 +142,7 @@ if (isset($_SESSION["user_login"])) {
                             $randomquestionID = rand(pow(10, $digits-1), pow(10, $digits)-1);
                         }
                     }
-                    
+                    //Insert questions into database
                     $questionquery = $db_handle->getConn()->prepare("INSERT INTO survey_question (questionID, questionTitle, surveyID, questionType) VALUES (:randomquestionID, :currentquestionTitle, :randomsurveyID, :currentanswerType)");
                     
                     $questionquery->bindParam(":randomquestionID", $randomquestionID);
@@ -152,14 +156,16 @@ if (isset($_SESSION["user_login"])) {
                     if($questionresult == true){
                         $answercount = 0;
                         $nextansweravailable = true;
+                        
                         while($nextansweravailable == true){
                             $answertitleName = "answer_title0" . $i . "0" . $answercount;
-                            if(isset($_POST[$answertitleName]) && !empty($_POST[$answertitleName])){
+                            if(array_key_exists($answertitleName, $answer_title)){
                                 $currentanswerTitle = $answer_title[$answertitleName];
                                 
                                 $randomanswerID = rand(pow(10, $digits-1), pow(10, $digits)-1);
                                 
                                 $isAnswerIDUnique = false;
+                                //Check uniquness of answer ID
                                     while($isAnswerIDUnique == false){
                                         $selectanswerquery = $db_handle->getConn()->prepare("SELECT answerID FROM survey_questionanswer WHERE answerID = :randomanswerID");
                                         $selectanswerquery->bindParam(":randomanswerID", $randomanswerID);
@@ -173,6 +179,7 @@ if (isset($_SESSION["user_login"])) {
                                         }
                                     }
                                 
+                                //Insert answer options into database
                                 $answerquery = $db_handle->getConn()->prepare("INSERT INTO survey_questionanswer (answerID, answerTitle, questionID, surveyID) VALUES (:randomanswerID, :currentanswerTitle, :randomquestionID, :randomsurveyID)");
                                 
                                 $answerquery->bindParam(":randomanswerID", $randomanswerID);
@@ -192,7 +199,7 @@ if (isset($_SESSION["user_login"])) {
                         $error_message = "";
                         $success_message = "You have succesfully published the survey!";
                         unset($_POST);
-                        header("refresh:2; url=index.php");
+                        //header("refresh:2; url=index.php");
                     }else{
                         $error_message = "Failed to submit";
                     }
