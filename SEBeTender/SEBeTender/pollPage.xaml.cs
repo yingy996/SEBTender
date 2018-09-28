@@ -122,7 +122,40 @@ namespace SEBeTender
 
         async void OnSubmitButtonClicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Submitted");
+            if (selectedOption == "")
+            {
+                await DisplayAlert("Failed", "Please select an answer", "OK");
+            } else
+            {
+                //Submit user's aswer for poll
+                activityIndicator.IsVisible = true;
+                activityIndicator.IsRunning = true;
+                string optionID = "";
+                foreach (pollOption option in poll.pollOptions)
+                {
+                    if (selectedOption == option.optionTitle)
+                    {
+                        optionID = option.optionID;
+                    }
+                }
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostSubmitPollAnswer(poll.pollID, optionID, userSession.username, ""));
+                string httpResult = httpTask.ToString();
+
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+
+                if (httpResult == "Answer has been successfully submitted. Thank you for participating!")
+                {
+                    await DisplayAlert("Success", httpResult, "OK");
+                    var page = App.Current.MainPage as rootPage;
+                    var pollPage = new pollPage();
+                    page.changePage(pollPage);
+                }
+                else
+                {
+                    await DisplayAlert("Failed", httpResult, "OK");
+                }
+            }
         }
 
         async void OnCreateButtonClicked(object sender, EventArgs e)

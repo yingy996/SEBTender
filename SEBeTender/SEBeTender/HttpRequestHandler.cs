@@ -1094,5 +1094,32 @@ namespace SEBeTender
             }
             return result;
         }
+
+        public static async Task<String> PostSubmitPollAnswer(string pollID, string optionID, string userID, string answerInText)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("pollID", pollID),
+                    new KeyValuePair<string,string>("optionID", optionID),
+                    new KeyValuePair<string,string>("userID", userID),
+                    new KeyValuePair<string,string>("answerInText", answerInText)
+                });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appInsertPollAnswer.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
     }
 }
