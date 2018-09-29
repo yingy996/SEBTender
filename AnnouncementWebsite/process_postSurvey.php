@@ -139,12 +139,13 @@ if (isset($_SESSION["user_login"])) {
                         }
                     }
                     
-                    $questionquery = $db_handle->getConn()->prepare("INSERT INTO survey_question (questionID, questionTitle, surveyID, questionType) VALUES (:randomquestionID, :currentquestionTitle, :randomsurveyID, :currentanswerType)");
+                    $questionquery = $db_handle->getConn()->prepare("INSERT INTO survey_question (questionID, questionTitle, surveyID, questionType, questionNumber) VALUES (:randomquestionID, :currentquestionTitle, :randomsurveyID, :currentanswerType, :questionNumber)");
                     
                     $questionquery->bindParam(":randomquestionID", $randomquestionID);
                     $questionquery->bindParam(":currentquestionTitle", $currentquestionTitle);
                     $questionquery->bindParam(":randomsurveyID", $randomsurveyID);
                     $questionquery->bindParam(":currentanswerType", $currentanswerType);
+                    $questionquery->bindParam(":questionNumber", $i);
                     
                     $questionresult = $questionquery->execute();
                     
