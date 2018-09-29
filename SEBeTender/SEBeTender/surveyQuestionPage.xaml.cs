@@ -719,11 +719,52 @@ namespace SEBeTender
 
         void switcher_Toggled(object sender, ToggledEventArgs e)
         {
-            if(sender.GetType() == typeof(Switch))
+            if (e.Value == true)
             {
-                Switch switcher = (Switch)sender;
-                userAnswer = switcher.StyleId;
-                survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+                if (sender.GetType() == typeof(Switch))
+                {
+                    Switch switcher = (Switch)sender;
+                    if (userAnswer != "")
+                    {
+                        userAnswer = userAnswer + "," + switcher.StyleId;
+                    }
+                    else
+                    {
+                        userAnswer = switcher.StyleId;
+                    }
+
+                    survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+                }
+            }
+            else
+            {
+                if(sender.GetType() == typeof(Switch))
+                {
+                    Switch switcher = (Switch)sender;
+                    string newuserAnswer = "";
+                    string[] useranswers = userAnswer.Split(',');
+                    int loopcount = 0;
+                    foreach(string answer in useranswers)
+                    {
+                        if(answer != switcher.StyleId)
+                        {
+                            if(loopcount == 0)
+                            {
+                                newuserAnswer = answer;
+                                loopcount++;
+                            }
+                            else
+                            {
+                                newuserAnswer = newuserAnswer + "," + answer;
+                                loopcount++;
+                            }
+                            
+                        }
+                    }
+                    userAnswer = newuserAnswer;
+                    survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+                    Console.WriteLine("NEWUSERANSWER" + userAnswer);
+                }
             }
         }
 
