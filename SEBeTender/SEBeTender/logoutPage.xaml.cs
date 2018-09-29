@@ -35,6 +35,7 @@ namespace SEBeTender
                 userSession.username = "";
                 Settings.Username = string.Empty;
                 Settings.Password = string.Empty;
+                Settings.Role = string.Empty;
                 logoutStatus.Text = "You have successfully logout! You will be redirected to login page shortly.";
                 logoutStatus.TextColor = Color.Default;
                 logoutStatus.FontAttributes = FontAttributes.None;

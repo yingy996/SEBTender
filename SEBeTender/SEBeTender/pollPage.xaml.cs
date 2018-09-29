@@ -41,62 +41,69 @@ namespace SEBeTender
 
             if (httpTask != null)
             {
-                List<Poll> pollList = JsonConvert.DeserializeObject<List<Poll>>(httpTask.ToString());
-
-                //If poll is available, get the poll details, else display the error message
-                if (pollList != null)
+                if (httpTask != "There is no poll for now.")
                 {
-                    if (pollList.Count > 0)
+                    List<Poll> pollList = JsonConvert.DeserializeObject<List<Poll>>(httpTask.ToString());
+
+                    //If poll is available, get the poll details, else display the error message
+                    if (pollList != null)
                     {
-                        //Get poll details
-                        poll = pollList[0];
-                        Console.WriteLine("Poll question is: " + poll.pollQuestion);
-                        string pollID = poll.pollID;
-                        string pollQuestion = poll.pollQuestion;
-
-                        //Get poll options
-                        string httpOptionTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollOptions(pollID));
-                        while (httpOptionTask == null)
+                        if (pollList.Count > 0)
                         {
-                            httpOptionTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollOptions(pollID));
-                        }
+                            //Get poll details
+                            poll = pollList[0];
+                            Console.WriteLine("Poll question is: " + poll.pollQuestion);
+                            string pollID = poll.pollID;
+                            string pollQuestion = poll.pollQuestion;
 
-                        if (httpOptionTask != null)
-                        {
-                            List<pollOption> pollOptionList = JsonConvert.DeserializeObject<List<pollOption>>(httpOptionTask.ToString());
-                            poll.pollOptions = pollOptionList;
-                            List<string> pollOptionStrings = new List<string>();
-                            foreach(pollOption option in poll.pollOptions)
+                            //Get poll options
+                            string httpOptionTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollOptions(pollID));
+                            while (httpOptionTask == null)
                             {
-                                pollOptionStrings.Add(option.optionTitle);
+                                httpOptionTask = await Task.Run<string>(() => HttpRequestHandler.PostGetPollOptions(pollID));
                             }
-                            if (pollOptionList != null)
+
+                            if (httpOptionTask != null)
                             {
-                                if (pollOptionList.Count > 0)
+                                List<pollOption> pollOptionList = JsonConvert.DeserializeObject<List<pollOption>>(httpOptionTask.ToString());
+                                poll.pollOptions = pollOptionList;
+                                List<string> pollOptionStrings = new List<string>();
+                                foreach (pollOption option in poll.pollOptions)
                                 {
-                                    
-                                    //Display poll details and options    
-                                    isPollPresent = true;
-                                    Console.WriteLine("YES TESTING IF ISPRESENT " + isPollPresent);
-                                    pollQuestionLbl.Text = pollQuestion;
-                                    pollOptionPicker.ItemsSource = pollOptionStrings;
-                                    pollQuestionLbl.IsVisible = true;
-                                    optionFrame.IsVisible = true;
-                                    //submitButton.IsVisible = true;
+                                    pollOptionStrings.Add(option.optionTitle);
+                                }
+                                if (pollOptionList != null)
+                                {
+                                    if (pollOptionList.Count > 0)
+                                    {
+
+                                        //Display poll details and options    
+                                        isPollPresent = true;
+                                        Console.WriteLine("YES TESTING IF ISPRESENT " + isPollPresent);
+                                        pollQuestionLbl.Text = pollQuestion;
+                                        pollOptionPicker.ItemsSource = pollOptionStrings;
+                                        pollQuestionLbl.IsVisible = true;
+                                        optionFrame.IsVisible = true;
+                                        //submitButton.IsVisible = true;
+                                    }
                                 }
                             }
+                        }
+                        else
+                        {
+                            errorMsg.IsVisible = true;
                         }
                     }
                     else
                     {
+                        Console.WriteLine("Poll Task is null ");
                         errorMsg.IsVisible = true;
                     }
-                }
-                else
+                } else
                 {
-                    Console.WriteLine("Poll Task is null ");
                     errorMsg.IsVisible = true;
-                }               
+                }
+                               
             }
             //await Task.Run(() => checkAdminLoginStatus());
             checkAdminLoginStatus();
@@ -115,7 +122,40 @@ namespace SEBeTender
 
         async void OnSubmitButtonClicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Submitted");
+            if (selectedOption == "")
+            {
+                await DisplayAlert("Failed", "Please select an answer", "OK");
+            } else
+            {
+                //Submit user's aswer for poll
+                activityIndicator.IsVisible = true;
+                activityIndicator.IsRunning = true;
+                string optionID = "";
+                foreach (pollOption option in poll.pollOptions)
+                {
+                    if (selectedOption == option.optionTitle)
+                    {
+                        optionID = option.optionID;
+                    }
+                }
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostSubmitPollAnswer(poll.pollID, optionID, userSession.username, ""));
+                string httpResult = httpTask.ToString();
+
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+
+                if (httpResult == "Answer has been successfully submitted. Thank you for participating!")
+                {
+                    await DisplayAlert("Success", httpResult, "OK");
+                    var page = App.Current.MainPage as rootPage;
+                    var pollPage = new pollPage();
+                    page.changePage(pollPage);
+                }
+                else
+                {
+                    await DisplayAlert("Failed", httpResult, "OK");
+                }
+            }
         }
 
         async void OnCreateButtonClicked(object sender, EventArgs e)
@@ -127,6 +167,35 @@ namespace SEBeTender
         async void OnEditButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new editPoll(poll));
+        }
+
+        async void OnCloseButtonClicked(object sender, EventArgs e)
+        {
+            var answer = await DisplayAlert("Close poll", "Are you sure you want to close this poll?", "Yes", "No");
+            if (answer)
+            {
+                //If user confirm to close the poll, send the HTTP request
+                activityIndicator.IsVisible = true;
+                activityIndicator.IsRunning = true;
+
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostClosePoll(poll.pollID, adminAuth.Username, adminAuth.Password));
+                string httpResult = httpTask.ToString();
+
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+
+                if (httpResult == "Successfully closed poll!")
+                {
+                    await DisplayAlert("Success", "Poll has been successfully closed!", "OK");
+                    var page = App.Current.MainPage as rootPage;
+                    var pollPage = new pollPage();
+                    page.changePage(pollPage);
+                }
+                else
+                {
+                    await DisplayAlert("Failed", httpResult, "OK");
+                }
+            }
         }
 
         async void checkAdminLoginStatus()

@@ -33,6 +33,15 @@
                                 <label for="question">Poll Question:</label>
                                 <input type="text" class="form-control" id="question" name="question" placeholder="Enter Poll Question" <?php if(isset($pollQuestion)){ echo 'value="'.$pollQuestion.'"';} ?> required/><span class="error"><?php if($pollQuestion_Error != "") echo "<p class='alert alert-danger'>" . $pollQuestion_Error . "</p>";?></span>
                             </div>
+                            
+                            <div class="form-group">
+                                <label for="questionType">Question Type:</label>
+                                <select class="form-control" name="questionType" id="questionType">
+                                    <option value="radio" selected>Multiple Choice</option>
+                                    <option value="checkbox">Checkboxes</option>
+                                </select>
+                                <span class="error"><?php if($questionType_Error != "") echo "<p class='alert alert-danger'>" . $questionType_Error . "</p>";?></span>
+                            </div>
 
                             <div class="form-group">
                                 <label for="option_number">Number of option:</label>
@@ -57,8 +66,18 @@
                                                 if (isset($pollOptions["option" . $i])) {
                                                     echo 'value="' . $pollOptions["option" . $i] . '"';
                                                 }
-                                                echo 'required/>
-                                                <!--<button name="deleteOptionButton' . $i .'" id="deleteOptionButton' . $i .'" value="deleteOptionButton' . $i .'" class="btn btn-default">Delete</button>-->';
+                                                echo 'required/>';
+                                            if ($i == $optionNumber) {
+                                                //Allow "Other" input for the last option
+                                                echo 
+                                                    '<div class="form-check">
+                                                          <input class="form-check-input" type="checkbox" id="isOther" name="isOther" value="isOther" onChange="document.getElementById(\'option'. $i .'\').disabled = this.checked;">
+                                                          <label class="form-check-label" for="isOther">
+                                                            Set as "Other" input
+                                                          </label>
+                                                    </div>';
+                                            }
+                                            
                                             echo '<span class="error">';
                                             
                                             if(isset($optionErrors["option" . $i])) {
@@ -72,7 +91,6 @@
                             ?>
                             </div>
                             <p><input type="submit" name="publishPollButton" class="btn btn-default" id="publishPollButton" value="Publish Poll"/></p>
-
                         </fieldset>
 
                     </form>

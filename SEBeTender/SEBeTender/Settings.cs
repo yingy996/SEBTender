@@ -30,6 +30,7 @@ namespace SEBeTender
         private static readonly string NotificationDefault = "default";
         private static readonly string UsernameDefault = string.Empty;
         private static readonly string PasswordDefault = string.Empty;
+        private static readonly string RoleDefault = string.Empty;
         #endregion
 
 
@@ -89,6 +90,18 @@ namespace SEBeTender
                     AppSettings.AddOrUpdateValue("password", encryptedPassword);
                 }
                 
+            }
+        }
+
+        public static string Role
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault("role", RoleDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue("role", value);
             }
         }
 

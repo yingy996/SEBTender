@@ -21,12 +21,13 @@ namespace SEBeTender
             InitializeComponent();
             //previousPage.IsVisible = false;
 
-            Console.WriteLine(HttpRequestHandler.getAnnouncementsResult());
-
+            //Console.WriteLine(HttpRequestHandler.getAnnouncementsResult());
+            
             retrieveAnnouncement();
-           
+            
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
+            
         }
 
         async void retrieveAnnouncement()
@@ -73,7 +74,16 @@ namespace SEBeTender
             {
                 Console.WriteLine("Announcement Task is null ");
                 errorMsg.IsVisible = true;
-            }           
+            }
+            if (Settings.Username != "" && (Settings.Role == "admin" || Settings.Role == "editor"))
+            {
+                if (String.IsNullOrEmpty(adminAuth.Username))
+                {
+                    adminAuth.saveCredentials(Settings.Username, Settings.Password);
+                }
+                
+            }
+            Console.WriteLine("Announcement page: " + adminAuth.Username);
         }
 
         void onUpButtonClicked()

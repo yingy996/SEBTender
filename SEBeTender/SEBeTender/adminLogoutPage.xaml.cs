@@ -34,6 +34,9 @@ namespace SEBeTender
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     userSession.userLoginCookie = "";
+                    Settings.Username = string.Empty;
+                    Settings.Password = string.Empty;
+                    Settings.Role = string.Empty;
                     Console.WriteLine( "Status code: " + response.StatusCode + ", Logout Successful");
 
                     logoutStatus.TextColor = Color.Default;
@@ -52,7 +55,6 @@ namespace SEBeTender
                     page.changePage(loginPage);
     
                     //App.Current.MainPage = new rootPage { Detail = new NavigationPage(new loginPage()) };
-
                 }
                 else
                 {

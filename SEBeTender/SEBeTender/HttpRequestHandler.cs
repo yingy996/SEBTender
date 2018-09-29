@@ -84,27 +84,33 @@ namespace SEBeTender
 
         public static async Task<string> PostUserLogin(string username, string password)
         {
-            string cookieResult = "";
+            //string cookieResult = "";
             string responseStatus = "";
+            string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string,string>("VenUserId", username),
-                new KeyValuePair<string,string>("VenPassword", password)
+                //new KeyValuePair<string,string>("VenUserId", username),
+                //new KeyValuePair<string,string>("VenPassword", password)
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password)
             });
 
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("http://www2.sesco.com.my/etender/notice/notice_login_set_session.jsp", parameters);
-                Console.WriteLine("Response code: " + response.StatusCode);
+                //var response = await httpClient.PostAsync("http://www2.sesco.com.my/etender/notice/notice_login_set_session.jsp", parameters);
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appUserLogin.php", parameters);
+                
                 responseStatus = response.StatusCode.ToString();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {                   
-                    cookieResult = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
-                    userSession.userLoginCookie = cookieResult;
+                {
+                    //cookieResult = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
+                    userSession.userLoginCookie = "success";
+                    result = await response.Content.ReadAsStringAsync();
                     userSession.username = username;
                     //for future automated login (user just need to login for once and will be kept logged in afterward)
                     Settings.Username = username;
                     Settings.Password = password;
+                    Settings.Role = "user";
                 } else
                 {
                     //if login request failed, return error message
@@ -114,7 +120,7 @@ namespace SEBeTender
             {
                 Console.WriteLine(ex);
             }
-            return "Success";
+            return result;
         }
 
         public static async Task<string> PostAdminLogin(string username, string password)
@@ -130,14 +136,46 @@ namespace SEBeTender
             {
                 var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appLogin.php", parameters);
 
-                if (response.IsSuccessStatusCode)
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     result = await response.Content.ReadAsStringAsync();
-                }            
+
+                    //for future automated login (user just need to login for once and will be kept logged in afterward)
+                    Settings.Username = username;
+                    Settings.Password = password;
+                    Settings.Role = "admin";
+                    Console.WriteLine("Username in setting: " + Settings.Username);
+                } else
+                {
+                    Console.WriteLine("Status code: " + response.IsSuccessStatusCode.ToString());
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Admin login error: " + ex);
+                //Try to send the HTTP request to log in again
+                /*try
+                {
+                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appLogin.php", parameters);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine("Login success");
+                        //for future automated login (user just need to login for once and will be kept logged in afterward)
+                        Settings.Username = username;
+                        Settings.Password = password;
+                        Settings.Role = "admin";
+                    }
+                    else
+                    {
+                        Console.WriteLine("Status code: " + response.IsSuccessStatusCode.ToString());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine("Admin login error: " + exception);
+                }*/
             }
             return result;
         }
@@ -989,6 +1027,88 @@ namespace SEBeTender
             try
             {
                 var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appDeleteOption.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<string> PostClosePoll(string pollID, string username, string password)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("pollID", pollID),
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password)
+            });
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                //Send HTTP request to close poll
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appClosePoll.php", parameters);
+
+                result = await response.Content.ReadAsStringAsync();
+                
+                Console.WriteLine(result);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<String> PostRegisterNewUser(string name, string email, string username, string password, string confPassword)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("name", name),
+                    new KeyValuePair<string,string>("email", email),
+                    new KeyValuePair<string,string>("username", username),
+                    new KeyValuePair<string,string>("password", password),
+                    new KeyValuePair<string,string>("confPassword", confPassword)
+                });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appRegisterUser.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<String> PostSubmitPollAnswer(string pollID, string optionID, string userID, string answerInText)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("pollID", pollID),
+                    new KeyValuePair<string,string>("optionID", optionID),
+                    new KeyValuePair<string,string>("userID", userID),
+                    new KeyValuePair<string,string>("answerInText", answerInText)
+                });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appInsertPollAnswer.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {

@@ -37,7 +37,7 @@ namespace SEBeTender
             this.Add(new menuItem()
             {
                 Title = "Registration",
-                TargetType = typeof(registrationPage)
+                TargetType = typeof(accountRegistrationPage)
             });
         }
 
@@ -63,11 +63,11 @@ namespace SEBeTender
                     TargetType = typeof(tenderPage)
                 });
 
-                this.Add(new menuItem()
+                /*this.Add(new menuItem()
                 {
                     Title = "Available Tender Document",
                     TargetType = typeof(tenderEligiblePage)
-                });
+                });*/
 
                 this.Add(new menuItem()
                 {
@@ -83,7 +83,7 @@ namespace SEBeTender
 
                 this.Add(new menuItem()
                 {
-                    Title = "Custom Searches",
+                    Title = "Favourite Searches",
                     TargetType = typeof(customSearchPage)
                 });
 
@@ -117,11 +117,11 @@ namespace SEBeTender
                     TargetType = typeof(MainPage)
                 });*/
 
-                this.Add(new menuItem()
+                /*this.Add(new menuItem()
                 {
                     Title = "User Info",
                     TargetType = typeof(userInfoPage)
-                });
+                });*/
 
                 this.Add(new menuItem()
                 {
