@@ -39,6 +39,8 @@
 
                     <Button Text="Back" Grid.Row="6" Grid.Column="0" x:Name="backButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="onBackButtonClicked" IsVisible="True"/>
                     <Button Text="Start" Grid.Row="6" Grid.Column="1" x:Name="nextButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="onNextButtonClicked" IsVisible="True"/>
+                    <Button Text="Submit" Grid.Row="6" Grid.ColumnSpan="2" x:Name="submitButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="onSubmitButtonClicked" IsVisible="False"/>
+                    
                 </Grid>
             </StackLayout>
         </ScrollView>

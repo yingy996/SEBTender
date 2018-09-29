@@ -1021,7 +1021,7 @@ namespace SEBeTender
                 var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine("GET survey titles: " + result);
+                
                 return result;
 
             }
@@ -1048,7 +1048,7 @@ namespace SEBeTender
                 var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine("GET survey questions: " + result);
+                
                 return result;
 
             }
@@ -1075,7 +1075,7 @@ namespace SEBeTender
                 var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine("GET survey question dropdown/checkbox/radiobox answers: " + result);
+                
                 return result;
 
             }
