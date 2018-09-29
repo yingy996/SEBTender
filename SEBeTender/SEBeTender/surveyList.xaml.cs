@@ -38,9 +38,7 @@ namespace SEBeTender
                 httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveys());
             }
 
-            activityIndicator.IsVisible = false;
-            activityIndicator.IsRunning = false;
-            pageTitle.IsVisible = true;
+            
 
             if (httpTask != null)
             {
@@ -71,6 +69,9 @@ namespace SEBeTender
 
                         
                     }
+                    activityIndicator.IsVisible = false;
+                    activityIndicator.IsRunning = false;
+                    pageTitle.IsVisible = true;
                     listView.ItemsSource = surveyList;
                 }
             }

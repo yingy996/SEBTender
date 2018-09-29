@@ -167,6 +167,7 @@ namespace SEBeTender
                         } else
                         {
                             nextButton.IsVisible = true;
+                            submitButton.IsVisible = false;
                         }
                     }
                     
@@ -178,8 +179,6 @@ namespace SEBeTender
                 //Display the question when no error present
                 surveyQuestion surveyQuestion = new surveyQuestion();
                 surveyQuestion = survey.surveyQuestions[currentQuestionCount];
-                //surveyQuestion.surveyOptions = survey.surveyQuestions[currentQuestionCount].surveyOptions;
-                //Console.WriteLine("first answer" + surveyQuestion.surveyOptions[currentQuestionCount]);
                 surveyQuestionLbl.Text = surveyQuestion.questionTitle;
                 if (currentQuestionCount != 0)
                 {
@@ -220,8 +219,6 @@ namespace SEBeTender
                             }
                         }
                     }
-
-                    
 
                     frame.Content = picker;
                     stackLayout.Children.Add(frame);
@@ -455,15 +452,18 @@ namespace SEBeTender
                 {
                     backButton.IsVisible = false;
                     nextButton.IsVisible = true;
+                    submitButton.IsVisible = false;
                 } else
                 {
                     backButton.IsVisible = true;
                     if (currentQuestionCount < (survey.surveyQuestions.Count-1))
                     {
                         nextButton.IsVisible = true;
+                        submitButton.IsVisible = false;
                     } else
                     {
                         nextButton.IsVisible = false;
+                        submitButton.IsVisible = true;
                     }
                 }
             }
@@ -729,7 +729,7 @@ namespace SEBeTender
 
         void onSubmitButtonClicked(object sender, EventArgs e)
         {
-            if (survey.surveyQuestions[currentQuestionCount].responseAnswer != null)
+            if (userAnswer != "")
             {
                 string jsonsurvey = JsonConvert.SerializeObject(survey);
                 DisplayAlert("Alert", jsonsurvey, "OK");
