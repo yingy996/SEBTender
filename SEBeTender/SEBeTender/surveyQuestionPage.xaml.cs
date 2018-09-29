@@ -301,6 +301,7 @@ namespace SEBeTender
                         }
                     }
 
+                    
 
                     frame.Content = picker;
                     stackLayout.Children.Add(frame);
@@ -362,7 +363,7 @@ namespace SEBeTender
 
                             Switch switcher = new Switch();
                             switcher.StyleId = surveyQuestion.surveyOptions[y].answerID;
-
+                            switcher.Toggled += switcher_Toggled;
                             stackLayout.Children.Add(switcher);
                             stackLayout.Children.Add(new Label()
                             {
@@ -374,30 +375,6 @@ namespace SEBeTender
                     }
 
                     
-                }
-                else
-                {
-                    
-
-
-
-                    /*frame.Content = switcher;
-                    stackLayout.Children.Add(frame);
-                    questionLayout.Children.Add(stackLayout);*/
-                    /*switcher.
-                    picker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
-                    picker.ItemsSource = surveyQuestion.surveyOptions;
-                    picker.ItemDisplayBinding = new Binding("answerTitle");*/
-
-                    /*RadioButton radioButton = new RadioButton();
-                    radioButton.BindingContext = surveyQuestion.surveyOptions;
-                    radioButton.SetBinding(RadioButton.IsCheckedProperty, "IsSelected", BindingMode.TwoWay);
-                    radioButton.SetBinding(RadioButton.IsVisibleProperty, "IsVisible");
-                    radioButton.SetBinding(RadioButton.TitleProperty, "answerTitle");
-                    radioButton.BorderImageSource = "radiocheckedbg";
-                    radioButton.CheckedBackgroundImageSource = "radiocheckedbg";
-                    radioButton.CheckmarkImageSource = "radiocheckmark";
-                    */
                 }
             }
             
@@ -572,7 +549,7 @@ namespace SEBeTender
             surveyQuestionLbl.Text = surveyQuestion.questionTitle;
 
             //Create the answer field
-            if (surveyQuestion.questionType == "dropdown")
+            if (surveyQuestion.questionType == "dropdown" || surveyQuestion.questionType == "radiobutton")
             {
                 StackLayout stackLayout = new StackLayout();
 
@@ -647,11 +624,24 @@ namespace SEBeTender
             }
             else if (surveyQuestion.questionType == "checkboxes")
             {
+                if (surveyQuestion.surveyOptions != null)
+                {
+                    for (int y = 0; y < surveyQuestion.surveyOptions.Count(); y++)
+                    {
+                        StackLayout stackLayout = new StackLayout() { Orientation = StackOrientation.Horizontal };
 
-            }
-            else
-            {
+                        Switch switcher = new Switch();
+                        switcher.StyleId = surveyQuestion.surveyOptions[y].answerID;
 
+                        stackLayout.Children.Add(switcher);
+                        stackLayout.Children.Add(new Label()
+                        {
+                            Text = surveyQuestion.surveyOptions[y].answerTitle
+                        });
+
+                        questionLayout.Children.Add(stackLayout);
+                    }
+                }
             }
 
             /*if (currentQuestionCount > 0)
@@ -785,6 +775,19 @@ namespace SEBeTender
                 Editor editor = (Editor)sender;
                 userAnswer = editor.Text;
                 survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+            }
+        }
+
+        void switcher_Toggled(object sender, ToggledEventArgs e)
+        {
+            if(sender.GetType() == typeof(Switch))
+            {
+                Switch switcher = (Switch)sender;
+                userAnswer = switcher.StyleId;
+                survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+
+
+
             }
         }
     }

@@ -1085,5 +1085,11 @@ namespace SEBeTender
                 return null;
             }
         }
+
+        //Submit Response
+        /*public static async Task<string> PostSurveyAnswers(string jsonanswers)
+        {
+
+        }*/
     }
 }
