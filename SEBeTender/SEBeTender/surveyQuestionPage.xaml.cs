@@ -163,6 +163,7 @@ namespace SEBeTender
                         if (currentQuestionCount == (survey.surveyQuestions.Count - 1))
                         {
                             nextButton.IsVisible = false;
+                            submitButton.IsVisible = true;
                         } else
                         {
                             nextButton.IsVisible = true;
@@ -723,6 +724,19 @@ namespace SEBeTender
                 Switch switcher = (Switch)sender;
                 userAnswer = switcher.StyleId;
                 survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+            }
+        }
+
+        void onSubmitButtonClicked(object sender, EventArgs e)
+        {
+            if (survey.surveyQuestions[currentQuestionCount].responseAnswer != null)
+            {
+                string jsonsurvey = JsonConvert.SerializeObject(survey);
+                DisplayAlert("Alert", jsonsurvey, "OK");
+            }
+            else
+            {
+                DisplayAlert("Error", "Please select an answer", "OK");
             }
         }
     }
