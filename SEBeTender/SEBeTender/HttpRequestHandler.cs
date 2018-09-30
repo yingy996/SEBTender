@@ -1086,10 +1086,33 @@ namespace SEBeTender
             }
         }
 
-        //Submit Response
-        /*public static async Task<string> PostSurveyAnswers(string jsonanswers)
+        //Submit survey Response
+        public static async Task<string> PostSurveyAnswers(string jsonanswers, string username)
         {
+            
+                var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", "surveys"),
+                new KeyValuePair<string,string>("surveyJson", jsonanswers)
+            });
 
-        }*/
+                try
+                {
+
+                    HttpClient client = new HttpClient();
+
+                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appSubmitSurvey.php", parameters);
+
+                    string result = response.Content.ReadAsStringAsync().Result;
+
+                    return result;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Fetch surveys error: " + ex);
+                    return null;
+                }
+            
+        }
     }
 }

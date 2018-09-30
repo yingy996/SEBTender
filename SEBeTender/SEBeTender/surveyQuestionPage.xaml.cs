@@ -768,16 +768,27 @@ namespace SEBeTender
             }
         }
 
-        void onSubmitButtonClicked(object sender, EventArgs e)
+        async void onSubmitButtonClicked(object sender, EventArgs e)
         {
             if (userAnswer != "")
             {
                 string jsonsurvey = JsonConvert.SerializeObject(survey);
-                DisplayAlert("Alert", jsonsurvey, "OK");
+
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostSurveyAnswers(jsonsurvey, userSession.username));
+                while(httpTask == null)
+                {
+                    httpTask = await Task.Run<string>(() => HttpRequestHandler.PostSurveyAnswers(jsonsurvey, userSession.username));
+                }
+                
+                if(httpTask != null)
+                {
+                    await DisplayAlert("Success", "Thank you! Your response have succesfully been submitted", "OK");
+                }
+                
             }
             else
             {
-                DisplayAlert("Error", "Please select an answer", "OK");
+                await DisplayAlert("Error", "Please select an answer", "OK");
             }
         }
     }
