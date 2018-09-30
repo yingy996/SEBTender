@@ -145,6 +145,10 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Survey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)surveyList.xaml.cs">
+      <DependentUpon>surveyList.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)surveyOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)surveyPage.xaml.cs">
       <DependentUpon>surveyPage.xaml</DependentUpon>
@@ -410,6 +414,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)accountRegistrationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)surveyList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
