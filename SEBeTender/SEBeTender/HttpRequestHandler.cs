@@ -84,23 +84,28 @@ namespace SEBeTender
 
         public static async Task<string> PostUserLogin(string username, string password)
         {
-            string cookieResult = "";
+            //string cookieResult = "";
             string responseStatus = "";
+            string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string,string>("VenUserId", username),
-                new KeyValuePair<string,string>("VenPassword", password)
+                //new KeyValuePair<string,string>("VenUserId", username),
+                //new KeyValuePair<string,string>("VenPassword", password)
+                new KeyValuePair<string,string>("username", username),
+                new KeyValuePair<string,string>("password", password)
             });
 
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("http://www2.sesco.com.my/etender/notice/notice_login_set_session.jsp", parameters);
-                Console.WriteLine("Response code: " + response.StatusCode);
+                //var response = await httpClient.PostAsync("http://www2.sesco.com.my/etender/notice/notice_login_set_session.jsp", parameters);
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appUserLogin.php", parameters);
+                
                 responseStatus = response.StatusCode.ToString();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {                   
-                    cookieResult = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
-                    userSession.userLoginCookie = cookieResult;
+                {
+                    //cookieResult = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
+                    userSession.userLoginCookie = "success";
+                    result = await response.Content.ReadAsStringAsync();
                     userSession.username = username;
                     //for future automated login (user just need to login for once and will be kept logged in afterward)
                     Settings.Username = username;
@@ -115,7 +120,7 @@ namespace SEBeTender
             {
                 Console.WriteLine(ex);
             }
-            return "Success";
+            return result;
         }
 
         public static async Task<string> PostAdminLogin(string username, string password)
@@ -134,7 +139,7 @@ namespace SEBeTender
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     result = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("Login success");
+
                     //for future automated login (user just need to login for once and will be kept logged in afterward)
                     Settings.Username = username;
                     Settings.Password = password;
@@ -1060,6 +1065,173 @@ namespace SEBeTender
                 Console.WriteLine(ex);
             }
             return result;
+        }
+
+        public static async Task<String> PostRegisterNewUser(string name, string email, string username, string password, string confPassword)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("name", name),
+                    new KeyValuePair<string,string>("email", email),
+                    new KeyValuePair<string,string>("username", username),
+                    new KeyValuePair<string,string>("password", password),
+                    new KeyValuePair<string,string>("confPassword", confPassword)
+                });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appRegisterUser.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static async Task<String> PostSubmitPollAnswer(string pollID, string optionID, string userID, string answerInText)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                    new KeyValuePair<string,string>("pollID", pollID),
+                    new KeyValuePair<string,string>("optionID", optionID),
+                    new KeyValuePair<string,string>("userID", userID),
+                    new KeyValuePair<string,string>("answerInText", answerInText)
+                });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appInsertPollAnswer.php", parameters);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        //get list of surveys
+        public static async Task<string> PostGetSurveys()
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "surveys")
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch surveys error: " + ex);
+                return null;
+            }
+        }
+
+        //get list of survey questions
+        public static async Task<string> PostGetSurveyQuestions(string surveyID)
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "questions"),
+                new KeyValuePair<string,string>("surveyID", surveyID)
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch survey questions error: " + ex);
+                return null;
+            }
+        }
+
+        //get list of survey question dropdown/radiobox/checkbox answers
+        public static async Task<string> PostGetSurveyQuestionAnswers(string questionID)
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("infoToObtain", "answers"),
+                new KeyValuePair<string,string>("questionID", questionID)
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch survey dropdown/checkbox/radiobox error: " + ex);
+                return null;
+            }
+        }
+
+        //Submit survey Response
+        public static async Task<string> PostSurveyAnswers(string jsonanswers, string username)
+        {
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("username", "surveys"),
+                new KeyValuePair<string,string>("surveyJson", jsonanswers)
+            });
+
+            try
+            {
+
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appSubmitSurvey.php", parameters);
+                if (response.IsSuccessStatusCode)
+                {
+                    result = response.Content.ReadAsStringAsync().Result;
+                }
+                
+                
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch surveys error: " + ex);
+                return null;
+            }
+
         }
     }
 }

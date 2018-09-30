@@ -57,7 +57,7 @@ namespace SEBeTender
             }
             else
             {
-                Console.WriteLine("bookmark is not null ");
+                Console.WriteLine("search is not null ");
                 errorMsg.IsVisible = true;
             }
 
@@ -87,7 +87,7 @@ namespace SEBeTender
             customSearchesItem customSearches = (customSearchesItem)customSearchesSelected;
             List<customSearchesItem> tempcustomSearches = (List<customSearchesItem>)listView.ItemsSource;
 
-            var answer = await DisplayAlert("Remove Custom Search", "Are you sure you want to remove custom search '" + customSearches.identifier + "'?", "YES", "NO");
+            var answer = await DisplayAlert("Remove Favourite Search", "Are you sure you want to remove favourite search '" + customSearches.identifier + "'?", "YES", "NO");
 
             if (answer)
             {
@@ -107,7 +107,7 @@ namespace SEBeTender
                 //Display error message when there are no bookmark
                 if (tempcustomSearches.Count <= 0)
                 {
-                    errorMsg.Text = "No custom searches found.";
+                    errorMsg.Text = "No favourite searches found.";
                     errorMsg.IsVisible = true;
                     upBtn.IsVisible = false;
                 }
