@@ -697,9 +697,12 @@ namespace SEBeTender
         void OnPickerSelectedIndexChanged(object sender, EventArgs e)
         {
             Picker picker = (Picker)sender;
-            string selectedOption = picker.Items[picker.SelectedIndex];
-            userAnswer = selectedOption;
+            surveyOption selectedOption = (surveyOption) picker.SelectedItem;
+            //string selectedOption = picker.Items[picker.SelectedIndex];
+            userAnswer = selectedOption.answerID;
             survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+            //Console.WriteLine("Selected picker option: " + survey.surveyQuestions[currentQuestionCount].responseAnswer);
+            //DisplayAlert("Picker selected", "Selected ID: " + survey.surveyQuestions[currentQuestionCount].responseAnswer, "OK");
         }
 
         void OnTextChanged(object sender, EventArgs e)
@@ -733,6 +736,7 @@ namespace SEBeTender
             {
                 string jsonsurvey = JsonConvert.SerializeObject(survey);
                 DisplayAlert("Alert", jsonsurvey, "OK");
+                Console.WriteLine("JSON: " + jsonsurvey);
             }
             else
             {
