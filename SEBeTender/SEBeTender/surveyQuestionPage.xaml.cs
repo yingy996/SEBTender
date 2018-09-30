@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,19 +10,26 @@ using Xamarin.Forms.Xaml;
 
 namespace SEBeTender
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class surveyQuestionPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class surveyQuestionPage : ContentPage
+    {
         Survey survey = new Survey();
         int currentQuestionCount = 0;
         int currentQuestion = 0;
         bool isFirstLoaded = true;
         string userAnswer = "";
-		public surveyQuestionPage ()
-		{
-			InitializeComponent ();
+        public surveyQuestionPage()
+        {
+        }
 
-            //Create survey item for demo
+        public surveyQuestionPage(Survey surveyitem)
+        {
+            InitializeComponent();
+
+            survey = surveyitem;
+
+            getQuestionAnswers();
+            /*//Create survey item for demo
             surveyQuestion surveyQuestion1 = new surveyQuestion();
             surveyQuestion1.questionID = "11111111";
             surveyQuestion1.questionTitle = "What is your favourite food?";
@@ -63,14 +71,64 @@ namespace SEBeTender
             survey.surveyQuestions = new List<surveyQuestion>();
             survey.surveyQuestions.Add(surveyQuestion1);
             survey.surveyQuestions.Add(surveyQuestion2);
-            survey.surveyQuestions.Add(surveyQuestion3);
+            survey.surveyQuestions.Add(surveyQuestion3);*/
 
             //Display survey question
             surveyTitleLbl.Text = survey.surveyTitle;
             surveyDescLbl.Text = survey.description;
             backButton.IsVisible = false;
-
         }
+
+        async void getQuestionAnswers()
+        {
+            nextButton.IsVisible = false;
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+            //Console.WriteLine("NUMBER OF QUESTIONS" + survey.surveyQuestions.Count());
+            for (int i = 0; i < survey.surveyQuestions.Count(); i++)
+            {
+                string currentnumber = i.ToString();
+                /*surveyQuestion surveyQuestion = new surveyQuestion();
+                surveyQuestion.questionID = survey.surveyQuestions[i].questionID;
+                surveyQuestion.questionTitle = survey.surveyQuestions[i].questionTitle;
+                surveyQuestion.questionType = survey.surveyQuestions[i].questionType;
+                surveyQuestion.surveyID = survey.surveyQuestions[i].surveyID;*/
+
+                List<surveyOption> surveyOptions = new List<surveyOption>();
+
+                /*if (survey.surveyQuestions[i].questionType == "shortsentence")
+                {
+                    survey.surveyQuestions.Add(surveyQuestion);
+                }else if(survey.surveyQuestions[i].questionType == "longsentence")
+                {
+                    survey.surveyQuestions.Add(surveyQuestion);
+                }else*/
+                if (survey.surveyQuestions[i].questionType == "dropdown" || survey.surveyQuestions[i].questionType == "radiobuttons" || survey.surveyQuestions[i].questionType == "checkboxes")
+                {
+
+                    string httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+
+                    while (httpTaskanswers == null)
+                    {
+                        httpTaskanswers = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveyQuestionAnswers(survey.surveyQuestions[i].questionID));
+                    }
+
+                    //if survey question dropdown/radiobutton/checkbox is available, get the list of answers for this particular question
+                    if (httpTaskanswers != null)
+                    {
+
+                        survey.surveyQuestions[i].surveyOptions = JsonConvert.DeserializeObject<List<surveyOption>>(httpTaskanswers.ToString());
+
+                    }
+                }
+            }
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+            nextButton.IsVisible = true;
+        }
+
+
 
         void onNextButtonClicked(object sender, EventArgs e)
         {
@@ -84,16 +142,18 @@ namespace SEBeTender
 
                 questionLayout.IsVisible = true;
 
-                nextButton.Text = "Next";                
-            } else
+                nextButton.Text = "Next";
+            }
+            else
             {
-                              
-                if(userAnswer == "")
+
+                if (userAnswer == "")
                 {
                     //Error is present when input field is empty, user cannot proceed to next question when error is present
                     DisplayAlert("Answer field must not be empty", "Please fill in the answer field.", "OK");
                     isErrorPresent = true;
-                } else
+                }
+                else
                 {
                     //Reset user answer variable 
                     userAnswer = "";
@@ -104,20 +164,24 @@ namespace SEBeTender
                         if (currentQuestionCount == (survey.surveyQuestions.Count - 1))
                         {
                             nextButton.IsVisible = false;
-                        } else
+                            submitButton.IsVisible = true;
+                        }
+                        else
                         {
                             nextButton.IsVisible = true;
+                            submitButton.IsVisible = false;
                         }
                     }
-                    
+
                 }
             }
 
             if (!isErrorPresent)
             {
                 //Display the question when no error present
-                surveyQuestion surveyQuestion = survey.surveyQuestions[currentQuestionCount];
-                pollQuestionLbl.Text = surveyQuestion.questionTitle;
+                surveyQuestion surveyQuestion = new surveyQuestion();
+                surveyQuestion = survey.surveyQuestions[currentQuestionCount];
+                surveyQuestionLbl.Text = surveyQuestion.questionTitle;
                 if (currentQuestionCount != 0)
                 {
                     //Delete the last child (answer field)
@@ -129,7 +193,7 @@ namespace SEBeTender
                 }
 
                 //Create the answer field
-                if (surveyQuestion.questionType == "dropdown")
+                if (surveyQuestion.questionType == "dropdown" || surveyQuestion.questionType == "radiobuttons")
                 {
                     StackLayout stackLayout = new StackLayout();
 
@@ -146,12 +210,15 @@ namespace SEBeTender
                     picker.ItemsSource = surveyQuestion.surveyOptions;
                     picker.ItemDisplayBinding = new Binding("answerTitle");
 
-                    foreach (surveyOption option in picker.ItemsSource)
+                    if (picker.ItemsSource != null)
                     {
-                        if (option.answerTitle == survey.surveyQuestions[currentQuestionCount].responseAnswer)
+                        foreach (surveyOption option in picker.ItemsSource)
                         {
-                            picker.SelectedItem = option;
-                            break;
+                            if (option.answerTitle == survey.surveyQuestions[currentQuestionCount].responseAnswer)
+                            {
+                                picker.SelectedItem = option;
+                                break;
+                            }
                         }
                     }
 
@@ -159,7 +226,7 @@ namespace SEBeTender
                     stackLayout.Children.Add(frame);
                     questionLayout.Children.Add(stackLayout);
                 }
-                else if (surveyQuestion.questionType == "shortAnswer")
+                else if (surveyQuestion.questionType == "shortsentence")
                 {
                     StackLayout stackLayout = new StackLayout();
 
@@ -180,7 +247,7 @@ namespace SEBeTender
                     stackLayout.Children.Add(frame);
                     questionLayout.Children.Add(stackLayout);
                 }
-                else if (surveyQuestion.questionType == "paragraph")
+                else if (surveyQuestion.questionType == "longsentence")
                 {
                     StackLayout stackLayout = new StackLayout();
 
@@ -202,16 +269,42 @@ namespace SEBeTender
                     stackLayout.Children.Add(frame);
                     questionLayout.Children.Add(stackLayout);
                 }
-                else if (surveyQuestion.questionType == "checkbox")
+                else if (surveyQuestion.questionType == "checkboxes")
                 {
+                    //var layout = new StackLayout() { Orientation = StackOrientation.Horizontal };
+                    StackLayout answerLayout = new StackLayout();
+                    //Console.WriteLine("TESTINGGGGGGGG" + surveyQuestion.surveyOptions[0].answerTitle);
+                    if (surveyQuestion.surveyOptions != null)
+                    {
+                        for (int y = 0; y < surveyQuestion.surveyOptions.Count(); y++)
+                        {
+                            StackLayout stackLayout = new StackLayout() { Orientation = StackOrientation.Horizontal };
 
-                }
-                else
-                {
+                            Switch switcher = new Switch();
+                            switcher.StyleId = surveyQuestion.surveyOptions[y].answerID;
+                            switcher.Toggled += switcher_Toggled;
+                            stackLayout.Children.Add(switcher);
+                            stackLayout.Children.Add(new Label()
+                            {
+                                Text = surveyQuestion.surveyOptions[y].answerTitle
+                            });
+
+                            if (survey.surveyQuestions[currentQuestionCount].responseAnswer != "")
+                            {
+                                if (survey.surveyQuestions[currentQuestionCount].responseAnswer == switcher.StyleId)
+                                {
+                                    switcher.IsToggled = true;
+                                }
+                            }
+
+                            answerLayout.Children.Add(stackLayout);
+                        }
+                    }
+                    questionLayout.Children.Add(answerLayout);
 
                 }
             }
-            
+
             /*
             if (userAnswer == "" && surveyTitleLbl.IsVisible == false)
             {
@@ -361,29 +454,34 @@ namespace SEBeTender
                 {
                     backButton.IsVisible = false;
                     nextButton.IsVisible = true;
-                } else
+                    submitButton.IsVisible = false;
+                }
+                else
                 {
                     backButton.IsVisible = true;
-                    if (currentQuestionCount < (survey.surveyQuestions.Count-1))
+                    if (currentQuestionCount < (survey.surveyQuestions.Count - 1))
                     {
                         nextButton.IsVisible = true;
-                    } else
+                        submitButton.IsVisible = false;
+                    }
+                    else
                     {
                         nextButton.IsVisible = false;
+                        submitButton.IsVisible = true;
                     }
                 }
             }
-            
+
             //Delete the last child (answer field)
             var lastChild = questionLayout.Children.Last();
             questionLayout.Children.Remove(lastChild);
 
             //Display previous question
             surveyQuestion surveyQuestion = survey.surveyQuestions[currentQuestionCount];
-            pollQuestionLbl.Text = surveyQuestion.questionTitle;
+            surveyQuestionLbl.Text = surveyQuestion.questionTitle;
 
             //Create the answer field
-            if (surveyQuestion.questionType == "dropdown")
+            if (surveyQuestion.questionType == "dropdown" || surveyQuestion.questionType == "radiobuttons")
             {
                 StackLayout stackLayout = new StackLayout();
 
@@ -413,7 +511,7 @@ namespace SEBeTender
                 stackLayout.Children.Add(frame);
                 questionLayout.Children.Add(stackLayout);
             }
-            else if (surveyQuestion.questionType == "shortAnswer")
+            else if (surveyQuestion.questionType == "shortsentence")
             {
                 StackLayout stackLayout = new StackLayout();
 
@@ -434,7 +532,7 @@ namespace SEBeTender
                 stackLayout.Children.Add(frame);
                 questionLayout.Children.Add(stackLayout);
             }
-            else if (surveyQuestion.questionType == "paragraph")
+            else if (surveyQuestion.questionType == "longsentence")
             {
                 StackLayout stackLayout = new StackLayout();
 
@@ -456,13 +554,38 @@ namespace SEBeTender
                 stackLayout.Children.Add(frame);
                 questionLayout.Children.Add(stackLayout);
             }
-            else if (surveyQuestion.questionType == "checkbox")
+            else if (surveyQuestion.questionType == "checkboxes")
             {
+                StackLayout answerLayout = new StackLayout();
 
-            }
-            else
-            {
+                //Console.WriteLine("TESTINGGGGGGGG" + surveyQuestion.surveyOptions[0].answerTitle);
+                if (surveyQuestion.surveyOptions != null)
+                {
+                    for (int y = 0; y < surveyQuestion.surveyOptions.Count(); y++)
+                    {
+                        StackLayout stackLayout = new StackLayout() { Orientation = StackOrientation.Horizontal };
 
+                        Switch switcher = new Switch();
+                        switcher.StyleId = surveyQuestion.surveyOptions[y].answerID;
+                        switcher.Toggled += switcher_Toggled;
+                        stackLayout.Children.Add(switcher);
+                        stackLayout.Children.Add(new Label()
+                        {
+                            Text = surveyQuestion.surveyOptions[y].answerTitle
+                        });
+
+                        if (survey.surveyQuestions[currentQuestionCount].responseAnswer != "")
+                        {
+                            if (survey.surveyQuestions[currentQuestionCount].responseAnswer == switcher.StyleId)
+                            {
+                                switcher.IsToggled = true;
+                            }
+                        }
+
+                        answerLayout.Children.Add(stackLayout);
+                    }
+                }
+                questionLayout.Children.Add(answerLayout);
             }
 
             /*if (currentQuestionCount > 0)
@@ -586,16 +709,109 @@ namespace SEBeTender
 
         void OnTextChanged(object sender, EventArgs e)
         {
-            if(sender.GetType() == typeof(Entry))
+            if (sender.GetType() == typeof(Entry))
             {
                 Entry entry = (Entry)sender;
                 userAnswer = entry.Text;
                 survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
-            } else if (sender.GetType() == typeof(Editor))
+            }
+            else if (sender.GetType() == typeof(Editor))
             {
                 Editor editor = (Editor)sender;
                 userAnswer = editor.Text;
                 survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+            }
+        }
+
+        void switcher_Toggled(object sender, ToggledEventArgs e)
+        {
+            if (e.Value == true)
+            {
+                if (sender.GetType() == typeof(Switch))
+                {
+                    Switch switcher = (Switch)sender;
+                    if (userAnswer != "")
+                    {
+                        userAnswer = userAnswer + "," + switcher.StyleId;
+                    }
+                    else
+                    {
+                        userAnswer = switcher.StyleId;
+                    }
+
+                    survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+                }
+            }
+            else
+            {
+                if (sender.GetType() == typeof(Switch))
+                {
+                    Switch switcher = (Switch)sender;
+                    string newuserAnswer = "";
+                    string[] useranswers = userAnswer.Split(',');
+                    int loopcount = 0;
+                    foreach (string answer in useranswers)
+                    {
+                        if (answer != switcher.StyleId)
+                        {
+                            if (loopcount == 0)
+                            {
+                                newuserAnswer = answer;
+                                loopcount++;
+                            }
+                            else
+                            {
+                                newuserAnswer = newuserAnswer + "," + answer;
+                                loopcount++;
+                            }
+
+                        }
+                    }
+                    userAnswer = newuserAnswer;
+                    survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
+                    
+                }
+            }
+        }
+
+        async void onSubmitButtonClicked(object sender, EventArgs e)
+        {
+            if (userAnswer != "")
+            {
+                activityIndicator.IsVisible = true;
+                activityIndicator.IsRunning = true;
+                string jsonsurvey = JsonConvert.SerializeObject(survey);
+
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostSurveyAnswers(jsonsurvey, userSession.username));
+                while (httpTask == null)
+                {
+                    httpTask = await Task.Run<string>(() => HttpRequestHandler.PostSurveyAnswers(jsonsurvey, userSession.username));
+                }
+                string httpResult = httpTask.ToString();
+
+                if (httpTask != null)
+                {
+                    activityIndicator.IsVisible = false;
+                    activityIndicator.IsRunning = false;
+                    if(httpResult == "Successfully submitted survey. Thank you for participating!")
+                    {
+                        await DisplayAlert("Success","Successfully submitted survey. Thank you for participating!", "OK");
+                        
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", httpResult, "OK");
+                    }
+                    var page = App.Current.MainPage as rootPage;
+                    var surveyList = new surveyList();
+                    page.changePage(surveyList);
+
+                }
+
+            }
+            else
+            {
+                await DisplayAlert("Error", "Please select an answer", "OK");
             }
         }
     }

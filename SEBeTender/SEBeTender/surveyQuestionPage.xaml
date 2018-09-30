@@ -15,6 +15,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -26,18 +27,21 @@
                     <Label Text="No question found." x:Name="errorMsg" FontAttributes="Italic" IsVisible="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
 
                     <Label x:Name="surveyTitleLbl" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold"/>
-                    
+
                     <BoxView Grid.Row="3" x:Name="firstPageBoxView" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-                    
+
                     <Label x:Name="surveyDescLbl" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
                     <!-- StackLayout for storing question -->
                     <StackLayout Grid.Row="5" Grid.Column="0" Margin="0,10,0,0" x:Name="questionLayout" Grid.ColumnSpan="2" IsVisible="False">
-                        <Label x:Name="pollQuestionLbl" FontAttributes="Bold"/>
+                        <Label x:Name="surveyQuestionLbl" FontAttributes="Bold"/>
                         <BoxView Margin="0,5,0,0" BackgroundColor="LightGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
                     </StackLayout>
 
                     <Button Text="Back" Grid.Row="6" Grid.Column="0" x:Name="backButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="onBackButtonClicked" IsVisible="True"/>
                     <Button Text="Start" Grid.Row="6" Grid.Column="1" x:Name="nextButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="onNextButtonClicked" IsVisible="True"/>
+                    <Button Text="Submit" Grid.Row="7" Grid.ColumnSpan="2" x:Name="submitButton" BackgroundColor="#c0d94e" TextColor="Black" Margin="0,5,0,0" Clicked="onSubmitButtonClicked" IsVisible="False"/>
+
+
                 </Grid>
             </StackLayout>
         </ScrollView>
