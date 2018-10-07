@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-ng-app="">
     <head>
-        <title>myprocurement</title>
+        <title>Telekom tender</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initialscale=1.0"/>
         <!-- Bootstrap -->
@@ -19,165 +19,116 @@
             <label>
 <?php
 
-require('simple_html_dom.php');
-        
+require("simple_html_dom.php");
+require("tender_object.php");
 findMyProcurementTenders();
         
 //Get all  tenders from myProcurement
 function findMyProcurementTenders(){
     $currenthtmlDoc = file_get_html("https://www.tm.com.my/DoingBusinessWithTM/pages/notices.aspx?Year=2018");
-    $htmlNodes = $currenthtmlDoc->find("//table/table/tr");
-    $result = "";
-    
-$tender_number = array();
-$tender_title = array();
-$tender_reference = array();
-$tender_category = array();
-$tender_ministry = array();
-$tender_originator = array();
-$tender_startingdate = array();
-$tender_closingdate = array();
-    
-    while($result != "No next page"){
-        $count = 0;
+    $htmlNodes = $currenthtmlDoc->find("//table");
+    $telekomTenders = array();
 
-            /*require_once("dbcontroller.php");
-                    $db_handle = new DBController();
+    $count = 0;
+    $currentMonth = date("F");
+    $lastMonth = date("F", strtotime("-1 month"));
+    //echo "Last month: " . strtolower($lastMonth);
+    //echo "Current month: " . strtolower($currentMonth);
+    foreach($htmlNodes as $tableNode){
+        if ($count != 0) {
+            $nodeCount = 0;
+            $tenderMonth = $tableNode->parent()->prev_sibling()->innertext;
 
-
-
-                    $query = $db_handle->getConn()->prepare("INSERT INTO myprocurementtender (tender_number, tender_title, tender_reference, tender_category, tender_ministry, tender_originator, tender_startingdate, tender_closingdate) VALUES
-                    (:randomID, :announcement_title, :announcement_content, NOW(), NULL, NULL, :login_user)");
-                    $query->bindParam(":randomID", $randomID);
-                    $query->bindParam(":announcement_title", $announcement_title);
-                    $query->bindParam(":announcement_content", $announcement_content);
-                    $query->bindParam(":login_user", $login_user);
-
-                    $result = $query->execute();*/
-
-
-
-        foreach($htmlNodes as $trNode){
-            //echo $trNode;
-            $tdNodes = $trNode->find("td");
-            $tdNodeCount = count($tdNodes);
-
-            //Required rows starts after 13
-            if($count >=14 && $count <=23){
-                $currentTdCount = 0;
-                foreach($tdNodes as $tdNode){
-                    if(!IsNullOrEmptyString($tdNode)){
-                        $innertdnode = $tdNode->innertext;
-
-
-
-                        switch($currentTdCount){
-                            case 0:
-                                echo "NUMBER: " . $innertdnode . "<br/>";
-                                //$tender_number.push($innertdnode);
-                                break;
-
-                            case 1:
-                                echo "TITLE: " . $innertdnode . "<br/>";
-                                //$tender_title.push($innertdnode);
-                                break;
-
-                            case 2:
-                                echo "Reference: " . $innertdnode . "<br/>";
-                                //$tender_reference.push($innertdnode);
-                                break;
-
-                            case 3:
-                                echo "Kategori Perolehan: " . $innertdnode . "<br/>";
-                                //$tender_category.push($innertdnode);
-                                break;
-
-                            case 4:
-                                echo "Kementerian: " . $innertdnode . "<br/>";
-                                //$tender_ministry.push($innertdnode);
-                                break;
-
-                            case 5:
-                                echo "OriginatingStation: " . $innertdnode . "<br/>";
-                                //$tender_originator.push($innertdnode);
-                                break;
-
-                            case 6:
-                                echo "StartingDate: " . $innertdnode . "<br/>";
-                                //$tender_startingdate.push($innertdnode);
-                                break;
-
-                            case 7:
-                                echo "ClosingDate: " . $innertdnode . "<br/>";
-                                //$tender_closingdate.push($innertdnode);
-                                break;
+            //Only display the tenders published in current month
+            if (strtolower($currentMonth) == strtolower($tenderMonth) || strtolower($lastMonth) == strtolower($tenderMonth)) {
+                $trNodes = $tableNode->find("tr");
+                foreach ($trNodes as $trNode) {
+                    if (trim($trNode->outertext) != ""){
+                        //Skip 0 as the first tr node is the title of the list
+                        if ($nodeCount != 0) {
+                            $tdCount = 0;
+                            //Instantiate a tender object 
+                            $tenderObject = new scrapped_tender();
+                            
+                            $tdNodes = $trNode->find("td");
+                            foreach($tdNodes as $tdNode) {
+                                if (trim($tdNode->innertext) != "") {
+                                    switch ($tdCount) {
+                                        case 0:
+                                            //Published date
+                                            //echo "Published date: " . $tdNode->innertext;
+                                            $tenderObject->startDate = $tdNode->innertext;
+                                            break;
+                                            
+                                        case 1:
+                                            //echo "Title: " . $tdNode->innertext;
+                                            $tenderObject->title = $tdNode->innertext;
+                                            break;
+                                            
+                                        case 2:
+                                            foreach ($tdNode->children as $childNode){
+                                                if (trim($childNode) != "") {
+                                                    if (isset($childNode->href)) {
+                                                        $fileName = trim($childNode->innertext);
+                                                        $link = $childNode->href;
+                                                        //echo "Link: " . $tdNode->innertext; 
+                                                        //echo "Link: " . $link; 
+                                                        $tenderObject->fileLink = $tdNode->innertext;
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                    }
+                                    $tdCount++;
+                                }
+                            }
+                            //Set tender source
+                            $tenderObject->originatingSource = "Telekom";
+                            $tenderObject->tenderSource = 2;
+                            //Add the tender object to array
+                            $telekomTenders[] = $tenderObject;
                         }
-                        echo "<br/>";
-                        echo "<br/>";
-                        $currentTdCount++;
+                        $nodeCount++;
                     }
                 }
-                $count++;
-            }else{
-                $count++;
             }
-
         }
-        
-        $result = getNextPageLink($currenthtmlDoc);
-        if($result != "No next page"){
-            $currenthtmlDoc = file_get_html("http://myprocurement.treasury.gov.my/" . $result);
-        }
+        $count++;
+    }
+    if (count($telekomTenders) > 0) {
+        insertIntoDatabase($telekomTenders);
     }
 }
-                
-//Check if next page exists
-function getNextPageLink($htmlDoc2){
-    $$nextpagelink = "";
-    $htmlNodes = $htmlDoc2->find("//table/tr");
-    
+
+//function to loop through list of tender items in $scrapped_tenders and insert into database
+function insertIntoDatabase($scrapped_tenders){
+    require_once("dbcontroller.php");
+    $db_handle = new DBController();
+    $result = "";
     $count = 0;
-    foreach($htmlNodes as $trNode){
-    
-    $tdNodes = $trNode->find("td");
-    $tdNodeCount = count($tdNodes);
-    //Required row is at 25
-    if($count==25){
-        $currentTdCount = 0;
-        foreach($tdNodes as $tdNode){
-            if(!IsNullOrEmptyString($tdNode)){
-                //$innertdnode = $tdNode->innertext;
-                switch($currentTdCount){
+    while(array_key_exists($count, $scrapped_tenders)){
+        $query = $db_handle->getConn()->prepare("INSERT INTO scrapped_tender (title, originatingSource, tenderSource, startDate, fileLinks) VALUES
+        (:title, :originatingSource, 2, :startDate, :fileLinks)");
+        $query->bindParam(":title", $scrapped_tenders[$count]->title);
+        $query->bindParam(":originatingSource", $scrapped_tenders[$count]->originatingSource);
+        $query->bindParam(":startDate", $scrapped_tenders[$count]->startDate);
+        $query->bindParam(":fileLinks", $scrapped_tenders[$count]->fileLink);
 
-                    case 3:
-                        $linktag = $tdNode->find('a');
-                        $nextpagelink = $linktag[0]->href;
-                        break;
-                }
-                echo "<br/>";
-                echo "<br/>";
-                $currentTdCount++;
-            }
+        $result = $query->execute();
+        if($result == true){
+            $count++;
         }
-        $count++;
-    }else{
-        $count++;
-    }
-}
-    if($finalpagelink == null){
-        return "No next page";
-    }else{
-        return $nextpagelink;
     }
     
-}
-                
+    if ($result) {
+        echo "Tenders have been successfully stored!";
+    }
+}                
 
 // Function for basic field validation (present and neither empty nor only white space
 function IsNullOrEmptyString($str){
     return (!isset($str) || trim($str) === '');
 }
-
 
 ?>
 </label>
