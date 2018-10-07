@@ -291,7 +291,7 @@ function deleteanswerRows(){
 						answertitlerows[x].setAttribute("name", "answer_title0" + questionnum + "0" + x);
 					}
 				}else{
-					alert("caonima");
+					alert("answerrows.length == 0s");
 				}
 		}
     }    
