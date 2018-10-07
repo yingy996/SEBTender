@@ -42,7 +42,7 @@ if(isset($_POST["infoToObtain"])) {
         if(isset($_POST["questionID"])){
             $questionID = sanitizeInput($_POST["questionID"]);
             //Obtain question dropdown/checkbox/radio answers
-            $query = $db_handle->getConn()->prepare("SELECT * FROM survey_questionanswer WHERE questionID = :questionID");
+            $query = $db_handle->getConn()->prepare("SELECT * FROM survey_questionanswer WHERE questionID = :questionID ORDER BY answerTitle");
             $query->bindParam(":questionID", $questionID);
             $query->execute();
             $result = $query->fetchAll();
