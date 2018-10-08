@@ -420,5 +420,67 @@ namespace SEBeTender
 
             return response;
         }
+
+        public static async Task<Object> GetMBKSTender(HtmlDocument htmlDocument)
+        {
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//td[@class='page_Content']/table/tbody/tr");
+            List<tenderItem> tenderItems = new List<tenderItem>();
+            tenderItem tender = new tenderItem();
+
+            int rowCount = 0;
+
+            if (htmlNodes != null)
+            {
+                // traverse tr node
+                foreach (var trNode in htmlNodes)
+                {
+                    if (rowCount > 0)
+                    {
+                        var tdNodes = trNode.ChildNodes;
+                        var tdNodeCount = tdNodes.Count;
+                        int count = 0;
+
+                        // traverse td node
+                        foreach (var tdNode in tdNodes)
+                        {
+                            if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
+                            {
+                                //string nodeString = trNode.InnerHtml.Trim();
+                                var htmlDoc = new HtmlDocument();
+                                htmlDoc.LoadHtml(trNode.InnerHtml);
+
+                                switch (count)
+                                {
+                                    case 0:
+                                        // skip first td
+                                        break;
+
+                                    case 1:
+                                        tender.Reference = htmlDoc.DocumentNode.SelectSingleNode("//a/strong").InnerHtml;
+                                        tender.TendererClass = htmlDoc.DocumentNode.SelectSingleNode("//a").Attributes["href"].Value;
+                                        break;
+
+                                    case 2:
+                                        tender.Title = htmlDoc.DocumentNode.SelectSingleNode("//a/strong").InnerHtml;
+                                        break;
+
+                                    case 3:
+                                        tender.ClosingDate = htmlDoc.DocumentNode.SelectSingleNode("//a/strong").InnerHtml;
+                                        break;
+
+                                }
+                                count++;
+                            }
+                        }
+                        rowCount++;
+                    } else
+                    {
+                        rowCount++;
+                    }
+                }
+            }
+
+            return tenderItems;
+        }
     }
 }
