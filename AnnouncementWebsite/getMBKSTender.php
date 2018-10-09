@@ -52,29 +52,40 @@
 
                                     switch($currentTdCount){
                                         case 0:
-                                            echo "Number: " . $tdNode . "<br/>";
+                                            $num = $tdNode->innertext;
+                                            $num = SanitizeString($num);
+                                            echo $num . "<br/>";
                                             //array_push($tender_number,$tdNode);
                                             break;
 
                                         case 1:
-                                            /*$refnode = $tdNode->children;
-                                            $ref = $refnode->innertext;
-                                            echo "Reference: " . $ref . "<br/>";
-
-                                            $childNode = $tdNode->child;
-                                            $link = $childNode->href;
-                                            echo "LINK: " . $link . "<br/>";*/ 
-
                                             foreach ($tdNode->children as $childNode) 
                                             {
                                                 foreach ($childNode->children as $innertag)
                                                 {
-                                                    $ref = $innertag->innertext;
-                                                    echo "Reference: " . $ref . "<br/>"; 
-                                                }
+                                                    foreach ($innertag->children as $inner2tag)
+                                                    {
+                                                        $ref = $inner2tag->innertext;
+                                                        $ref = SanitizeString($ref);
+                                                        echo "Reference: " . $ref . "<br/>"; 
+                                                    }
 
-                                                $link = $childNode->href;
-                                                echo "<br/>Document Link: " . $mbks_domain . $link . "<br/>";
+                                                    if ($innertag->tag == "strong")
+                                                    {
+                                                        foreach ($innertag->children as $inner2tag)
+                                                        {
+                                                            $link = $inner2tag->href;
+                                                            $link = SanitizeString($link);
+                                                            echo "<br/>Document Link: " . $mbks_domain . $link . "<br/>";
+                                                        }
+
+                                                    } else {
+                                                        $link = $innertag->href;
+                                                        $link = SanitizeString($link);
+                                                        echo "<br/>Document Link: " . $mbks_domain . $link . "<br/>";
+                                                    }
+
+                                                }
                                             }
 
                                             $tenderObject->reference = $ref;
@@ -87,10 +98,12 @@
                                             foreach ($tdNode->children as $childNode) 
                                             {
                                                 $title = $childNode->innertext;
+                                                $title = SanitizeString($title);
                                                 echo "Title: " . $title . "<br/>";
                                             }
 
-                                            $tenderObject->title = $title; //array_push($tender_description,$title);
+                                            $tenderObject->title = $title; 
+                                            //array_push($tender_description,$title);
                                             break;
 
                                         case 3:
@@ -99,7 +112,8 @@
                                                 foreach ($childNode->children as $innertag) 
                                                 {
                                                     $closingDate = $innertag->innertext;
-                                                    echo "Title: " . $closingDate . "<br/>";
+                                                    $closingDate = SanitizeString($closingDate);
+                                                    echo "Closing Date: " . $closingDate . "<br/>";
                                                 }
                                             }
 
@@ -165,8 +179,18 @@
                 }
 
                 // Function for basic field validation (present and neither empty nor only white space
-                function IsNullOrEmptyString($str){
+                function IsNullOrEmptyString($str)
+                {
                     return (!isset($str) || trim($str) === '');
+                }
+                
+                // Function for sanitizing string from html tag or encoding
+                function SanitizeString($str)
+                {
+                    $str = html_entity_decode($str);
+                    $str = strip_tags($str);
+                    
+                    return $str;
                 }
 
                 ?>
