@@ -13,13 +13,20 @@ namespace SEBeTender
         public static async Task<Object> getWebData(string webData, string page)
         {
             var htmlDocument = new HtmlDocument();
+            var procurementhtmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(webData);
+            procurementhtmlDocument.LoadHtml("http://myprocurement.treasury.gov.my/custom/p_iklan_tender.php");
             //var output = "";
 
             if (page == "tender")
             {
                 //Task<Object> getTenderTask = Task.Run<Object>(() => getTenderPage(htmlDocument));
+
+                //Scrape SEB tender websystem
                 Object getTenderTask = await Task.Run<Object>(() => getTenderPage(htmlDocument));
+
+                //Scrape myProcurement websystem
+                Object getProcurementTask = await Task.Run<Object>(() => getProcurementPage(procurementhtmlDocument));
                 //var output = getTenderTask.Result;
                 var output = getTenderTask;
                 //var output = getTenderPage(htmlDocument);
@@ -69,6 +76,56 @@ namespace SEBeTender
                 return output;
             }*/
             return "No result";
+        }
+        public static async Task<Object> getProcurementPage(HtmlDocument procurementhtmlDocument)
+        {
+            var htmlNodes = procurementhtmlDocument.DocumentNode.SelectNodes("//table/table/tr");
+            var count = 0;
+            List<tenderItem> tenderItems = new List<tenderItem>();
+            foreach (var trNode in htmlNodes)
+            {
+                var tdNodes = trNode.ChildNodes;
+                var tdNodeCount = tdNodes.Count;
+
+                if(count != 0)
+                {
+                    var currentdCount = 0;
+                    tenderItem tender = new tenderItem();
+                    foreach (var tdNode in tdNodes)
+                    {
+                        if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
+                        {
+                            switch (currentdCount)
+                            {
+                                case 1:
+                                    foreach (var childNode in tdNode.ChildNodes)
+                                    {
+                                        if (!String.IsNullOrWhiteSpace(childNode.InnerHtml))
+                                        {
+                                            if (childNode.NodeType != HtmlNodeType.Comment)
+                                            {
+                                                tender.Title = childNode.OuterHtml.Trim();
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case 2:
+                                    tender.Reference = tdNode.InnerHtml.Trim();
+                                    break;
+                                case 5:
+                                    tender.OriginatingStation = tdNode.InnerHtml.Trim();
+                                    break;
+                                case 7:
+                                    tender.ClosingDate = tdNode.InnerHtml.Trim();
+                                    break;
+
+                            }
+                        }
+                    }
+                    tenderItems.Add(tender);
+                }
+            }
+            return tenderItems;
         }
 
         public static async Task<Object> getTenderPage(HtmlDocument htmlDocument)
