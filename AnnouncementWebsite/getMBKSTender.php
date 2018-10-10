@@ -95,13 +95,30 @@
                                             break;
 
                                         case 2:
+                                            // Use this loop when the tags are span -> strong 
                                             foreach ($tdNode->children as $childNode) 
                                             {
                                                 $title = $childNode->innertext;
                                                 $title = SanitizeString($title);
-                                                echo "Title: " . $title . "<br/>";
                                             }
 
+                                            // Use this loop when the tags are span -> strong -> span
+                                            if (IsNullOrEmptyString($title))
+                                            {
+                                                // span
+                                                foreach ($tdNode->children as $childNode) 
+                                                {
+                                                    // strong
+                                                    foreach ($childNode->children as $innertag)
+                                                    {
+                                                        $title = $innertag->innertext;
+                                                        $title = SanitizeString($title);
+                                                    } 
+                                                }
+                                            }
+
+                                            $title = SanitizeString($title);
+                                            echo "Title: " . $title . "<br/>";
                                             $tenderObject->title = $title; 
                                             //array_push($tender_description,$title);
                                             break;
@@ -113,10 +130,10 @@
                                                 {
                                                     $closingDate = $innertag->innertext;
                                                     $closingDate = SanitizeString($closingDate);
-                                                    echo "Closing Date: " . $closingDate . "<br/>";
                                                 }
                                             }
 
+                                            echo "Closing Date: " . $closingDate . "<br/>";
                                             $tenderObject->closingDate = $closingDate;
                                             //array_push($tender_closingdate,$tdNode);
                                             break;
@@ -183,13 +200,13 @@
                 {
                     return (!isset($str) || trim($str) === '');
                 }
-                
+
                 // Function for sanitizing string from html tag or encoding
                 function SanitizeString($str)
                 {
                     $str = html_entity_decode($str);
                     $str = strip_tags($str);
-                    
+
                     return $str;
                 }
 
