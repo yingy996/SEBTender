@@ -26,7 +26,7 @@
                     $currenthtmlDoc = file_get_html("http://www.mbks.sarawak.gov.my/modules/web/pages.php?mod=webpage&sub=page&id=1382");
                     $htmlNodes = $currenthtmlDoc->find("//table/tbody/tr/td[@class='page_Content']/table/tbody/tr");
 
-                    $mbks_domain = "http://www.mbks.gov.my";
+                    //$mbks_domain = "http://www.mbks.gov.my";
                     /*
                     $reference = ""; 
                     $link = ""; 
@@ -54,7 +54,7 @@
                                         case 0:
                                             $num = $tdNode->innertext;
                                             $num = SanitizeString($num);
-                                            echo $num . "<br/>";
+                                            //echo $num . "<br/>";
                                             //array_push($tender_number,$tdNode);
                                             break;
 
@@ -63,11 +63,13 @@
                                             {
                                                 foreach ($childNode->children as $innertag)
                                                 {
+                                                    $links = array();
+                                                    
                                                     foreach ($innertag->children as $inner2tag)
                                                     {
                                                         $ref = $inner2tag->innertext;
                                                         $ref = SanitizeString($ref);
-                                                        echo "Reference: " . $ref . "<br/>"; 
+                                                        //echo "Reference: " . $ref . "<br/>"; 
                                                     }
 
                                                     if ($innertag->tag == "strong")
@@ -76,20 +78,22 @@
                                                         {
                                                             $link = $inner2tag->href;
                                                             $link = SanitizeString($link);
-                                                            echo "<br/>Document Link: " . $mbks_domain . $link . "<br/>";
+                                                            //echo "<br/>Document Link: " . $link . "<br/>";
                                                         }
 
                                                     } else {
                                                         $link = $innertag->href;
                                                         $link = SanitizeString($link);
-                                                        echo "<br/>Document Link: " . $mbks_domain . $link . "<br/>";
+                                                        //echo "<br/>Document Link: " . $link . "<br/>";
                                                     }
 
+                                                    $links[$ref] = $link;
                                                 }
                                             }
 
                                             $tenderObject->reference = $ref;
-                                            $tenderObject->fileLink = $mbks_domain . $link;
+
+                                            $tenderObject->fileLink = json_encode($links);
                                             //array_push($tender_reference,$ref);
                                             //array_push($tender_downloadlink,$link);
                                             break;
@@ -118,7 +122,7 @@
                                             }
 
                                             $title = SanitizeString($title);
-                                            echo "Title: " . $title . "<br/>";
+                                            //echo "Title: " . $title . "<br/>";
                                             $tenderObject->title = $title; 
                                             //array_push($tender_description,$title);
                                             break;
@@ -133,13 +137,13 @@
                                                 }
                                             }
 
-                                            echo "Closing Date: " . $closingDate . "<br/>";
+                                            //echo "Closing Date: " . $closingDate . "<br/>";
                                             $tenderObject->closingDate = $closingDate;
                                             //array_push($tender_closingdate,$tdNode);
                                             break;
 
                                     }
-                                    echo "<br/>";
+                                    //echo "<br/>";
                                     $currentTdCount++;
                                 }
                             }
@@ -155,7 +159,7 @@
                         } else {
                             $rowCount++;
                         }
-                        echo "<hr/>";
+                        //echo "<hr/>";
                     }
 
                     // Call function to insert scrapped tenders into database after finish looping
@@ -191,7 +195,7 @@
                     }
 
                     if ($result) {
-                        echo "Tenders have been successfully stored!";
+                        //echo "Tenders have been successfully stored!";
                     }
                 }
 
