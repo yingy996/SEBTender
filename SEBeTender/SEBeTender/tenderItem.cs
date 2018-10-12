@@ -6,9 +6,27 @@ namespace SEBeTender
 {
     public class tenderItem
     {
-        private string reference = "", title = "", originatingStation = "", closingDate = "", biddingClosingDate = "", feeBeforeGST = "", feeGST = "", feeAfterGST = "", tendererClass = "", name = "", officePhone = "", extension = "", mobilePhone = "", email = "", fax = "", checkedValue = "", addToCartQuantity = "1"; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
+        private string company = "", reference = "", title = "", originatingStation = "", closingDate = "", biddingClosingDate = "", feeBeforeGST = "", feeGST = "", feeAfterGST = "", tendererClass = "", name = "", officePhone = "", extension = "", mobilePhone = "", email = "", fax = "", checkedValue = "", addToCartQuantity = "1", category = "", tenderSource = "", agency = ""; //checkedValue is used to store the checkbox value to post the data to add tender to cart 
         private string bookmarkImage = "bookmark.png";
         private Dictionary<string, string> fileLinks = new Dictionary<string, string>();
+
+        public string Company
+        {
+            get { return company; }
+            set { company = value; }
+        }
+
+        public string TenderSource
+        {
+            get { return tenderSource; }
+            set { tenderSource = value; }
+        }
+
+        public string Agency
+        {
+            get { return agency; }
+            set { agency = value; }
+        }
 
         public string Reference
         {
@@ -20,6 +38,12 @@ namespace SEBeTender
         {
             get { return title; }
             set { title = value; }
+        }
+
+        public string Category
+        {
+            get { return category; }
+            set { category = value; }
         }
 
         public string OriginatingStation

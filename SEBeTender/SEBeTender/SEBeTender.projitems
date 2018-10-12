@@ -139,6 +139,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)rootPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)scrapped_tender.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)searchTenderPage.xaml.cs">
       <DependentUpon>searchTenderPage.xaml</DependentUpon>
       <SubType>Code</SubType>

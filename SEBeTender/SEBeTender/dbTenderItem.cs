@@ -8,7 +8,11 @@ namespace SEBeTender
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
+        public string Company { get; set; }
         public string Reference { get; set; }
+        public string TenderSource { get; set; }
+        public string Agency { get; set; }
+        public string Category { get; set; }
         public string Title { get; set; }
         public string OriginatingStation { get; set; }
         public string ClosingDate { get; set; }

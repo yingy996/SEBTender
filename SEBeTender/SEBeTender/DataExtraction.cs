@@ -52,7 +52,14 @@ namespace SEBeTender
                 Task<Object> getContactPerson = Task.Run<Object>(() => getContactPersonPage(htmlDocument));
                 var output = getContactPerson.Result;
                 return output;
-            } /*else if (page == "userChangePassword")
+            } else if (page == "telekom")
+            {
+                Task<Object> getTelekomTenderTask = Task.Run<Object>(() => getTelekomTender(htmlDocument));
+                var output = getTelekomTenderTask.Result;
+                return output;
+            } 
+            
+            /*else if (page == "userChangePassword")
             {
                 Object getChangePassword = Task.Run<Object>(() => getChangePasswordPage(htmlDocument));
                 var output = getChangePassword;
@@ -73,6 +80,7 @@ namespace SEBeTender
 
         public static async Task<Object> getTenderPage(HtmlDocument htmlDocument)
         {
+            //Getting Sarawak Energy tenders
             var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//tbody/tr");
             int rowCount = 0;
 
@@ -227,7 +235,7 @@ namespace SEBeTender
                                     }
                                 }
                             }
-
+                            tender.Company = "Sarawak Energy";
                             tenderItems.Add(tender);
                         }
 
@@ -298,6 +306,7 @@ namespace SEBeTender
                 }
                 if (childNodeCount == 7)
                 {
+                    tender.Company = "Sarawak Energy";
                     tenderItems.Add(tender);
                     childNodeCount = 0;
                 }
@@ -419,6 +428,87 @@ namespace SEBeTender
             }
 
             return response;
+        }
+
+        public static async Task<Object> getTelekomTender(HtmlDocument htmlDocument)
+        {
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//table");
+            int count = 0;
+
+            //List to store tender items
+            List<tenderItem> tenderItems = new List<tenderItem>();
+            DateTime currentDateTime = DateTime.Now;
+            //Loop through the table nodes to get the list of tenders
+            foreach (HtmlNode node in htmlNodes)
+            {
+                //Console.WriteLine("Node html nodes runned");
+                if (count != 0)
+                {
+                    int nodeCount = 0;
+                    string tenderMonth = node.ParentNode.PreviousSibling.InnerHtml;
+                    string lastMonth = currentDateTime.AddMonths(-1).ToString("MMMM").ToLower();
+                    //Only display the tenders published in current month
+                    if (currentDateTime.ToString("MMMM").ToLower() == tenderMonth.ToLower() || lastMonth == tenderMonth.ToLower())
+                    {
+                        //Loop through the tr nodes in the table node
+                        foreach (var trNode in node.ChildNodes)
+                        {
+                            
+                            if (!String.IsNullOrWhiteSpace(trNode.OuterHtml))
+                            {
+                                //Skip 0 as the first tr node is the title of the list
+                                if (nodeCount != 0)
+                                {
+                                    int tdCount = 0;
+                                    tenderItem tender = new tenderItem();
+                                    tender.OriginatingStation = "Telekom";
+                                    foreach (var tdNode in trNode.ChildNodes)
+                                    {
+                                        if (!String.IsNullOrWhiteSpace(tdNode.InnerHtml))
+                                        {
+                                            switch (tdCount)
+                                            {
+                                                case 0:
+                                                    //Console.WriteLine("Date: " + tdNode.InnerHtml);
+                                                    break;
+                                                case 1:
+                                                    tender.Title = tdNode.InnerHtml;
+                                                    //Console.WriteLine("Tender Title: " + tdNode.InnerHtml);
+                                                    break;
+                                                case 2:
+                                                    foreach (var childNode in tdNode.ChildNodes)
+                                                    {
+                                                        if (!String.IsNullOrWhiteSpace(childNode.InnerHtml))
+                                                        {
+                                                            if (childNode.Attributes["href"] != null)
+                                                            {
+                                                                string fileName = childNode.InnerHtml.Trim();
+                                                                string link = childNode.Attributes["href"].Value;
+                                                                tender.FileLinks[fileName] = childNode.Attributes["href"].Value;
+                                                                //Console.WriteLine("Link: " + childNode.Attributes["href"].Value);
+                                                                //Console.WriteLine("Link Name: " + childNode.InnerHtml.Trim());
+                                                            }
+
+                                                        }
+                                                    }
+                                                    break;
+                                            }
+                                            tdCount++;
+                                        }
+                                    }
+                                    tender.Company = "Telekom";
+                                    tenderItems.Add(tender);
+                                }
+                                nodeCount++;
+                            }
+                        }
+                    }
+                    
+                }
+                count++;
+            }
+
+            return tenderItems;
         }
     }
 }
