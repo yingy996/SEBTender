@@ -71,9 +71,9 @@
                             </Frame>
 
 
-                            <Label Text="Originating Station:" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center"/>
+                            <Label Text="Originating Source:" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center"/>
                             <Frame CornerRadius="5" Grid.Row="3" Grid.Column="1" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
-                                <Picker x:Name="stationPicker">
+                                <Picker x:Name="sourcePicker">
                                     <Picker.Items>
                                     </Picker.Items>
                                 </Picker>
@@ -92,7 +92,7 @@
                                 <DatePicker.Format>dd-MM-yyyy</DatePicker.Format>
                             </DatePicker>
 
-                            <Label Text="E-Bidding Closing Date:" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
+                            <!--<Label Text="E-Bidding Closing Date:" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
 
                             <Label Text="From:" Grid.Row="8" Grid.Column="0" FontSize="Micro"/>
                             <Label Text="To:" Grid.Row="8" Grid.Column="1" FontSize="Micro"/>
@@ -103,7 +103,7 @@
 
                             <DatePicker Date="{x:Static sys:DateTime.Now}" Grid.Row="9" Grid.Column="1" x:Name="bidclosingdateTo">
                                 <DatePicker.Format>dd-MM-yyyy</DatePicker.Format>
-                            </DatePicker>
+                            </DatePicker>-->
 
                             <Button Text="Search" x:Name="searchButton" VerticalOptions="End" Grid.Row="10" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black"/>
                             <Button Text="Clear"  x:Name="clearButton" VerticalOptions="Start" Grid.Row="10" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black"/>

@@ -82,6 +82,69 @@ namespace SEBeTender
             return result;
          }
 
+        //get originating source from web database
+        public static async Task<string> searchGetOriginatingSource(string url)
+        {
+            string responseStatus = "";
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("retrieveOriginatingSource", "retrieveOriginatingSource")
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync(url, parameters);
+                responseStatus = response.StatusCode.ToString();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    result = response.Content.ReadAsStringAsync().Result;
+                    
+                }
+            }
+            catch
+            {
+                return "Error: " + responseStatus + ". Please try again";
+            }
+            return result;
+        }
+        
+
+        
+        //get tender search result from web database
+        public static async Task<string> searchTendersFromDatabase(string url, string tenderReference, string tenderTitle, string originatingSource, string closingDateFrom, string  closingDateTo)
+        {
+            string responseStatus = "";
+            string result = "";
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("searchReference", tenderReference),
+                new KeyValuePair<string,string>("searchTitle", tenderTitle),
+                new KeyValuePair<string,string>("searchOriginatingSource", originatingSource),
+                new KeyValuePair<string,string>("searchClosingDate", closingDateFrom),
+                new KeyValuePair<string, string>("searchCLosingDateTo", closingDateTo)
+            });
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.PostAsync(url, parameters);
+                responseStatus = response.StatusCode.ToString();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    result = response.Content.ReadAsStringAsync().Result;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return result;
+
+        }
+
         public static async Task<string> PostUserLogin(string username, string password)
         {
             //string cookieResult = "";
@@ -1148,6 +1211,7 @@ namespace SEBeTender
             }
         }
 
+        
         //get list of survey questions
         public static async Task<string> PostGetSurveyQuestions(string surveyID)
         {

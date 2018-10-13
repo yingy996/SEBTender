@@ -1,5 +1,7 @@
 ﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +36,7 @@ namespace SEBeTender
             //var httpResult = httpTask.Result.ToString();
 
             //HtmlDocument htmlDoc = retrieveOriginatingStation().Result;
-            retrieveOriginatingStation();
+            retrieveOriginatingSource();
 
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
@@ -44,13 +46,13 @@ namespace SEBeTender
             //set datepicker text color to light gray to simulate not-filled
             closingdateFrom.TextColor = Color.LightGray;
             closingdateTo.TextColor = Color.LightGray;
-            bidclosingdateFrom.TextColor = Color.LightGray;
-            bidclosingdateTo.TextColor = Color.LightGray;
+            /*bidclosingdateFrom.TextColor = Color.LightGray;
+            bidclosingdateTo.TextColor = Color.LightGray;*/
 
             closingdateFrom.DateSelected += DatePicker_DateSelected;
             closingdateTo.DateSelected += DatePicker_DateSelected;
-            bidclosingdateFrom.DateSelected += DatePicker_DateSelected;
-            bidclosingdateTo.DateSelected += DatePicker_DateSelected;
+            /*bidclosingdateFrom.DateSelected += DatePicker_DateSelected;
+            bidclosingdateTo.DateSelected += DatePicker_DateSelected;*/
             //---------End DatePicker Control Section-----------
             
             stkTab2.IsVisible = false;
@@ -224,28 +226,30 @@ namespace SEBeTender
 
 
 
-        async Task retrieveOriginatingStation()
+        async Task retrieveOriginatingSource()
         {
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
-            //Send Http request to retrieve search page originating station drop down
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
+            //Retrieve list of originating source from online tender database
+            /*string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
+            var httpResult = httpTask;*/
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.searchGetOriginatingSource("https://sebannouncement.000webhostapp.com/process_appSearchTenders.php"));
             var httpResult = httpTask;
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
 
-            //--------Station Picker Control Section----------------------------------------------
+            //--------Originating Source Picker Control Section----------------------------------------------
             //Small data extraction to extract Station dropdown selects/options to fill Picker
-            HtmlDocument htmlDoc = new HtmlDocument();
-            HtmlNode.ElementsFlags.Remove("option");
-            htmlDoc.LoadHtml(httpResult);
-            var stationList = new List<string>();
-            foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
-            {
-                stationList.Add(node.InnerText);
-            }
-            stationPicker.ItemsSource = stationList;
-            stationPicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
+            
+            var sourceList = new List<string>();
+            //List<String> originatingSourceList = new ArrayList<String>();
+
+
+            sourceList = JsonConvert.DeserializeObject<List<string>>(httpResult);
+
+
+            sourcePicker.ItemsSource = sourceList;
+            sourcePicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
             //---------End Station Picker Control Section-----------------------------------------
 
             //setting globalHtmlDoc to be used in another constructor with parameter
