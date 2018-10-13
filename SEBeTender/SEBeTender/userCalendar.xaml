@@ -6,8 +6,11 @@
              x:Class="SEBeTender.userCalendar" Title="Pocket Tender">
     <ContentPage.Content>
         <StackLayout>
+            <ContentView Padding="10,0,0,0">
+                <Label Text="*Each dot represent the closing date of a tender" FontAttributes="Italic"/>
+            </ContentView>
             <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
-            <syncfusion:SfCalendar x:Name="calendar" />
+            <syncfusion:SfCalendar x:Name="calendar" TransitionMode="Float" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -15,7 +15,7 @@ namespace SEBeTender
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class userCalendar : ContentPage
 	{
-        //private Random rnd = new Random();
+        private Random rnd = new Random();
 
         public userCalendar ()
 		{
@@ -38,14 +38,14 @@ namespace SEBeTender
 
         async void RetrieveBookmarkedTender()
         {
-            activityIndicator.IsVisible = true;
-            activityIndicator.IsRunning = true;
+            //activityIndicator.IsVisible = true;
+            //activityIndicator.IsRunning = true;
 
             string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostTenderBookmark(userSession.username));
             var httpResult = httpTask;
 
-            activityIndicator.IsVisible = false;
-            activityIndicator.IsRunning = false;
+            //activityIndicator.IsVisible = false;
+            //activityIndicator.IsRunning = false;
 
             if (httpResult != null)
             {
@@ -69,7 +69,7 @@ namespace SEBeTender
         {
             //SfCalendar calendar = new SfCalendar();
             calendar.ShowInlineEvents = true;
-
+            
             CalendarEventCollection collection = new CalendarEventCollection();
 
             //string closingdate = "2018-04-30 00:00:00";   //working date format
@@ -83,13 +83,41 @@ namespace SEBeTender
             foreach (var bookmark in tenderBookmarks)
             {
                 CalendarInlineEvent events = new CalendarInlineEvent();
+
+                /*
+                // If only closingDate exist
+                if (String.IsNullOrEmpty(bookmark.startDate))
+                {
+                    events.StartTime = DateTime.Parse(bookmark.closingDate);
+                    events.EndTime = events.StartTime;
+                    events.Subject = bookmark.tenderTitle;
+                }
+                // If only startDate exist
+                else if (String.IsNullOrEmpty(bookmark.closingDate))
+                {
+                    events.StartTime = DateTime.Parse(bookmark.startDate);
+                    events.EndTime = events.StartTime;
+                    events.Subject = bookmark.tenderTitle;
+                }
+                // If both startDate and closingDate exist
+                else
+                {
+                    events.StartTime = DateTime.Parse(bookmark.startDate);
+                    events.EndTime = DateTime.Parse(bookmark.closingDate);
+                    events.Subject = bookmark.tenderTitle;
+                }*/
+
+
                 events.StartTime = DateTime.Parse(bookmark.closingDate);
-                events.EndTime = events.StartTime;
+                events.EndTime = DateTime.Parse(bookmark.closingDate);
                 events.Subject = bookmark.tenderTitle;
 
-                // random event color
-                //Color randomColor = Color.FromRgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                 events.Color = Color.Navy;
+                /*
+                // random event color
+                Color randomColor = Color.FromRgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                events.Color = randomColor;
+                */
 
                 collection.Add(events);
             }
