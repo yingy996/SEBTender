@@ -19,111 +19,108 @@
         <div class="container container-fluid">
             <label><?php
 
-require("simple_html_dom.php");
-require("tender_object.php");             
-findMyProcurementTenders();
- 
+require('simple_html_dom.php');
 
+findMyProcurementTenders();
+        
 //Get all  tenders from myProcurement
 function findMyProcurementTenders(){
-    //list of scrapped_tender object
-    
-    $scrapped_tenders = array();  
-    
     $currenthtmlDoc = file_get_html("http://myprocurement.treasury.gov.my/custom/p_iklan_tender.php");
-    
-    
     $htmlNodes = $currenthtmlDoc->find("//table/table/tr");
     $result = "";
     
-/*$tender_number = array();
+$tender_number = array();
 $tender_title = array();
 $tender_reference = array();
 $tender_category = array();
 $tender_ministry = array();
 $tender_originator = array();
 $tender_startingdate = array();
-$tender_closingdate = array();*/
+$tender_closingdate = array();
     
     while($result != "No next page"){
-        
         $count = 0;
+
+            /*require_once("dbcontroller.php");
+                    $db_handle = new DBController();
+
+
+
+                    $query = $db_handle->getConn()->prepare("INSERT INTO myprocurementtender (tender_number, tender_title, tender_reference, tender_category, tender_ministry, tender_originator, tender_startingdate, tender_closingdate) VALUES
+                    (:randomID, :announcement_title, :announcement_content, NOW(), NULL, NULL, :login_user)");
+                    $query->bindParam(":randomID", $randomID);
+                    $query->bindParam(":announcement_title", $announcement_title);
+                    $query->bindParam(":announcement_content", $announcement_content);
+                    $query->bindParam(":login_user", $login_user);
+
+                    $result = $query->execute();*/
+
+
+
         foreach($htmlNodes as $trNode){
             //echo $trNode;
             $tdNodes = $trNode->find("td");
             $tdNodeCount = count($tdNodes);
-            
+
             //Required rows starts after 13
             if($count >=14 && $count <=23){
                 $currentTdCount = 0;
-                $scrappedTender = new scrapped_tender();
-                
-                
-                //for each td nodes in one tr
                 foreach($tdNodes as $tdNode){
                     if(!IsNullOrEmptyString($tdNode)){
-                        
                         $innertdnode = $tdNode->innertext;
-                        
+
+
+
                         switch($currentTdCount){
                             case 0:
-                                //if first column contains a link, this means that the row is past the tender rows and there are no more tenders
                                 $link = $tdNode->find('a');
                                 if($link !=null){
-                                    break 3;
+                                    return;
                                 }
-                                //echo "NUMBER: " . $innertdnode . "<br/>";
-                                //array_push($tender_number,$innertdnode);
-                                //$scrappedTender->reference = $innertdnode;
+                                echo "NUMBER: " . $innertdnode . "<br/>";
+                                array_push($tender_number,$innertdnode);
                                 break;
 
                             case 1:
-                                //echo "TITLE: " . $innertdnode . "<br/>";
-                                //array_push($tender_title,$innertdnode);
-                                $scrappedTender->title = strip_tags($innertdnode);
-                                //echo $scrappedTender->title;
+                                echo "TITLE: " . $innertdnode . "<br/>";
+                                array_push($tender_title,$innertdnode);
                                 break;
 
                             case 2:
-                                //echo "Reference: " . $innertdnode . "<br/>";
-                                //array_push($tender_reference,$innertdnode);
-                                $scrappedTender->reference = strip_tags($innertdnode);
+                                echo "Reference: " . $innertdnode . "<br/>";
+                                array_push($tender_reference,$innertdnode);
                                 break;
 
                             case 3:
-                                //echo "Kategori Perolehan: " . $innertdnode . "<br/>";
-                                //array_push($tender_category,$innertdnode);
-                                $scrappedTender->category = strip_tags($innertdnode);
+                                echo "Kategori Perolehan: " . $innertdnode . "<br/>";
+                                array_push($tender_category,$innertdnode);
                                 break;
 
                             case 4:
-                                //echo "Kementerian: " . $innertdnode . "<br/>";
-                                //array_push($tender_ministry,$innertdnode);
-                                $scrappedTender->originatingSource = strip_tags($innertdnode);
+                                echo "Kementerian: " . $innertdnode . "<br/>";
+                                array_push($tender_ministry,$innertdnode);
                                 break;
 
                             case 5:
-                                //echo "Agency: " . $innertdnode . "<br/>";
-                                //array_push($tender_originator,$innertdnode);
-                                $scrappedTender->agency = strip_tags($innertdnode);
+                                echo "OriginatingStation: " . $innertdnode . "<br/>";
+                                array_push($tender_originator,$innertdnode);
                                 break;
 
                             case 6:
-                                //echo "StartingDate: " . $innertdnode . "<br/>";
-                                //array_push($tender_startingdate,$innertdnode);
-                                $scrappedTender->startDate = strip_tags($innertdnode);
+                                echo "StartingDate: " . $innertdnode . "<br/>";
+                                array_push($tender_startingdate,$innertdnode);
                                 break;
 
                             case 7:
-                                //echo "ClosingDate: " . $innertdnode . "<br/>";
-                                //array_push($tender_closingdate,$innertdnode);
-                                $scrappedTender->closingDate = strip_tags($innertdnode);
+                                echo "ClosingDate: " . $innertdnode . "<br/>";
+                                array_push($tender_closingdate,$innertdnode);
                                 break;
                         }
+                        echo "<br/>";
+                        echo "<br/>";
                         $currentTdCount++;
                     }
                 }
-                $scrapped_tenders[] = $scrappedTender;
                 $count++;
             }else{
                 $count++;
@@ -132,29 +129,21 @@ $tender_closingdate = array();*/
         }
         
         $result = getNextPageLink($currenthtmlDoc);
-        if($result == "No next page"){
-            break;
+        if($result != "No next page"){
+            $currenthtmlDoc = file_get_html("http://myprocurement.treasury.gov.my" . $result);
+            $htmlNodes = $currenthtmlDoc->find("//table/table/tr");
         }
-        $currenthtmlDoc = file_get_html("http://myprocurement.treasury.gov.my" . $result);
-        $htmlNodes = $currenthtmlDoc->find("//table/table/tr");
-        
     }
-    
-    //call function to insert scrapped tenders into database
-    insertIntoDatabase($scrapped_tenders);
 }
                 
 //Check if next page exists
 function getNextPageLink($htmlDoc2){
     $nextpagelink = "";
-    
     $htmlNodes = $htmlDoc2->find("//table/tr");
     
     $count = 0;
-    //foreach trnode
     foreach($htmlNodes as $trNode){
     
-    //foreach tdnode 
     $tdNodes = $trNode->find("td");
     $tdNodeCount = count($tdNodes);
     //Required row is at 25
@@ -164,14 +153,14 @@ function getNextPageLink($htmlDoc2){
             if(!IsNullOrEmptyString($tdNode)){
                 //$innertdnode = $tdNode->innertext;
                 switch($currentTdCount){
-                    //at td number 3
+
                     case 3:
                         $linktag = $tdNode->find('a');
                         $nextpagelink = $linktag[0]->href;
-                        
                         break;
                 }
-                
+                echo "<br/>";
+                echo "<br/>";
                 $currentTdCount++;
             }
         }
@@ -180,45 +169,15 @@ function getNextPageLink($htmlDoc2){
         $count++;
     }
 }
-    //if link starts with /cust then returns link, if not then final page is reached
-    if(substr($nextpagelink,0,5) === "/cust"){
-        
-        return $nextpagelink;
-        
-    }else{
-        
+    if($nextpagelink == null){
         return "No next page";
+    }else{
+        return $nextpagelink;
     }
     
-    
 }
                 
-//function to loop through list of tender items in $scrapped_tenders and insert into database
-function insertIntoDatabase($scrapped_tenders){
-    require_once("dbcontroller.php");
-                    $db_handle = new DBController();
-                    
-                    $count = 0;
-                    while(array_key_exists($count,$scrapped_tenders)){
-                        $query = $db_handle->getConn()->prepare("INSERT INTO scrapped_tender (reference, title, category, originatingSource, tenderSource, agency, closingDate, startDate) VALUES
-                        (:reference, :title, :category, :originatingSource, 0, :agency, STR_TO_DATE(:startDate, '%d/%m/%y'), STR_TO_DATE(:closingDate, '%d/%m/%y'))");
-                        
-                        $query->bindParam(":reference", $scrapped_tenders[$count]->reference);
-                        $query->bindParam(":title", $scrapped_tenders[$count]->title);
-                        $query->bindParam(":category", $scrapped_tenders[$count]->category);
-                        $query->bindParam(":originatingSource", $scrapped_tenders[$count]->originatingSource);
-                        //$query->bindParam(":tenderSource", "0");
-                        $query->bindParam(":agency", $scrapped_tenders[$count]->agency);
-                        $query->bindParam(":startDate", $scrapped_tenders[$count]->startDate);
-                        $query->bindParam(":closingDate", $scrapped_tenders[$count]->closingDate);
 
-                        $result = $query->execute();
-                        if($result == true){
-                            $count++;
-                        }
-                    }
-}
-                
 // Function for basic field validation (present and neither empty nor only white space
 function IsNullOrEmptyString($str){
     return (!isset($str) || trim($str) === '');

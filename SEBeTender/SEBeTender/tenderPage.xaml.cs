@@ -92,37 +92,150 @@ namespace SEBeTender
             }
             else
             {
-                //Sending HTTP request to obtain the tender page data
-                string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
-                var httpResult = httpTask;
-                
+                //Sending HTTP request to obtain the SEB tender page data
+                //string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
+                //var httpResult = httpTask;
+
                 //Extract tender data from the response
-                var tenders = await DataExtraction.getWebData(httpResult, "tender");
-                List<tenderItem> tenderItems = (List<tenderItem>)tenders;
-                
+                //var tenders = await DataExtraction.getWebData(httpResult, "tender");
+
+                //Retrieve Telekom tenders
+                //string httpTaskTelekom = await Task.Run<string>(() => getPageData("https://www.tm.com.my/DoingBusinessWithTM/pages/notices.aspx?Year=2018"));
+                //var httpResultTelekom = httpTaskTelekom;
+                //Console.WriteLine("TELEKOM: " + httpTaskTelekom);
+                //Extract tender data from the response
+                //var tendersTelekom = await DataExtraction.getWebData(httpResultTelekom, "telekom");
+
+                //List<tenderItem> tenderItems = (List<tenderItem>)tendersTelekom;
+                //tenderItems.AddRange((List<tenderItem>)tenders);
                 //Get bookmark details from online database
-                if (userSession.username != "")
+
+                List<scrapped_tender> scrappedTenders = new List<scrapped_tender>();
+                List<tenderItem> tenderItems = new List<tenderItem>();
+                //Retrieve tenders from server
+                string url = "https://pockettender.000webhostapp.com/process_getTenders.php";
+                string httpTaskResult = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url, false));
+
+                if (httpTaskResult != null)
                 {
-                    List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
-                    List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
-                    if (tenderBookmarks.Count > 0)
+                    if (httpTaskResult != "No tender found")
                     {
-                        foreach (var tenderItem in tenderItems)
+                        scrappedTenders = JsonConvert.DeserializeObject<List<scrapped_tender>>(httpTaskResult); 
+
+                        if (scrappedTenders != null)
                         {
-                            foreach (var tenderBookmark in tenderBookmarks)
+                            Console.WriteLine("Number of scrapped tenders: " + scrappedTenders.Count);
+                            //Convert scrapped tender item into tender item
+                            foreach (scrapped_tender scrappedTender in scrappedTenders)
                             {
-                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                tenderItem tender = new tenderItem();
+                                tender.Company = scrappedTender.originatingSource;
+                                tender.TenderSource = scrappedTender.tenderSource;
+                                tender.Reference = scrappedTender.reference;
+                                tender.Agency = scrappedTender.agency;
+                                tender.Title = scrappedTender.title;
+                                tender.Category = scrappedTender.category;
+                                tender.OriginatingStation = scrappedTender.originatingSource;
+                                tender.ClosingDate = scrappedTender.closingDate;
+
+                                //{"bidCloseDate":"N\/A","feeBeforeGST":"RM 0.00","feeGST":"RM 0.00","feeAfterGST":"RM 0.00"}
+                                //{ "name":"Francesca Lim","officePhone":"082-441188","extension":"1126","mobilePhone":null,"email":null,"fax":null}
+                                //{"PMS106-14-Instruction.pdf":"http:\/\/www2.sesco.com.my\/noticeDoc\/PMS106-14-Instruction.pdf"}
+
+                                if (scrappedTender.docInfoJson != null)
                                 {
-                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                    break;
+                                    dynamic docInfo = JsonConvert.DeserializeObject(scrappedTender.docInfoJson);
+                                    if (docInfo.bidCloseDate != null)
+                                    {
+                                        tender.BidClosingDate = docInfo.bidCloseDate;
+                                    }
+
+                                    if (docInfo.feeBeforeGST != null)
+                                    {
+                                        tender.FeeBeforeGST = docInfo.feeBeforeGST;
+                                    }
+
+                                    if (docInfo.feeGST != null)
+                                    {
+                                        tender.FeeGST = docInfo.feeGST;
+                                    }
+
+                                    if (docInfo.feeAfterGST != null)
+                                    {
+                                        tender.FeeAfterGST = docInfo.feeAfterGST;
+                                    }
                                 }
+
+                                if (scrappedTender.originatorJson != null)
+                                {
+                                    dynamic originatorInfo = JsonConvert.DeserializeObject(scrappedTender.originatorJson);
+                                    if (originatorInfo.name != null)
+                                    {
+                                        tender.Name = originatorInfo.name;
+                                    }
+
+                                    if (originatorInfo.officePhone != null)
+                                    {
+                                        tender.OffinePhone = originatorInfo.officePhone;
+                                    }
+
+                                    if (originatorInfo.extension != null)
+                                    {
+                                        tender.Extension = originatorInfo.extension;
+                                    }
+
+                                    if (originatorInfo.mobilePhone != null)
+                                    {
+                                        tender.MobilePhone = originatorInfo.mobilePhone;
+                                    }
+
+                                    if (originatorInfo.email != null)
+                                    {
+                                        tender.Email = originatorInfo.email;
+                                    }
+
+                                    if (originatorInfo.fax != null)
+                                    {
+                                        tender.Fax = originatorInfo.fax;
+                                    }
+                                }
+
+                                if (scrappedTender.fileLinks != null)
+                                {
+                                    Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(scrappedTender.fileLinks);
+                                    tender.FileLinks = fileLinks;
+                                    //{"Folder 1.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 1.zip","Folder 2.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 2.zip","Folder 3.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 3.zip","Folder 4.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 4.zip"}
+                                }
+                                tenderItems.Add(tender);
+                            }
+                        }                      
+
+                        if (userSession.username != "")
+                        {
+                            List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                            List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+                            if (tenderBookmarks.Count > 0)
+                            {
+                                foreach (var tenderItem in tenderItems)
+                                {
+                                    foreach (var tenderBookmark in tenderBookmarks)
+                                    {
+                                        if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                        {
+                                            tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                            break;
+                                        }
+                                    }
+                                }
+
                             }
                         }
-
+                        Console.WriteLine("Num of tender items: " + tenderItems.Count);
+                        listView.ItemsSource = tenderItems;
                     }
                 }
-                
-                listView.ItemsSource = tenderItems;
+
+
                 //Save page 1 tenders to database
                 await saveToTenderDb(tenderItems, 1);
 
@@ -134,8 +247,6 @@ namespace SEBeTender
 
                 await WaitAndExecuteUpdateTenders(10800000);
             }
-            
-
         }
 
         public async Task WaitAndExecuteUpdateTenders(int milisec)
@@ -143,13 +254,147 @@ namespace SEBeTender
             await Task.Delay(milisec);
 
             //Sending HTTP request to obtain the tender page data
-            string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
+            /*string httpTask = await Task.Run<string>(() => getPageData("http://www2.sesco.com.my/etender/notice/notice.jsp"));
             var httpResult = httpTask;
 
             //Extract tender data from the response
             var tenders = await DataExtraction.getWebData(httpResult, "tender");
-            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
 
+            //Retrieve Telekom tenders
+            string httpTaskTelekom = await Task.Run<string>(() => getPageData("https://www.tm.com.my/DoingBusinessWithTM/pages/notices.aspx?Year=2018"));
+            var httpResultTelekom = httpTaskTelekom;
+            //Console.WriteLine("TELEKOM:" + httpResultTelekom);
+            //Extract tender data from the response
+            var tendersTelekom = await DataExtraction.getWebData(httpResultTelekom, "telekom");
+
+            List<tenderItem> tenderItems = (List<tenderItem>)tendersTelekom;
+            tenderItems.AddRange((List<tenderItem>)tenders);
+            //List<tenderItem> tenderItems = (List<tenderItem>)tenders;
+            */
+
+            List<scrapped_tender> scrappedTenders = new List<scrapped_tender>();
+            List<tenderItem> tenderItems = new List<tenderItem>();
+            //Retrieve tenders from server
+            string url = "https://pockettender.000webhostapp.com/process_getTenders.php";
+            string httpTaskResult = await Task.Run<string>(() => HttpRequestHandler.GetRequest(url, false));
+
+            if (httpTaskResult != null)
+            {
+                if (httpTaskResult != "No tender found")
+                {
+                    scrappedTenders = JsonConvert.DeserializeObject<List<scrapped_tender>>(httpTaskResult);
+                    
+                    //Convert scrapped tender item into tender item
+                    if (scrappedTenders != null)
+                    {
+                        foreach (scrapped_tender scrappedTender in scrappedTenders)
+                        {
+                            tenderItem tender = new tenderItem();
+                            tender.Company = scrappedTender.originatingSource;
+                            tender.TenderSource = scrappedTender.tenderSource;
+                            tender.Reference = scrappedTender.reference;
+                            tender.Agency = scrappedTender.agency;
+                            tender.Title = scrappedTender.title;
+                            tender.Category = scrappedTender.category;
+                            tender.OriginatingStation = scrappedTender.originatingSource;
+                            tender.ClosingDate = scrappedTender.closingDate;
+
+                            //{"bidCloseDate":"N\/A","feeBeforeGST":"RM 0.00","feeGST":"RM 0.00","feeAfterGST":"RM 0.00"}
+                            //{ "name":"Francesca Lim","officePhone":"082-441188","extension":"1126","mobilePhone":null,"email":null,"fax":null}
+                            //{"PMS106-14-Instruction.pdf":"http:\/\/www2.sesco.com.my\/noticeDoc\/PMS106-14-Instruction.pdf"}
+
+                            if (scrappedTender.docInfoJson != null)
+                            {
+                                dynamic docInfo = JsonConvert.DeserializeObject(scrappedTender.docInfoJson);
+                                if (docInfo.bidCloseDate != null)
+                                {
+                                    tender.BidClosingDate = docInfo.bidCloseDate;
+                                }
+
+                                if (docInfo.feeBeforeGST != null)
+                                {
+                                    tender.FeeBeforeGST = docInfo.feeBeforeGST;
+                                }
+
+                                if (docInfo.feeGST != null)
+                                {
+                                    tender.FeeGST = docInfo.feeGST;
+                                }
+
+                                if (docInfo.feeAfterGST != null)
+                                {
+                                    tender.FeeAfterGST = docInfo.feeAfterGST;
+                                }
+                            }
+
+                            if (scrappedTender.originatorJson != null)
+                            {
+                                dynamic originatorInfo = JsonConvert.DeserializeObject(scrappedTender.originatorJson);
+                                if (originatorInfo.name != null)
+                                {
+                                    tender.Name = originatorInfo.name;
+                                }
+
+                                if (originatorInfo.officePhone != null)
+                                {
+                                    tender.OffinePhone = originatorInfo.officePhone;
+                                }
+
+                                if (originatorInfo.extension != null)
+                                {
+                                    tender.Extension = originatorInfo.extension;
+                                }
+
+                                if (originatorInfo.mobilePhone != null)
+                                {
+                                    tender.MobilePhone = originatorInfo.mobilePhone;
+                                }
+
+                                if (originatorInfo.email != null)
+                                {
+                                    tender.Email = originatorInfo.email;
+                                }
+
+                                if (originatorInfo.fax != null)
+                                {
+                                    tender.Fax = originatorInfo.fax;
+                                }
+                            }
+
+                            if (scrappedTender.fileLinks != null)
+                            {
+                                Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(scrappedTender.fileLinks);
+                                tender.FileLinks = fileLinks;
+                                //{"Folder 1.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 1.zip","Folder 2.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 2.zip","Folder 3.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 3.zip","Folder 4.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 4.zip"}
+                            }
+                            tenderItems.Add(tender);
+                        }
+                    }                    
+
+                    if (userSession.username != "")
+                    {
+                        List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                        List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+                        if (tenderBookmarks.Count > 0)
+                        {
+                            foreach (var tenderItem in tenderItems)
+                            {
+                                foreach (var tenderBookmark in tenderBookmarks)
+                                {
+                                    if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                    {
+                                        tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                    listView.ItemsSource = tenderItems;
+                }
+            }
             DisplayAlert("Update Tenders", "Updating tender listing. Please wait while the update is running...", "Okay");
             //Display the activity indicator to show activity running in the background 
             activityIndicator.IsRunning = true;
@@ -211,7 +456,11 @@ namespace SEBeTender
             foreach (tenderItem item in tenderItems)
             {
                 dbTenderItem dbTenderItem = new dbTenderItem();
+                dbTenderItem.Company = item.Company;
                 dbTenderItem.Reference = item.Reference;
+                dbTenderItem.TenderSource = item.TenderSource;
+                dbTenderItem.Category = item.Category;
+                dbTenderItem.Agency = item.Agency;
                 dbTenderItem.Title = item.Title;
                 dbTenderItem.OriginatingStation = item.OriginatingStation;
                 dbTenderItem.ClosingDate = item.ClosingDate;
@@ -248,7 +497,11 @@ namespace SEBeTender
             {
                 Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.FileLinks);
                 tenderItem tenderitem = new tenderItem();
+                tenderitem.Company = item.Company;
                 tenderitem.Reference = item.Reference;
+                tenderitem.TenderSource = item.TenderSource;
+                tenderitem.Category = item.Category;
+                tenderitem.Agency = item.Agency;
                 tenderitem.Title = item.Title;
                 tenderitem.OriginatingStation = item.OriginatingStation;
                 tenderitem.ClosingDate = item.ClosingDate;
@@ -386,7 +639,6 @@ namespace SEBeTender
                 i = i + 1;
 
                 var httpResult = httpTask.ToString();
-
 
                 //Small data extraction to get "Next" and "Previous" page hyperlinks
                 var htmlDoc = new HtmlDocument();
