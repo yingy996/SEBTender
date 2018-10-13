@@ -57,7 +57,7 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             //Show tenders from database first if exists, then clear database to make way for new tenders
             List<tenderItem> dbtenders1 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
-            List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
+            //List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
             if (dbtenders1.Count > 0)
             {
                 if (userSession.username != "")
@@ -82,10 +82,10 @@ namespace SEBeTender
                 }
 
                 listView.ItemsSource = dbtenders1;
-                if (dbtenders2.Count > 0)
+                /*if (dbtenders2.Count > 0)
                 {
                     nextPage.IsVisible = true;
-                }
+                }*/
                 activityIndicator.IsRunning = false;
                 activityIndicator.IsVisible = false;
                 await WaitAndExecuteUpdateTenders(10000);
@@ -887,12 +887,6 @@ namespace SEBeTender
                     }
                 }
             }
-            
-
-            //Display tender list with or without bookmark
-
-            //send request to database everyone user tap on bookmark 
-            
         }
     }
 }
