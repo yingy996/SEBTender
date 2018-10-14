@@ -113,7 +113,7 @@ namespace SEBeTender
                 }
 
                 //Remove bookmark from database
-                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(customSearches.searchID, customSearches.tenderReference, customSearches.tenderTitle, customSearches.originatingStation, customSearches.closingDateFrom, customSearches.closingDateTo, customSearches.biddingclosingDateFrom, customSearches.biddingclosingDateTo, userSession.username, customSearches.identifier, "delete"));
+                string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(customSearches.searchID, customSearches.tenderReference, customSearches.tenderTitle, customSearches.originatingSource, customSearches.closingDateFrom, customSearches.closingDateTo, userSession.username, customSearches.identifier, "delete"));
                 Console.WriteLine(customSearches.identifier);
                 var httpResult = httpTask.ToString();
                 Console.WriteLine(httpResult);
@@ -122,7 +122,7 @@ namespace SEBeTender
                 while (count < 3 && httpResult != "Success")
                 {
                     Console.WriteLine("Looping for failure delete");
-                    httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(customSearches.searchID, customSearches.tenderReference, customSearches.tenderTitle, customSearches.originatingStation, customSearches.closingDateFrom, customSearches.closingDateTo, customSearches.biddingclosingDateFrom, customSearches.biddingclosingDateTo, userSession.username, customSearches.identifier, "delete"));
+                    httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(customSearches.searchID, customSearches.tenderReference, customSearches.tenderTitle, customSearches.originatingSource, customSearches.closingDateFrom, customSearches.closingDateTo, userSession.username, customSearches.identifier, "delete"));
                     httpResult = httpTask.ToString();
                     count++;
                 }

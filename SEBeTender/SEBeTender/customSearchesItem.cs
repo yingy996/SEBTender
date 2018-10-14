@@ -12,15 +12,11 @@ namespace SEBeTender
 
         public string tenderTitle { get; set; }
 
-        public string originatingStation { get; set; }
+        public string originatingSource { get; set; }
 
         public string closingDateFrom { get; set; }
 
         public string closingDateTo { get; set; }
-
-        public string biddingclosingDateFrom { get; set; }
-
-        public string biddingclosingDateTo { get; set; }
 
         public string username { get; set; }
 
