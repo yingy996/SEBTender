@@ -57,7 +57,7 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
             //Show tenders from database first if exists, then clear database to make way for new tenders
             List<tenderItem> dbtenders1 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
-            List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
+            //List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
             if (dbtenders1.Count > 0)
             {
                 if (userSession.username != "")
@@ -70,10 +70,20 @@ namespace SEBeTender
                         {
                             foreach (var tenderBookmark in tenderBookmarks)
                             {
-                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                if (tenderItem.Reference != "" && tenderItem.Reference != null)
                                 {
-                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                    break;
+                                    if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                    {
+                                        tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                        break;
+                                    }
+                                } else
+                                {
+                                    if (tenderItem.Title == tenderBookmark.tenderTitle)
+                                    {
+                                        tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -82,10 +92,10 @@ namespace SEBeTender
                 }
 
                 listView.ItemsSource = dbtenders1;
-                if (dbtenders2.Count > 0)
+                /*if (dbtenders2.Count > 0)
                 {
                     nextPage.IsVisible = true;
-                }
+                }*/
                 activityIndicator.IsRunning = false;
                 activityIndicator.IsVisible = false;
                 await WaitAndExecuteUpdateTenders(10000);
@@ -220,10 +230,21 @@ namespace SEBeTender
                                 {
                                     foreach (var tenderBookmark in tenderBookmarks)
                                     {
-                                        if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                        if (tenderItem.Reference != "" && tenderItem.Reference != null)
                                         {
-                                            tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                            break;
+                                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                            {
+                                                tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (tenderItem.Title == tenderBookmark.tenderTitle)
+                                            {
+                                                tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                                break;
+                                            }
                                         }
                                     }
                                 }
@@ -381,10 +402,21 @@ namespace SEBeTender
                             {
                                 foreach (var tenderBookmark in tenderBookmarks)
                                 {
-                                    if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                    if (tenderItem.Reference != "" && tenderItem.Reference != null)
                                     {
-                                        tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                        break;
+                                        if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                        {
+                                            tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (tenderItem.Title == tenderBookmark.tenderTitle)
+                                        {
+                                            tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -427,12 +459,23 @@ namespace SEBeTender
                     {
                             foreach (var tenderBookmark in tenderBookmarks)
                             {
+                            if (tenderItem.Reference != "" && tenderItem.Reference != null)
+                            {
                                 if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
                                 {
                                     tenderItem.BookmarkImage = "bookmarkfilled.png";
                                     break;
                                 }
                             }
+                            else
+                            {
+                                if (tenderItem.Title == tenderBookmark.tenderTitle)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                        }
                      }
 
                  }
@@ -683,10 +726,21 @@ namespace SEBeTender
                     {
                         foreach (var tenderBookmark in tenderBookmarks)
                         {
-                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                            if (tenderItem.Reference != "" && tenderItem.Reference != null)
                             {
-                                tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                break;
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (tenderItem.Title == tenderBookmark.tenderTitle)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
                             }
                         }
                     }
@@ -766,10 +820,21 @@ namespace SEBeTender
                     {
                         foreach (var tenderBookmark in tenderBookmarks)
                         {
-                            if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                            if (tenderItem.Reference != "" && tenderItem.Reference != null)
                             {
-                                tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                break;
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (tenderItem.Title == tenderBookmark.tenderTitle)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
                             }
                         }
                     }
@@ -847,12 +912,19 @@ namespace SEBeTender
                 var tenderSelected = ((TappedEventArgs)eventArgs).Parameter;
                 tenderItem tender = (tenderItem)tenderSelected;
                 //var image = sender as Image;
-                Console.WriteLine("Image now is: " + ((Image)sender).Source.ToString());
+                //Console.WriteLine("Image now is: " + ((Image)sender).Source.ToString());
 
                 if (((Image)sender).Source.ToString() == "File: bookmarkfilled.png")
                 {
                     ((Image)sender).Source = "bookmark.png";
-                    DisplayAlert("Cancel bookmark", "Tender '" + tender.Reference + "' has been removed from bookmark!", "OK");
+                    if (tender.Reference == "")
+                    {
+                        DisplayAlert("Cancel bookmark", "Tender has been removed from bookmark!", "OK");
+                    } else
+                    {
+                        DisplayAlert("Cancel bookmark", "Tender '" + tender.Reference + "' has been removed from bookmark!", "OK");
+                    }
+                    
 
                     string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageTenderBookmark(userSession.username, tender, "delete"));
                     var httpResult = httpTask.ToString();
@@ -871,13 +943,20 @@ namespace SEBeTender
                 else
                 {
                     ((Image)sender).Source = "bookmarkfilled.png";
-                    DisplayAlert("Add bookmark", "Tender '" + tender.Reference + "' has been successfully added to bookmark!", "OK");
-
+                    if (tender.Reference == "")
+                    {
+                        DisplayAlert("Add bookmark", "Tender has been successfully added to bookmark!", "OK");
+                    }
+                    else
+                    {
+                        DisplayAlert("Add bookmark", "Tender '" + tender.Reference + "' has been successfully added to bookmark!", "OK");
+                    }
+                    
                     string httpTask = await Task.Run<string>(() => HttpRequestHandler.PostManageTenderBookmark(userSession.username, tender, "add"));
                     var httpResult = httpTask.ToString();
-                    Console.WriteLine(httpResult);
+                    Console.WriteLine("Add bookmark result: " + httpResult + " tender: " + tender.OriginatingStation );
                     int count = 0;
-
+                    
                     while (count < 3 && httpResult != "Success")
                     {
                         Console.WriteLine("Looping for failure add");
@@ -887,12 +966,6 @@ namespace SEBeTender
                     }
                 }
             }
-            
-
-            //Display tender list with or without bookmark
-
-            //send request to database everyone user tap on bookmark 
-            
         }
     }
 }
