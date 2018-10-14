@@ -47,7 +47,7 @@ namespace SEBeTender
             return result;
         }
 
-        public static async Task<string> SearchPostRequest(string url, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingClosingDateFrom, string biddingClosingDateTo)
+        /*public static async Task<string> SearchPostRequest(string url, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingClosingDateFrom, string biddingClosingDateTo)
         {
             HttpClient client = new HttpClient();
             string result = "";
@@ -80,7 +80,7 @@ namespace SEBeTender
             }
 
             return result;
-         }
+         }*/
 
         //get originating source from web database
         public static async Task<string> searchGetOriginatingSource(string url)
@@ -115,14 +115,22 @@ namespace SEBeTender
         //get tender search result from web database
         public static async Task<string> searchTendersFromDatabase(string url, string tenderReference, string tenderTitle, string originatingSource, string closingDateFrom, string  closingDateTo)
         {
+            /*if (tenderReference == "")
+            {
+                Console.WriteLine("TENDER REFERENCE" + tenderReference);
+            }
+            Console.WriteLine("TenderTitle: "+tenderTitle);
+            Console.WriteLine("Originatingsource: "+originatingSource);
+            Console.WriteLine("ClosingDateFrom: " +closingDateFrom);
+            Console.WriteLine("ClosingDateTo: " + closingDateTo);*/
             string responseStatus = "";
             string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string,string>("searchReference", tenderReference),
                 new KeyValuePair<string,string>("searchTitle", tenderTitle),
                 new KeyValuePair<string,string>("searchOriginatingSource", originatingSource),
-                new KeyValuePair<string,string>("searchClosingDate", closingDateFrom),
-                new KeyValuePair<string, string>("searchCLosingDateTo", closingDateTo)
+                new KeyValuePair<string,string>("searchClosingDateFrom", closingDateFrom),
+                new KeyValuePair<string, string>("searchClosingDateTo", closingDateTo)
             });
 
             HttpClient httpClient = new HttpClient();

@@ -195,7 +195,7 @@ namespace SEBeTender
                 tenderItem tenderitem = new tenderItem();
                 tenderitem.Reference = item.Reference;
                 tenderitem.Title = item.Title;
-                tenderitem.OriginatingStation = item.OriginatingStation;
+                tenderitem.OriginatingStation = item.OriginatingSource;
                 tenderitem.ClosingDate = item.ClosingDate;
                 tenderitem.BidClosingDate = item.BidClosingDate;
                 tenderitem.FeeBeforeGST = item.FeeBeforeGST;
@@ -235,7 +235,7 @@ namespace SEBeTender
                 dbTenderItem dbTenderItem = new dbTenderItem();
                 dbTenderItem.Reference = item.Reference;
                 dbTenderItem.Title = item.Title;
-                dbTenderItem.OriginatingStation = item.OriginatingStation;
+                dbTenderItem.OriginatingSource = item.OriginatingStation;
                 dbTenderItem.ClosingDate = item.ClosingDate;
                 dbTenderItem.BidClosingDate = item.BidClosingDate;
                 dbTenderItem.FeeBeforeGST = item.FeeBeforeGST;

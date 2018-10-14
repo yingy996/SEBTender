@@ -15,7 +15,7 @@ namespace SEBeTender
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class searchTenderPage : ContentPage
     {
-        string selectedStation = "";
+        string selectedSource = "";
         string closingdatefrom = "";
         string closingdateto = "";
         string bidclosingdatefrom = "";
@@ -30,41 +30,9 @@ namespace SEBeTender
             username = adminAuth.Username;
             password = adminAuth.Password;
 
-
-            //Send Http request to retrieve search page originating station drop down
-            //Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
-            //var httpResult = httpTask.Result.ToString();
-
-            //HtmlDocument htmlDoc = retrieveOriginatingStation().Result;
-            retrieveOriginatingSource();
-
-            var tapRecognizer = new TapGestureRecognizer();
-            tapRecognizer.Tapped += OnSearchBookmarkTapped;
-            bookmarkImg.GestureRecognizers.Add(tapRecognizer);
+            displaySearchFields();
+           
             
-            //---------DatePicker Control Section---------------
-            //set datepicker text color to light gray to simulate not-filled
-            closingdateFrom.TextColor = Color.LightGray;
-            closingdateTo.TextColor = Color.LightGray;
-            /*bidclosingdateFrom.TextColor = Color.LightGray;
-            bidclosingdateTo.TextColor = Color.LightGray;*/
-
-            closingdateFrom.DateSelected += DatePicker_DateSelected;
-            closingdateTo.DateSelected += DatePicker_DateSelected;
-            /*bidclosingdateFrom.DateSelected += DatePicker_DateSelected;
-            bidclosingdateTo.DateSelected += DatePicker_DateSelected;*/
-            //---------End DatePicker Control Section-----------
-            
-            stkTab2.IsVisible = false;
-            normalTabButton.TextColor = Color.White;
-            keywordTabButton.TextColor = Color.White;
-            //normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
-            //keywordTabButton.BackgroundColor = Color.FromHex("#527DD4");
-            searchButton.Clicked += OnSubmitButtonClicked;
-            clearButton.Clicked += OnClearButtonClicked;
-
-            keywordSubmitButton.Clicked += OnKeywordSubmitButtonClicked;
-            keywordClearButton.Clicked += OnClearButtonClicked;
 
            
 
@@ -78,21 +46,49 @@ namespace SEBeTender
             username = adminAuth.Username;
             password = adminAuth.Password;
 
-            /*retrieveOriginatingStation();
+            displayBookmarkedSearchFields(aCustomSearchItem);
+        }
 
-            HtmlDocument htmlDoc = globalHtmlDoc;          
+        async void displaySearchFields()
+        {
+            await retrieveOriginatingSource();
+
+            var tapRecognizer = new TapGestureRecognizer();
+            tapRecognizer.Tapped += OnSearchBookmarkTapped;
+            bookmarkImg.GestureRecognizers.Add(tapRecognizer);
+
+            //---------DatePicker Control Section---------------
+            //set datepicker text color to light gray to simulate not-filled
+            closingdateFrom.TextColor = Color.LightGray;
+            closingdateTo.TextColor = Color.LightGray;
+
+            closingdateFrom.DateSelected += DatePicker_DateSelected;
+            closingdateTo.DateSelected += DatePicker_DateSelected;
+            //---------End DatePicker Control Section-----------
+
+            stkTab2.IsVisible = false;
+            normalTabButton.TextColor = Color.White;
+            keywordTabButton.TextColor = Color.White;
+            //normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
+            //keywordTabButton.BackgroundColor = Color.FromHex("#527DD4");
+            searchButton.Clicked += OnSubmitButtonClicked;
+            clearButton.Clicked += OnClearButtonClicked;
+
+            keywordSubmitButton.Clicked += OnKeywordSubmitButtonClicked;
+            keywordClearButton.Clicked += OnClearButtonClicked;
+        }
+
+        async void displayBookmarkedSearchFields(customSearchesItem aCustomSearchItem)
+        {
+            await retrieveOriginatingSource();
+
+            HtmlDocument htmlDoc = globalHtmlDoc;
             var stationList = new List<string>();
 
-            if (htmlDoc != null)
-            {
-                foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
-                {
-                    stationList.Add(node.InnerText);
-                }
-            }*/
             
+
             //Send Http request to retrieve search page originating station drop down
-            Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
+            /*Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
             var httpResult = httpTask.Result.ToString();
     
             //--------Station Picker Control Section----------------------------------------------
@@ -105,10 +101,10 @@ namespace SEBeTender
             {
                 stationList.Add(node.InnerText);
             }
-            stationPicker.ItemsSource = stationList;
-            stationPicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
+            sourcePicker.ItemsSource = stationList;
+            sourcePicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
             //---------End Station Picker Control Section-----------------------------------------
-            
+            */
 
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
@@ -118,13 +114,13 @@ namespace SEBeTender
             //set datepicker text color to light gray to simulate not-filled
             closingdateFrom.TextColor = Color.LightGray;
             closingdateTo.TextColor = Color.LightGray;
-            bidclosingdateFrom.TextColor = Color.LightGray;
-            bidclosingdateTo.TextColor = Color.LightGray;
+            /*bidclosingdateFrom.TextColor = Color.LightGray;
+            bidclosingdateTo.TextColor = Color.LightGray;*/
 
             closingdateFrom.DateSelected += DatePicker_DateSelected;
             closingdateTo.DateSelected += DatePicker_DateSelected;
-            bidclosingdateFrom.DateSelected += DatePicker_DateSelected;
-            bidclosingdateTo.DateSelected += DatePicker_DateSelected;
+            /*bidclosingdateFrom.DateSelected += DatePicker_DateSelected;
+            bidclosingdateTo.DateSelected += DatePicker_DateSelected;*/
             //---------End DatePicker Control Section-----------
 
             stkTab2.IsVisible = false;
@@ -171,8 +167,8 @@ namespace SEBeTender
                         {
                             if (stationList[x] == aCustomSearchItem.originatingStation)
                             {
-                                stationPicker.SelectedIndex = x;
-                                selectedStation = aCustomSearchItem.originatingStation;
+                                sourcePicker.SelectedIndex = x;
+                                selectedSource = aCustomSearchItem.originatingStation;
                             }
                             else if (x == stationList.Count - 1 && stationList[x] != aCustomSearchItem.originatingStation)
                             {
@@ -181,7 +177,7 @@ namespace SEBeTender
                         }
 
                     }
-                }              
+                }
 
                 if (!string.IsNullOrEmpty(aCustomSearchItem.closingDateFrom))
                 {
@@ -194,17 +190,7 @@ namespace SEBeTender
                     closingdateTo.Date = DateTime.Parse(aCustomSearchItem.closingDateTo);
                     closingdateTo.TextColor = Color.Black;
                 }
-
-                if (!string.IsNullOrEmpty(aCustomSearchItem.biddingclosingDateFrom)) {
-                    bidclosingdateFrom.Date = DateTime.Parse(aCustomSearchItem.biddingclosingDateFrom);
-                    closingdateTo.TextColor = Color.Black;
-                }
-
-                if(!string.IsNullOrEmpty(aCustomSearchItem.biddingclosingDateTo)){
-                    bidclosingdateTo.Date = DateTime.Parse(aCustomSearchItem.biddingclosingDateTo);
-                    bidclosingdateTo.TextColor = Color.Black;
-                }
-            }  
+            }
         }
 
         //Custom tab control
@@ -233,27 +219,33 @@ namespace SEBeTender
             //Retrieve list of originating source from online tender database
             /*string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
             var httpResult = httpTask;*/
-            string httpTask = await Task.Run<string>(() => HttpRequestHandler.searchGetOriginatingSource("https://sebannouncement.000webhostapp.com/process_appSearchTenders.php"));
+            string httpTask = await Task.Run<string>(() => HttpRequestHandler.searchGetOriginatingSource("https://pockettender.000webhostapp.com/process_appSearchTenders.php"));
             var httpResult = httpTask;
+            
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
 
             //--------Originating Source Picker Control Section----------------------------------------------
-            //Small data extraction to extract Station dropdown selects/options to fill Picker
-            
+            //retrieve list of originating sources
+            var originatingSourceObjects = new List<originatingSourceObject>();
+            originatingSourceObjects = JsonConvert.DeserializeObject<List<originatingSourceObject>>(httpTask);
+
             var sourceList = new List<string>();
-            //List<String> originatingSourceList = new ArrayList<String>();
-
-
-            sourceList = JsonConvert.DeserializeObject<List<string>>(httpResult);
-
-
+            foreach (var originatingSourceObject in originatingSourceObjects)
+            {
+                sourceList.Add(originatingSourceObject.originatingSource);
+            }
             sourcePicker.ItemsSource = sourceList;
             sourcePicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
             //---------End Station Picker Control Section-----------------------------------------
 
             //setting globalHtmlDoc to be used in another constructor with parameter
             globalHtmlDoc.LoadHtml(httpResult);
+        }
+
+        public class originatingSourceObject
+        {
+            public string originatingSource { get; set; }
         }
 
         //Event Handler Arguments
@@ -263,14 +255,14 @@ namespace SEBeTender
 
             if (picker.SelectedIndex > 0)
             {
-                selectedStation = stationPicker.Items[stationPicker.SelectedIndex];
+                selectedSource = sourcePicker.Items[sourcePicker.SelectedIndex];
 
             }
             else
             {
-                selectedStation = null;
+                selectedSource = null;
             }
-            Console.WriteLine("Selected station: " + selectedStation);
+            Console.WriteLine("Selected station: " + selectedSource);
         }
 
         void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
@@ -285,7 +277,7 @@ namespace SEBeTender
                 closingdateto = e.NewDate.ToString();
                 closingdateTo.TextColor = Color.Black;
             }
-            else if (sender == bidclosingdateFrom)
+            /*else if (sender == bidclosingdateFrom)
             {
                 bidclosingdatefrom = e.NewDate.ToString();
                 bidclosingdateFrom.TextColor = Color.Black;
@@ -294,15 +286,14 @@ namespace SEBeTender
             {
                 bidclosingdateto = e.NewDate.ToString();
                 bidclosingdateTo.TextColor = Color.Black;
-            }
+            }*/
         }
 
         async void OnSubmitButtonClicked(object sender, EventArgs e)
         {
             if (sender == searchButton)
             {
-                if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedStation == "" && closingdatefrom == "" && closingdateto == ""
-                    && bidclosingdatefrom == "" && bidclosingdateto == "")
+                if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedSource == "" && closingdatefrom == "" && closingdateto == ""/*&& bidclosingdatefrom == "" && bidclosingdateto == ""*/)
                 {
                     DisplayAlert("Error", "Please enter at least one search field", "Okay");
 
@@ -310,7 +301,7 @@ namespace SEBeTender
                 else
                 {
                     //Sending HTTP request to obtain the tender page search result data
-                    Task<string> httpSearchTask = Task.Run<string>(() => HttpRequestHandler.SearchPostRequest("http://www2.sesco.com.my/etender/notice/notice.jsp", tenderReferenceInput.Text, tenderTitleInput.Text, selectedStation, closingdatefrom, closingdateto, bidclosingdatefrom, bidclosingdateto));
+                    Task<string> httpSearchTask = Task.Run<string>(() => HttpRequestHandler.searchTendersFromDatabase("https://pockettender.000webhostapp.com/process_appSearchTenders.php", tenderReferenceInput.Text, tenderTitleInput.Text, selectedSource, closingdatefrom, closingdateto/*, bidclosingdatefrom, bidclosingdateto*/));
                     var httpSearchResult = httpSearchTask.Result.ToString();
                     //Console.WriteLine(httpSearchResult);
                     await Navigation.PushAsync(new tenderSearchResultPage(httpSearchResult, null));
@@ -325,16 +316,16 @@ namespace SEBeTender
             {
                 tenderReferenceInput.Text = "";
                 tenderTitleInput.Text = "";
-                stationPicker.SelectedIndex = 0;
-                selectedStation = "";
+                sourcePicker.SelectedIndex = 0;
+                selectedSource = "";
                 closingdatefrom = "";
                 closingdateto = "";
                 bidclosingdatefrom = "";
                 bidclosingdateto = "";
                 closingdateFrom.TextColor = Color.LightGray;
                 closingdateTo.TextColor = Color.LightGray;
-                bidclosingdateFrom.TextColor = Color.LightGray;
-                bidclosingdateTo.TextColor = Color.LightGray;
+                /*bidclosingdateFrom.TextColor = Color.LightGray;
+                bidclosingdateTo.TextColor = Color.LightGray;*/
 
             }
         }
@@ -374,8 +365,7 @@ namespace SEBeTender
             }
             else
             {   //if none of the fields are edited, output error
-                if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedStation == "" && closingdatefrom == "" && closingdateto == ""
-                    && bidclosingdatefrom == "" && bidclosingdateto == "")
+                if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedSource == "" && closingdatefrom == "" && closingdateto == ""/*&& bidclosingdatefrom == "" && bidclosingdateto == ""*/)
                 {
                     DisplayAlert("Error", "Please enter at least one search field", "Okay");
 
@@ -396,7 +386,7 @@ namespace SEBeTender
 
                     string tenderReference = tenderReferenceInput.Text;
                     string tenderTitle = tenderTitleInput.Text;
-                    string originatingStation = selectedStation;
+                    string originatingSource = selectedSource;
                     string closingDateFrom = closingdatefrom;
                     string closingDateTo = closingdateto;
                     string biddingclosingDateFrom = bidclosingdatefrom;
@@ -406,7 +396,7 @@ namespace SEBeTender
                     
 
 
-                    string postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingStation, closingDateFrom, closingDateTo, biddingclosingDateFrom, biddingclosingDateTo, userSession.username, identifier, "add"));
+                    string postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, biddingclosingDateFrom, biddingclosingDateTo, userSession.username, identifier, "add"));
                     var postbookmarkhttpresult = postbookmarkhttptask.ToString();
                     Console.WriteLine(postbookmarkhttpresult);
                     int count = 0;
@@ -414,7 +404,7 @@ namespace SEBeTender
                     while (count < 3 && postbookmarkhttpresult != "Success")
                     {
                         Console.WriteLine("Looping for failure add");
-                        postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingStation, closingDateFrom, closingDateTo, biddingclosingDateFrom, biddingclosingDateTo, userSession.username, identifier, "add"));
+                        postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, biddingclosingDateFrom, biddingclosingDateTo, userSession.username, identifier, "add"));
                         postbookmarkhttpresult = postbookmarkhttptask.ToString();
                         count++;
                     }

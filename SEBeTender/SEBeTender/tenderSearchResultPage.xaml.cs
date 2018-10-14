@@ -34,14 +34,14 @@ namespace SEBeTender
             InitializeComponent();
 
             //Set "Previous" and "Next" hyperlink label. 
-            var previousLblTapRecognizer = new TapGestureRecognizer();
+            /*var previousLblTapRecognizer = new TapGestureRecognizer();
             previousLblTapRecognizer.Tapped += onPreviousPageTapped;
-            previousPage.GestureRecognizers.Add(previousLblTapRecognizer);
+            previousPage.GestureRecognizers.Add(previousLblTapRecognizer);*/
             previousPage.IsVisible = false;  //"Previous" label is set to invisible for first page
 
-            var nextLblTapRecognizer = new TapGestureRecognizer();
+            /*var nextLblTapRecognizer = new TapGestureRecognizer();
             nextLblTapRecognizer.Tapped += onNextPageTapped;
-            nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
+            nextPage.GestureRecognizers.Add(nextLblTapRecognizer);*/
             nextPage.IsVisible = false;
 
             if(searchTenderResult == "Search Local Database")
@@ -50,87 +50,110 @@ namespace SEBeTender
             }
             else
             {
-                retrieveSearchResult(searchTenderResult);
+                displayNormalSearch(searchTenderResult);
             }
         }
 
-        async void retrieveSearchResult(string searchTenderResult)
+        async void displayNormalSearch(string httpTaskResult)
         {
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
-            //Sending HTTP request to obtain the tender page data
-            var httpResult = searchTenderResult;
 
-            //Small data extraction to get "Next" and "Previous" page hyperlinks
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(httpResult);
-            var aNodes = htmlDoc.DocumentNode.SelectNodes("//a");
-            if (aNodes != null)
+            List<scrapped_tender> scrappedTenders = new List<scrapped_tender>();
+            List<tenderItem> tenderItems = new List<tenderItem>();
+            scrappedTenders = JsonConvert.DeserializeObject<List<scrapped_tender>>(httpTaskResult);
+            foreach (scrapped_tender scrappedTender in scrappedTenders)
             {
-                foreach (var aNode in aNodes)
+                tenderItem tender = new tenderItem();
+                tender.Company = scrappedTender.originatingSource;
+                tender.TenderSource = scrappedTender.tenderSource;
+                tender.Reference = scrappedTender.reference;
+                tender.Agency = scrappedTender.agency;
+                tender.Title = scrappedTender.title;
+                tender.Category = scrappedTender.category;
+                tender.OriginatingStation = scrappedTender.originatingSource;
+                tender.ClosingDate = scrappedTender.closingDate;
+
+                if (scrappedTender.docInfoJson != null)
                 {
-                    if (aNode.InnerHtml == "Previous")
+                    dynamic docInfo = JsonConvert.DeserializeObject(scrappedTender.docInfoJson);
+                    if (docInfo.bidCloseDate != null)
                     {
-                        previousUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                        isPreviousAvailable = true;
-                        previousPage.IsVisible = true;
+                        tender.BidClosingDate = docInfo.bidCloseDate;
                     }
-                    else if (aNode.InnerHtml == "Next")
+
+                    if (docInfo.feeBeforeGST != null)
                     {
-                        nextUrl = "http://www2.sesco.com.my/etender/notice/" + aNode.Attributes["href"].Value;
-                        isNextAvailable = true;
-                        nextPage.IsVisible = true;
+                        tender.FeeBeforeGST = docInfo.feeBeforeGST;
+                    }
+
+                    if (docInfo.feeGST != null)
+                    {
+                        tender.FeeGST = docInfo.feeGST;
+                    }
+
+                    if (docInfo.feeAfterGST != null)
+                    {
+                        tender.FeeAfterGST = docInfo.feeAfterGST;
                     }
                 }
-            }
 
-
-            //Extract tender data from the response
-            //var tenders = await DataExtraction.getWebData(httpResult, "tender");
-            var tenders = await Task.Run<Object>(() => DataExtraction.getWebData(httpResult, "tender"));
-            List<tenderItem> tenderItems = (List<tenderItem>)tenders;
-            
-            //Get bookmark details from database
-            if (userSession.username != "")
-            {
-                //string httpTask = await Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/vendor/vendor_tender_eligible.jsp", true));
-                //Task<List<tenderBookmark>> bookmarkHttpTask = Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
-                List<tenderBookmark> tenderBookmarks = await retrieveBookmark();
-                if (tenderBookmarks != null)
+                if (scrappedTender.originatorJson != null)
                 {
-                    //List<tenderBookmark> tenderBookmarks = bookmarkHttpTask;
-                    if (tenderBookmarks.Count > 0)
+                    dynamic originatorInfo = JsonConvert.DeserializeObject(scrappedTender.originatorJson);
+                    if (originatorInfo.name != null)
                     {
-                        foreach (var tenderItem in tenderItems)
-                        {
-                            foreach (var tenderBookmark in tenderBookmarks)
-                            {
-                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
-                                {
-                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
-                                    break;
-                                }
-                            }
-                        }
+                        tender.Name = originatorInfo.name;
+                    }
+
+                    if (originatorInfo.officePhone != null)
+                    {
+                        tender.OffinePhone = originatorInfo.officePhone;
+                    }
+
+                    if (originatorInfo.extension != null)
+                    {
+                        tender.Extension = originatorInfo.extension;
+                    }
+
+                    if (originatorInfo.mobilePhone != null)
+                    {
+                        tender.MobilePhone = originatorInfo.mobilePhone;
+                    }
+
+                    if (originatorInfo.email != null)
+                    {
+                        tender.Email = originatorInfo.email;
+                    }
+
+                    if (originatorInfo.fax != null)
+                    {
+                        tender.Fax = originatorInfo.fax;
                     }
                 }
+
+                if (scrappedTender.fileLinks != null)
+                {
+                    Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(scrappedTender.fileLinks);
+                    tender.FileLinks = fileLinks;
+                    //{"Folder 1.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 1.zip","Folder 2.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 2.zip","Folder 3.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 3.zip","Folder 4.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 4.zip"}
+                }
+                tenderItems.Add(tender);
             }
 
             pageTitle.IsVisible = true;
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
-
             if (tenderItems.Count > 0)
             {
                 upBtn.IsVisible = true;
             }
             else
             {
-                Console.WriteLine("No item returned!!");
                 errorMsg.IsVisible = true;
             }
 
-            listView.ItemsSource = tenderItems;            
+            listView.ItemsSource = tenderItems;
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
         }
@@ -148,7 +171,7 @@ namespace SEBeTender
                 tenderItem tenderitem = new tenderItem();
                 tenderitem.Reference = item.Reference;
                 tenderitem.Title = item.Title;
-                tenderitem.OriginatingStation = item.OriginatingStation;
+                tenderitem.OriginatingStation = item.OriginatingSource;
                 tenderitem.ClosingDate = item.ClosingDate;
                 tenderitem.BidClosingDate = item.BidClosingDate;
                 tenderitem.FeeBeforeGST = item.FeeBeforeGST;
@@ -317,7 +340,7 @@ namespace SEBeTender
             listView.ScrollTo(topItem, ScrollToPosition.Start, true);
         }
 
-        async void onNextPageTapped(object sender, EventArgs eventArgs)
+        /*async void onNextPageTapped(object sender, EventArgs eventArgs)
         {
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
@@ -432,7 +455,7 @@ namespace SEBeTender
             }
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
-        }
+        }*/
     }
 }
 
