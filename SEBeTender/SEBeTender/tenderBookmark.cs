@@ -9,6 +9,8 @@ namespace SEBeTender
         public string bookmarkID { get; set; }
 
         public string username { get; set; }
+
+        public string originatingSource { get; set; }
  
         public string tenderReferenceNumber { get; set; }
 

@@ -98,7 +98,7 @@ namespace SEBeTender
             try
             {
                 //var response = await httpClient.PostAsync("http://www2.sesco.com.my/etender/notice/notice_login_set_session.jsp", parameters);
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appUserLogin.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_appUserLogin.php", parameters);
                 
                 responseStatus = response.StatusCode.ToString();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -347,7 +347,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_getUserBookmark.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_getUserBookmark.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -369,24 +369,28 @@ namespace SEBeTender
             string tenderClosingDate = tender.ClosingDate;
             if (action != "delete")
             {
-                tenderClosingDate = tenderClosingDate.Replace("Closing date: ", "");
-                tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
+                //tenderClosingDate = tenderClosingDate.Replace("Closing date: ", "");
+                if (tender.TenderSource == "0")
+                {
+                    tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
+                }                
             }
 
             //default add tender bookmark action
             var parameters = new FormUrlEncodedContent(new[] {
-
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("tenderReferenceNumber", tender.Reference),
                 new KeyValuePair<string,string>("tenderTitle", tender.Title),
+                new KeyValuePair<string,string>("originatingSource", tender.OriginatingStation),
                 new KeyValuePair<string,string>("closingDate", tenderClosingDate)
-                });
+            });
 
             if (action == "delete")
             {
                 parameters = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("tenderReferenceNumber", tender.Reference),
+                new KeyValuePair<string,string>("tenderTitle", tender.Reference),
                 new KeyValuePair<string,string>("isDelete", "1"),
                 });
             }
@@ -394,7 +398,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_manageTenderBookmark.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_manageTenderBookmark.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -409,11 +413,11 @@ namespace SEBeTender
             return result;
         }
 
-        public static async Task<string> PostGetBookmarkDetails(string tenderRefNo)
+        public static async Task<string> PostGetBookmarkDetails(string tenderRefNo, string tenderTitle)
         {
             HttpClient client = new HttpClient();
             string result = "";
-            var parameters = new FormUrlEncodedContent(new[]
+            /*var parameters = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string,string>("SchReferno", tenderRefNo),
                 new KeyValuePair<string,string>("SchTendertitle", ""),
@@ -424,7 +428,23 @@ namespace SEBeTender
                 new KeyValuePair<string,string>("SchToEbidClosedate", "")
             });
 
-            var uri = new Uri(string.Format("http://www2.sesco.com.my/etender/notice/notice.jsp", string.Empty));
+            var uri = new Uri(string.Format("http://www2.sesco.com.my/etender/notice/notice.jsp", string.Empty));*/
+            var parameters = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("tenderReferenceNo", tenderRefNo),
+                new KeyValuePair<string,string>("tenderTitle", tenderTitle)
+            });
+
+            if (tenderRefNo == "" || tenderRefNo == null)
+            {
+                parameters = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string,string>("tenderReferenceNo", "None"),
+                    new KeyValuePair<string,string>("tenderTitle", tenderTitle)
+                });
+            }     
+
+            var uri = new Uri(string.Format("https://pockettender.000webhostapp.com/process_appGetBookmarkItem.php", string.Empty));
             try
             {
                 var response = await client.PostAsync(uri, parameters);
@@ -1081,7 +1101,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appRegisterUser.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_appRegisterUser.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
