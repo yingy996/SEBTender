@@ -14,7 +14,7 @@ namespace SEBeTender
         public string Agency { get; set; }
         public string Category { get; set; }
         public string Title { get; set; }
-        public string OriginatingStation { get; set; }
+        public string OriginatingSource { get; set; }
         public string ClosingDate { get; set; }
         public string BidClosingDate { get; set; }
         public string FeeBeforeGST { get; set; }

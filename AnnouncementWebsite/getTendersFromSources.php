@@ -3,18 +3,18 @@ require("simple_html_dom.php");
 require("tender_object.php");
 ini_set('max_execution_time', 0);
 date_default_timezone_set("Asia/Kuching");
-
+echo "Once<br/>";
 deleteFromDatabase();
 $tekelomTenders = extractTelekomTenders();
 $mbksTenders = extractMBKSTenders();
-$sebTenders = extractSEBTenders();
+//$sebTenders = extractSEBTenders();
 $myProcurementTenders = extractMyProcurementTenders();
 
 echo "Telekom: " . count($tekelomTenders) . "<br/>";
 echo "MBKS: " . count($mbksTenders) . "<br/>";
-echo "SEB: " . count($sebTenders) . "<br/>";
+//echo "SEB: " . count($sebTenders) . "<br/>";
 echo "MyProcurement: " . count($myProcurementTenders) . "<br/>";
-insertIntoDatabase($sebTenders, 0);
+//insertIntoDatabase($sebTenders, 0);
 insertIntoDatabase($myProcurementTenders, 1);
 insertIntoDatabase($tekelomTenders, 2);
 insertIntoDatabase($mbksTenders, 3);
@@ -129,7 +129,7 @@ function extractMyProcurementTenders(){
     
     /*if (count($scrapped_tenders) > 0) {
         //delete all tenders from myProcurement website
-        
+        //deleteFromDatabase(1);
         //call function to insert scrapped tenders into database
         echo "My procrurement: " . count($scrapped_tenders);
         insertIntoDatabase($scrapped_tenders, 1);
@@ -214,6 +214,7 @@ function extractTelekomTenders(){
         $count++;
     }
     /*if (count($telekomTenders) > 0) {
+        //deleteFromDatabase(2);
         echo "Telekom: " . count($telekomTenders);
         insertIntoDatabase($telekomTenders, 2);
     }*/
@@ -263,7 +264,7 @@ function extractMBKSTenders(){
                                 foreach ($childNode->children as $innertag)
                                 {
                                     $links = array();
-
+                                    
                                     foreach ($innertag->children as $inner2tag)
                                     {
                                         $ref = $inner2tag->innertext;
@@ -643,7 +644,7 @@ function insertIntoDatabase($scrapped_tenders, $tenderSource){
     while(array_key_exists($count, $scrapped_tenders)){
         if ($tenderSource == 0) { //Sarawak Energy SEB
             $query = $db_handle->getConn()->prepare("INSERT INTO scrapped_tender (reference, title, originatingSource, tenderSource, closingDate, startDate, docInfoJson, originatorJson, fileLinks) VALUES
-            (:reference, :title, :originatingSource, :tenderSource, STR_TO_DATE(:closingDate, '%d-%m-%y'), STR_TO_DATE(:startDate, '%d-%m-%y'), :docInfoJson, :originatorJson, :fileLinks)");
+            (:reference, :title, :originatingSource, :tenderSource, STR_TO_DATE(:closingDate, '%d-%m-%Y'), STR_TO_DATE(:startDate, '%d-%m-%Y'), :docInfoJson, :originatorJson, :fileLinks)");
             $query->bindParam(":reference", $scrapped_tenders[$count]->reference);
             $query->bindParam(":title", $scrapped_tenders[$count]->title);
             $query->bindParam(":originatingSource", $scrapped_tenders[$count]->originatingSource);
@@ -658,7 +659,7 @@ function insertIntoDatabase($scrapped_tenders, $tenderSource){
             $query->bindParam(":fileLinks", $scrapped_tenders[$count]->fileLink);
         } elseif ($tenderSource == 1) { //myProcurement
             $query = $db_handle->getConn()->prepare("INSERT INTO scrapped_tender (reference, title, category, originatingSource, tenderSource, agency, closingDate, startDate) VALUES
-            (:reference, :title, :category, :originatingSource, 1, :agency, STR_TO_DATE(:closingDate, '%d/%m/%y'), STR_TO_DATE(:startDate, '%d/%m/%y'))");
+            (:reference, :title, :category, :originatingSource, 1, :agency, STR_TO_DATE(:closingDate, '%d/%m/%Y'), STR_TO_DATE(:startDate, '%d/%m/%Y'))");
             $query->bindParam(":reference", $scrapped_tenders[$count]->reference);
             $query->bindParam(":title", $scrapped_tenders[$count]->title);
             $query->bindParam(":category", $scrapped_tenders[$count]->category);
@@ -669,7 +670,7 @@ function insertIntoDatabase($scrapped_tenders, $tenderSource){
             $query->bindParam(":closingDate", $scrapped_tenders[$count]->closingDate);
         } elseif ($tenderSource == 2){ //Telekom
             $query = $db_handle->getConn()->prepare("INSERT INTO scrapped_tender (title, originatingSource, tenderSource, startDate, fileLinks) VALUES
-            (:title, :originatingSource, :tenderSource, STR_TO_DATE(:startDate, '%d/%m/%y'), :fileLinks)");
+            (:title, :originatingSource, :tenderSource, STR_TO_DATE(:startDate, '%d/%m/%Y'), :fileLinks)");
             $query->bindParam(":title", $scrapped_tenders[$count]->title);
             $query->bindParam(":originatingSource", $scrapped_tenders[$count]->originatingSource);
             $query->bindParam(":tenderSource", $tenderSource);
@@ -715,6 +716,15 @@ function deleteFromDatabase() {
     } catch (PDOException $ex) {
         echo "Delete Error: " . $ex;
     }
+    
+    //do {
+        //Delete all the tenders from a selected source
+        //$query = $db_handle->getConn()->prepare("DELETE FROM scrapped_tender WHERE tenderSource = :tenderSource");
+        //$query->bindParam(":tenderSource", $tenderSource);
+        //$query = $db_handle->getConn()->prepare("TRUNCATE TABLE scrapped_tender");
+        //$result = $query->execute();
+        //echo $result;
+    //} while ($result == false);
 }
 
 // Function for basic field validation (present and neither empty nor only white space
