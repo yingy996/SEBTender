@@ -10,36 +10,46 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
     $closingDateFrom = $_POST["searchClosingDateFrom"];
     $closingDateTo = $_POST["searchClosingDateTo"];
     
-    $initialQuery = "SELECT * FROM scrapped_tender WHERE";
+    $initialQuery = "SELECT * FROM scrapped_tender";
     $laterQuery = "";
     
     if($reference != ""){
         //$laterQuery = $laterQuery . " reference = " . $reference;
-        $laterQuery = $laterQuery . " reference LIKE :reference";
+        $laterQuery = $laterQuery . " WHERE reference LIKE :reference";
         
     }
     if($title != ""){
         if($reference == ""){
             //$laterQuery = $laterQuery . " title = " . $title;
-            $laterQuery = $laterQuery . " title LIKE :title";
+            $laterQuery = $laterQuery . " WHERE title LIKE :title";
         }else{
             //$laterQuery = $laterQuery . " AND title = " . $title;
             $laterQuery = $laterQuery . " AND title LIKE :title";
         }
     }
     if($originatingSource != ""){
-        if($reference == "" && $title == ""){
-            //$laterQuery = $laterQuery . " originatingSource = " . $originatingSource;
-            $laterQuery = $laterQuery . " originatingSource LIKE :originatingSource";
+        if($originatingSource == "all"){
+            if($reference == "" && $title == ""){
+                //$laterQuery = $laterQuery . " originatingSource = " . $originatingSource;
+                $laterQuery = "";
+            }else{
+                //$laterQuery = $laterQuery . " AND originatingSource = " . $originatingSource;
+                $laterQuery = $laterQuery . "";
+            }
         }else{
-            //$laterQuery = $laterQuery . " AND originatingSource = " . $originatingSource;
-            $laterQuery = $laterQuery . " AND originatingSource LIKE :originatingSource";
+            if($reference == "" && $title == ""){
+                //$laterQuery = $laterQuery . " originatingSource = " . $originatingSource;
+                $laterQuery = $laterQuery . " WHERE originatingSource LIKE :originatingSource";
+            }else{
+                //$laterQuery = $laterQuery . " AND originatingSource = " . $originatingSource;
+                $laterQuery = $laterQuery . " AND originatingSource LIKE :originatingSource";
+            }
         }
     }
     if($closingDateFrom != "" && $closingDateTo != ""){
         if($reference == "" && $title == "" && $originatingSource == ""){
             //$laterQuery = $laterQuery . " closingDate BETWEEN " . $closingDateFrom . " AND " . $closingDateTo;
-            $laterQuery = $laterQuery . " closingDate BETWEEN :closingDateFrom AND :closingDateTo";
+            $laterQuery = $laterQuery . " WHERE closingDate BETWEEN :closingDateFrom AND :closingDateTo";
         }else{
             //$laterQuery = $laterQuery . " AND closingDate BETWEEN " . $closingDateFrom . " AND " . $closingDateTo;
             $laterQuery = $laterQuery . " AND closingDate BETWEEN :closingDateFrom AND :closingDateTo";
@@ -59,8 +69,10 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
         $query->bindParam(":title", $titlequery);
     }
     if($originatingSource != ""){
+        if($originatingSource != "all"){
         $originatingSourcequery = "%" . $originatingSource . "%";
         $query->bindParam(":originatingSource", $originatingSourcequery);
+        }
     }
     if($closingDateFrom != "" & $closingDateTo != ""){
         $query->bindParam(":closingDateFrom", $closingDateFrom);
@@ -85,7 +97,7 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
         echo $error_message;
     }
 }else if(isset($_POST["retrieveOriginatingSource"])){
-    $query = $db_handle->getConn()->prepare("SELECT DISTINCT originatingSource FROM scrapped_tenders");
+    $query = $db_handle->getConn()->prepare("SELECT DISTINCT originatingSource FROM scrapped_tender");
     $query->execute();
     $result = $query->fetchAll();
     if($result[0][0] != ""){

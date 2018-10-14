@@ -61,6 +61,7 @@ namespace SEBeTender
 
             List<scrapped_tender> scrappedTenders = new List<scrapped_tender>();
             List<tenderItem> tenderItems = new List<tenderItem>();
+            //Console.WriteLine("PASSEDIN SEARCH RESULT JSON" + httpTaskResult);
             scrappedTenders = JsonConvert.DeserializeObject<List<scrapped_tender>>(httpTaskResult);
             foreach (scrapped_tender scrappedTender in scrappedTenders)
             {

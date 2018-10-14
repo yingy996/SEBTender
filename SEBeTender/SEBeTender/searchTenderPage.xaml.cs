@@ -231,6 +231,7 @@ namespace SEBeTender
             originatingSourceObjects = JsonConvert.DeserializeObject<List<originatingSourceObject>>(httpTask);
 
             var sourceList = new List<string>();
+            sourceList.Add("All");
             foreach (var originatingSourceObject in originatingSourceObjects)
             {
                 sourceList.Add(originatingSourceObject.originatingSource);
@@ -260,9 +261,8 @@ namespace SEBeTender
             }
             else
             {
-                selectedSource = null;
+                selectedSource = "all";
             }
-            Console.WriteLine("Selected station: " + selectedSource);
         }
 
         void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
@@ -271,6 +271,7 @@ namespace SEBeTender
             {
                 closingdatefrom = e.NewDate.ToString();
                 closingdateFrom.TextColor = Color.Black;
+                Console.WriteLine("CLOSING DATE FROM" + closingdatefrom);
             }
             else if (sender == closingdateTo)
             {
