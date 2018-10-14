@@ -535,7 +535,11 @@ function extractSEBTenders() {
 
                         $tenderObject->docInfoJson = json_encode($tenderDoc);
                         $tenderObject->originatorJson = json_encode($originatorInfo);
-                        $tenderObject->fileLink = json_encode($fileLinks);
+                        if (count($fileLinks) > 0){
+                            $tenderObject->fileLink = json_encode($fileLinks);
+                        } else {
+                            $tenderObject->fileLink = null;
+                        }
                         $tenderObject->tenderSource = 0;
                         //echo "<strong>Doc Info:</strong> ". $tenderObject->docInfoJson . "<br/>";
                         //echo "<strong>Originator Info:</strong> " . $tenderObject->originatorJson . "<br/>";
