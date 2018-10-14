@@ -370,7 +370,10 @@ namespace SEBeTender
             if (action != "delete")
             {
                 //tenderClosingDate = tenderClosingDate.Replace("Closing date: ", "");
-                tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
+                if (tender.TenderSource == "0")
+                {
+                    tenderClosingDate = tenderClosingDate.Replace(" at ", " ");
+                }                
             }
 
             //default add tender bookmark action
@@ -426,11 +429,20 @@ namespace SEBeTender
             });
 
             var uri = new Uri(string.Format("http://www2.sesco.com.my/etender/notice/notice.jsp", string.Empty));*/
-            var parameters = new FormUrlEncodedContent(new[] 
+            var parameters = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string,string>("tenderReferenceNo", tenderRefNo),
                 new KeyValuePair<string,string>("tenderTitle", tenderTitle)
             });
+
+            if (tenderRefNo == "" || tenderRefNo == null)
+            {
+                parameters = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string,string>("tenderReferenceNo", "None"),
+                    new KeyValuePair<string,string>("tenderTitle", tenderTitle)
+                });
+            }     
 
             var uri = new Uri(string.Format("https://pockettender.000webhostapp.com/process_appGetBookmarkItem.php", string.Empty));
             try

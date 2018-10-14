@@ -188,7 +188,7 @@ namespace SEBeTender
             if (httpResult != "Tender not found" && httpResult != "Missing parameter(s)")
             {
                 scrapped_tender scrappedTender = JsonConvert.DeserializeObject<scrapped_tender>(httpResult);
-                tenderItem aTenderItem = JsonConvert.DeserializeObject<tenderItem>(httpResult);
+                tenderItem aTenderItem = new tenderItem();
 
                 //Copying tender details from scrapped_tender object to tender item object 
                 aTenderItem.Company = scrappedTender.originatingSource;
@@ -416,7 +416,7 @@ namespace SEBeTender
             {
                 if (httpResult == "Tender not found")
                 {
-                    await DisplayAlert("Not found", "Tender '" + tenderBookmark.tenderReferenceNumber + "' is not available!", "OK");
+                    await DisplayAlert("Tender Not found", "Tender '" + tenderBookmark.tenderReferenceNumber + "' is not available!", "OK");
                     var page = App.Current.MainPage as rootPage;
                     var tenderBookmarkPage = new tenderBookmarkPage();
                     page.changePage(tenderBookmarkPage);
