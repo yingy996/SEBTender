@@ -534,20 +534,18 @@ namespace SEBeTender
             return result;
         }
 
-        public static async Task<string> PostManageSearchBookmark(string searchID, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingclosingDateFrom, string biddingclosingDateTo, string username, string identifier, string action)
+        public static async Task<string> PostManageSearchBookmark(string searchID, string tenderReference, string tenderTitle, string originatingSource, string closingDateFrom, string closingDateTo, string username, string identifier, string action)
         {
             string result = "";
-
+            
             //default add tender bookmark action
             var parameters = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string,string>("searchID", searchID),
                 new KeyValuePair<string,string>("tenderReference", tenderReference),
                 new KeyValuePair<string,string>("tenderTitle", tenderTitle),
-                new KeyValuePair<string,string>("originatingStation", originatingStation),
+                new KeyValuePair<string,string>("originatingSource", originatingSource),
                 new KeyValuePair<string,string>("closingDateFrom", closingDateFrom),
                 new KeyValuePair<string,string>("closingDateTo", closingDateTo),
-                new KeyValuePair<string,string>("biddingclosingDateFrom", biddingclosingDateFrom),
-                new KeyValuePair<string,string>("biddingclosingDateTo", biddingclosingDateTo),
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("identifier", identifier)
                 });
@@ -558,11 +556,9 @@ namespace SEBeTender
                 new KeyValuePair<string,string>("searchID", searchID),
                 new KeyValuePair<string,string>("tenderReference", tenderReference),
                 new KeyValuePair<string,string>("tenderTitle", tenderTitle),
-                new KeyValuePair<string,string>("originatingStation", originatingStation),
+                new KeyValuePair<string,string>("originatingStation", originatingSource),
                 new KeyValuePair<string,string>("closingDateFrom", closingDateFrom),
                 new KeyValuePair<string,string>("closingDateTo", closingDateTo),
-                new KeyValuePair<string,string>("biddingclosingDateFrom", biddingclosingDateFrom),
-                new KeyValuePair<string,string>("biddingclosingDateTo", biddingclosingDateTo),
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("identifier", identifier),
                 new KeyValuePair<string,string>("isDelete", "1")
@@ -572,7 +568,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_manageCustomSearch.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_manageCustomSearch.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -598,7 +594,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_getuserCustomSearches.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_getuserCustomSearches.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {

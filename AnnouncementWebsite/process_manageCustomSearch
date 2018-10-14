@@ -1,0 +1,93 @@
+<?php
+require_once("dbcontroller.php");
+$db_handle = new DBController();
+
+//add bookmark
+if(isset($_POST["username"]) && isset($_POST["searchID"]) && !isset($_POST["isDelete"])) {
+    $searchID = sanitizeInput($_POST["searchID"]);
+    $username = sanitizeInput($_POST["username"]);
+    if($_POST["tenderReference"] == null){
+        $tenderReference = "NULL";
+    }else{
+        $tenderReference = sanitizeInput($_POST["tenderReference"]);
+    }
+    
+    if($_POST["tenderTitle"] == null){
+        $tenderTitle = "NULL";
+    }else{
+        $tenderTitle = sanitizeInput($_POST["tenderTitle"]);
+    }
+    
+    if($_POST["originatingSource"] == null){
+        $originatingStation = "NULL";
+    }else{
+        $originatingStation = sanitizeInput($_POST["originatingSource"]);
+    }
+    
+    if($_POST["closingDateFrom"] == null){
+        $closingDateFrom = "NULL";
+    }else{
+        $closingDateFrom = $_POST["closingDateFrom"];
+    }
+    
+    if($_POST["closingDateTo"] == null){
+        $closingDateTo = "NULL";
+    }else{
+        $closingDateTo = $_POST["closingDateTo"];
+    }
+    
+    $identifier = $_POST["identifier"];
+    
+    try {
+        $query = $db_handle->getConn()->prepare("INSERT INTO custom_search (searchID, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, username, identifier, savedDate) VALUES (:searchID, :tenderReference, :tenderTitle, :originatingSource, STR_TO_DATE(:closingDateFrom, '%c/%e/%Y %r'), STR_TO_DATE(:closingDateTo, '%c/%e/%Y %r'), :username, :identifier, NOW())");
+        $query->bindParam(":searchID", $searchID);
+        $query->bindParam(":tenderReference", $tenderReference);
+        $query->bindParam(":tenderTitle", $tenderTitle);
+        $query->bindParam(":originatingSource", $originatingSource);
+        $query->bindParam(":closingDateFrom", $closingDateFrom);
+        $query->bindParam(":closingDateTo", $closingDateTo);
+        $query->bindParam(":username", $username);
+        $query->bindParam(":identifier", $identifier);
+        $result = $query->execute();
+
+        if($result == true) {
+            echo "Success";	
+        } else {
+            echo "Failed";	
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+} elseif (isset($_POST["username"]) && isset($_POST["searchID"]) && isset($_POST["isDelete"])) { 
+    //remove bookmark from database
+    $username = sanitizeInput($_POST["username"]);
+    $searchID = sanitizeInput($_POST["searchID"]);
+    $isDeleteAction = sanitizeInput($_POST["isDelete"]);
+    
+    try {
+        $query = $db_handle->getConn()->prepare("DELETE FROM custom_search WHERE searchID = :searchID AND username = :username");
+    
+        $query->bindParam(":username", $username);
+        $query->bindParam(":searchID", $searchID);
+        $result = $query->execute();
+        
+        if($result == true) {
+            echo "Success";	
+        } else {
+            echo "Failed";	
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+} else {
+    echo "Missing parameters";
+}
+
+function sanitizeInput($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+
+    return $data;
+}
+?>

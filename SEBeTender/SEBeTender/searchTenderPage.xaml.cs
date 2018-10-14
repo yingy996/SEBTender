@@ -20,7 +20,9 @@ namespace SEBeTender
         string closingdateto = "";
         string bidclosingdatefrom = "";
         string bidclosingdateto = "";
-        HtmlDocument globalHtmlDoc = new HtmlDocument();
+        
+        //for use in storing originating sources for use when passing in custom bookmarked search
+        List<string> globalSourceList = new List<string>();
 
         public searchTenderPage()
         {
@@ -82,30 +84,6 @@ namespace SEBeTender
         {
             await retrieveOriginatingSource();
 
-            HtmlDocument htmlDoc = globalHtmlDoc;
-            var stationList = new List<string>();
-
-            
-
-            //Send Http request to retrieve search page originating station drop down
-            /*Task<string> httpTask = Task.Run<string>(() => HttpRequestHandler.GetRequest("http://www2.sesco.com.my/etender/notice/notice_search.jsp", false));
-            var httpResult = httpTask.Result.ToString();
-    
-            //--------Station Picker Control Section----------------------------------------------
-            //Small data extraction to extract Station dropdown selects/options to fill Picker
-            HtmlDocument htmlDoc = new HtmlDocument();
-            HtmlNode.ElementsFlags.Remove("option");
-            htmlDoc.LoadHtml(httpResult);
-            var stationList = new List<string>();
-            foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
-            {
-                stationList.Add(node.InnerText);
-            }
-            sourcePicker.ItemsSource = stationList;
-            sourcePicker.SelectedIndexChanged += OnPickerSelectedIndexChanged;
-            //---------End Station Picker Control Section-----------------------------------------
-            */
-
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
             bookmarkImg.GestureRecognizers.Add(tapRecognizer);
@@ -114,13 +92,8 @@ namespace SEBeTender
             //set datepicker text color to light gray to simulate not-filled
             closingdateFrom.TextColor = Color.LightGray;
             closingdateTo.TextColor = Color.LightGray;
-            /*bidclosingdateFrom.TextColor = Color.LightGray;
-            bidclosingdateTo.TextColor = Color.LightGray;*/
-
             closingdateFrom.DateSelected += DatePicker_DateSelected;
             closingdateTo.DateSelected += DatePicker_DateSelected;
-            /*bidclosingdateFrom.DateSelected += DatePicker_DateSelected;
-            bidclosingdateTo.DateSelected += DatePicker_DateSelected;*/
             //---------End DatePicker Control Section-----------
 
             stkTab2.IsVisible = false;
@@ -159,25 +132,22 @@ namespace SEBeTender
 
                 }
 
-                if (htmlDoc != null)
+                
+                for (int x = 0; x < globalSourceList.Count; x++)
                 {
-                    foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//select[@name='SchStation']//option"))
+                    if (globalSourceList[x] == aCustomSearchItem.originatingSource)
                     {
-                        for (int x = 0; x < stationList.Count; x++)
-                        {
-                            if (stationList[x] == aCustomSearchItem.originatingStation)
-                            {
-                                sourcePicker.SelectedIndex = x;
-                                selectedSource = aCustomSearchItem.originatingStation;
-                            }
-                            else if (x == stationList.Count - 1 && stationList[x] != aCustomSearchItem.originatingStation)
-                            {
-                                DisplayAlert("Error", "There are no available tenders with the chosen originating station. Please choose the originating station again", "Okay");
-                            }
-                        }
-
+                        sourcePicker.SelectedIndex = x;
+                        selectedSource = aCustomSearchItem.originatingSource;
+                    }
+                    else if (x == globalSourceList.Count && globalSourceList[x] != aCustomSearchItem.originatingSource)
+                    {
+                        
+                        await DisplayAlert("Error", "There are no available tenders with the chosen originating station. Please choose the originating station again", "Okay");
                     }
                 }
+
+                  
 
                 if (!string.IsNullOrEmpty(aCustomSearchItem.closingDateFrom))
                 {
@@ -241,7 +211,7 @@ namespace SEBeTender
             //---------End Station Picker Control Section-----------------------------------------
 
             //setting globalHtmlDoc to be used in another constructor with parameter
-            globalHtmlDoc.LoadHtml(httpResult);
+            globalSourceList = sourceList;
         }
 
         public class originatingSourceObject
@@ -278,16 +248,6 @@ namespace SEBeTender
                 closingdateto = e.NewDate.ToString();
                 closingdateTo.TextColor = Color.Black;
             }
-            /*else if (sender == bidclosingdateFrom)
-            {
-                bidclosingdatefrom = e.NewDate.ToString();
-                bidclosingdateFrom.TextColor = Color.Black;
-            }
-            else if (sender == bidclosingdateTo)
-            {
-                bidclosingdateto = e.NewDate.ToString();
-                bidclosingdateTo.TextColor = Color.Black;
-            }*/
         }
 
         async void OnSubmitButtonClicked(object sender, EventArgs e)
@@ -325,9 +285,6 @@ namespace SEBeTender
                 bidclosingdateto = "";
                 closingdateFrom.TextColor = Color.LightGray;
                 closingdateTo.TextColor = Color.LightGray;
-                /*bidclosingdateFrom.TextColor = Color.LightGray;
-                bidclosingdateTo.TextColor = Color.LightGray;*/
-
             }
         }
 
@@ -362,13 +319,13 @@ namespace SEBeTender
             //check if user is logged in
             if (userSession.userLoginCookie == "")
             {
-                DisplayAlert("Login required", "Please login first to saved your custom search", "OK");
+                await DisplayAlert("Login required", "Please login first to saved your custom search", "OK");
             }
             else
             {   //if none of the fields are edited, output error
-                if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedSource == "" && closingdatefrom == "" && closingdateto == ""/*&& bidclosingdatefrom == "" && bidclosingdateto == ""*/)
+                if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedSource == "" && closingdatefrom == "" && closingdateto == "")
                 {
-                    DisplayAlert("Error", "Please enter at least one search field", "Okay");
+                    await DisplayAlert("Error", "Please enter at least one search field", "Okay");
 
                 }
                 else
@@ -390,14 +347,13 @@ namespace SEBeTender
                     string originatingSource = selectedSource;
                     string closingDateFrom = closingdatefrom;
                     string closingDateTo = closingdateto;
-                    string biddingclosingDateFrom = bidclosingdatefrom;
-                    string biddingclosingDateTo = bidclosingdateto;
+                    
 
                     DisplayAlert("Add bookmark", "Search preferences added and can be viewed at the Custom Searches page", "OK");
                     
 
 
-                    string postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, biddingclosingDateFrom, biddingclosingDateTo, userSession.username, identifier, "add"));
+                    string postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, userSession.username, identifier, "add"));
                     var postbookmarkhttpresult = postbookmarkhttptask.ToString();
                     Console.WriteLine(postbookmarkhttpresult);
                     int count = 0;
@@ -405,7 +361,7 @@ namespace SEBeTender
                     while (count < 3 && postbookmarkhttpresult != "Success")
                     {
                         Console.WriteLine("Looping for failure add");
-                        postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, biddingclosingDateFrom, biddingclosingDateTo, userSession.username, identifier, "add"));
+                        postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, userSession.username, identifier, "add"));
                         postbookmarkhttpresult = postbookmarkhttptask.ToString();
                         count++;
                     }
