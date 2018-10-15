@@ -9,6 +9,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -16,18 +17,19 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackLayout Grid.Row="0" Grid.Column="0" Padding="7.5" VerticalOptions="FillAndExpand">
+                <ActivityIndicator x:Name="activityIndicator"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+                
+                <StackLayout Grid.Row="1" Grid.Column="0" Padding="7.5" VerticalOptions="FillAndExpand">
                     <Button x:Name="normalTabButton" BackgroundColor="#0383c7" Clicked="normalTabClicked" Text="Normal Search"/>
                 </StackLayout>
 
-                <StackLayout Grid.Row="0" Grid.Column="1" Padding="7.5" VerticalOptions="FillAndExpand">
+                <StackLayout Grid.Row="1" Grid.Column="1" Padding="7.5" VerticalOptions="FillAndExpand">
                     <Button x:Name="keywordTabButton" BackgroundColor="#0383c7" Clicked="keywordTabClicked" Text="Keyword Search"/>
                 </StackLayout>
 
-
-                <StackLayout x:Name="stkTab1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <StackLayout x:Name="stkTab1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                     <ScrollView VerticalOptions="FillAndExpand" Padding="10">
-                        <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
+                        
                         <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -111,7 +113,7 @@
                     </ScrollView>
                 </StackLayout>
 
-                <StackLayout x:Name="stkTab2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <StackLayout x:Name="stkTab2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                     <ScrollView VerticalOptions="FillAndExpand" Padding="10">
                         <ActivityIndicator x:Name="activityIndicator2" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
                         <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
