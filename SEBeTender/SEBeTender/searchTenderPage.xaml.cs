@@ -33,11 +33,6 @@ namespace SEBeTender
             password = adminAuth.Password;
 
             displaySearchFields();
-           
-            
-
-           
-
         }
 
         public searchTenderPage(customSearchesItem aCustomSearchItem)
@@ -53,7 +48,7 @@ namespace SEBeTender
 
         async void displaySearchFields()
         {
-            await retrieveOriginatingSource();
+            stkTab2.IsVisible = false;
 
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
@@ -67,8 +62,7 @@ namespace SEBeTender
             closingdateFrom.DateSelected += DatePicker_DateSelected;
             closingdateTo.DateSelected += DatePicker_DateSelected;
             //---------End DatePicker Control Section-----------
-
-            stkTab2.IsVisible = false;
+            
             normalTabButton.TextColor = Color.White;
             keywordTabButton.TextColor = Color.White;
             //normalTabButton.BackgroundColor = Color.FromHex("#4A6FB8");
@@ -78,6 +72,8 @@ namespace SEBeTender
 
             keywordSubmitButton.Clicked += OnKeywordSubmitButtonClicked;
             keywordClearButton.Clicked += OnClearButtonClicked;
+
+            await retrieveOriginatingSource();
         }
 
         async void displayBookmarkedSearchFields(customSearchesItem aCustomSearchItem)
@@ -179,8 +175,6 @@ namespace SEBeTender
             stkTab1.IsVisible = false;
             stkTab2.IsVisible = true;
         }
-
-
 
         async Task retrieveOriginatingSource()
         {
