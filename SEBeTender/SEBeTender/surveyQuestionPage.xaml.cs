@@ -703,7 +703,14 @@ namespace SEBeTender
         {
             Picker picker = (Picker)sender;
             string selectedOption = picker.Items[picker.SelectedIndex];
-            userAnswer = selectedOption;
+            foreach (surveyOption option in survey.surveyQuestions[currentQuestionCount].surveyOptions)
+            {
+                if (option.answerTitle == selectedOption)
+                {
+                    userAnswer = option.answerID;
+                }
+            }
+            //userAnswer = selectedOption;
             survey.surveyQuestions[currentQuestionCount].responseAnswer = userAnswer;
         }
 
