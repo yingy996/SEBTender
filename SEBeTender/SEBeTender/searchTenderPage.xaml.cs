@@ -24,7 +24,7 @@ namespace SEBeTender
         //for use in storing originating sources for use when passing in custom bookmarked search
         List<string> globalSourceList = new List<string>();
 
-        public searchTenderPage()
+        public searchTenderPage() 
         {
             BindingContext = this;
             InitializeComponent();
@@ -32,11 +32,16 @@ namespace SEBeTender
             username = adminAuth.Username;
             password = adminAuth.Password;
 
-            displaySearchFields();
-           
-            
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
 
-           
+            displaySearchFields();
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+
+
 
         }
 
@@ -48,7 +53,13 @@ namespace SEBeTender
             username = adminAuth.Username;
             password = adminAuth.Password;
 
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
             displayBookmarkedSearchFields(aCustomSearchItem);
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
         }
 
         async void displaySearchFields()

@@ -1295,7 +1295,7 @@ namespace SEBeTender
         {
             string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string,string>("username", "surveys"),
+                new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("surveyJson", jsonanswers)
             });
 
