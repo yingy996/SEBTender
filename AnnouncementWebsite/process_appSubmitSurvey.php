@@ -36,8 +36,9 @@ if(empty($_POST["username"])) {
                     $errorMessage = "Survey does not exist. Please try again!";
                 } else {
                     //Validate if user has participated before
-                    $selectQuery = $db_handle->getConn()->prepare("SELECT userID FROM survey_response WHERE surveyID = :surveyID");
+                    $selectQuery = $db_handle->getConn()->prepare("SELECT userID FROM survey_response WHERE surveyID = :surveyID  AND userID = :userID");
                     $selectQuery->bindParam(":surveyID", $surveyID);
+                    $selectQuery->bindParam(":userID", $username);
                     $selectQuery->execute();
                     $selectResult = $selectQuery->fetchAll();
                     $total = count($selectResult);
@@ -111,7 +112,7 @@ if(empty($_POST["username"])) {
     
 }
 
-if (!$errorPresence) {
+if (!$errorPresence && $errorMessage == "") {
     //try {
         //Insert survey response into database
         //Generate unique ID
@@ -171,7 +172,7 @@ if (!$errorPresence) {
 
                 $resp_answerID = $randomID;
 
-                if ($question->questionType == "longsentece" || $question->questionType == "shortsentence") {
+                if ($question->questionType == "longsentence" || $question->questionType == "shortsentence") {
                     $answerID = "";
                     $text_answer = sanitizeInput($survey->surveyQuestions[$i]->responseAnswer);
 
