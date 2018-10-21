@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Example</title>
+    <title>Pocket Tender - Browse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
     <link href="pigeon-table/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/stylesheet.css" rel="stylesheet" />
     <!-- Pigeon Table -->
     <link href="pigeon-table/css/pigeon-table.css" rel="stylesheet" />
 </head>  
-<body>
-    <div class="container">
+<body background="images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="index.php">Pocket Tender</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="">
 
-        <pigeon-table query="Select * FROM tender_source" editable="true" control="true"></pigeon-table>
+        <pigeon-table query="SELECT reference as &#34ReferenceNo&#34, title as Title FROM scrapped_tender" editable="false" control="true"></pigeon-table>
         
     </div>
     
