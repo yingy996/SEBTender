@@ -54,9 +54,12 @@
                             <?php 
                             if (count($results) > 0) {
 
+                                $openSurveyEmpty = true;
+                                
                                 foreach ($results as $survey) {
 
                                     echo '<tr class="info">';
+                                    
                                     if ($survey["isEnded"] == 0)
                                     {
                                         echo '<td>'. $survey["surveyTitle"] .'</td>
@@ -70,7 +73,10 @@
                                                 <button type="submit" class="btn btn-info">View</button>
                                             </form>
                                         </td>';
+                                        
+                                        $openSurveyEmpty = false;
                                     }
+                                    
                                     echo '</tr>';
                                 }
 
@@ -79,10 +85,17 @@
                         </tbody>
 
                     </table>
+
+                    <?php
+                    if ($openSurveyEmpty == true) 
+                        echo '<strong>No survey found.</strong>';
+                    ?>
+
                 </div>
             </div>
 
-
+            <hr/><br/><br/>
+            
             <div class="row">
                 <div class="col-xs-12">
                     <p class="h4"><strong>Closed Surveys</strong></p>
@@ -102,9 +115,12 @@
                             <?php 
                             if (count($results) > 0) {
 
+                                $closedSurveyEmpty = true;
+
                                 foreach ($results as $survey) {
 
                                     echo '<tr class="info">';
+
                                     if ($survey["isEnded"] == 1)
                                     {
                                         echo '<td>'. $survey["surveyTitle"] .'</td>
@@ -118,7 +134,10 @@
                                                 <button type="submit" class="btn btn-info">View</button>
                                             </form>
                                         </td>';
+
+                                        $closedSurveyEmpty = false;
                                     }
+
                                     echo '</tr>';
                                 }
 
@@ -127,6 +146,12 @@
                         </tbody>
 
                     </table>
+
+                    <?php
+                    if ($closedSurveyEmpty == true) 
+                        echo '<strong>No survey found.</strong>';
+                    ?>
+
                 </div>
             </div>
 
