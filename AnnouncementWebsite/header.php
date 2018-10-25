@@ -39,9 +39,9 @@
                         </li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         
-                        echo '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="survey.php">Survey <span class="caret"></span></a>
+                        echo '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="viewSurvey.php">Survey <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="survey.php">View Surveys</a></li>
+                                <li><a href="viewSurvey.php">View Surveys</a></li>
                                 <li><a href="postSurvey.php">Create Survey</a></li>
                             </ul>
                         </li>
