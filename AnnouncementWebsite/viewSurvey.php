@@ -57,7 +57,7 @@
                                         <td>'. $survey["startDate"] .'</td>
                                         <td>'. $survey["endDate"] .'</td>
                                         <td>
-                                            <form action="survey_get.php" method="get">
+                                            <form action="viewSurveyQuestion.php" method="get">
                                                 <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
                                                 <button type="submit" class="btn btn-info">View</button>
                                             </form>
@@ -118,7 +118,7 @@
                                         <td>'. $survey["startDate"] .'</td>
                                         <td>'. $survey["endDate"] .'</td>
                                         <td>
-                                            <form action="survey_get.php" method="get">
+                                            <form action="viewSurveyQuestion.php" method="get">
                                                 <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
                                                 <button type="submit" class="btn btn-info">View</button>
                                             </form>
