@@ -12,16 +12,10 @@
 <body background="../images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
 
     <?php 
+    include("header.php");
     include("process_tenders.php");
     ?>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="index.php">Pocket Tender</a>
-            </div>
-        </div>
-    </nav>
-    
+       
     <div class="container-fluid">
         <!--<div class="row">
             <div class="col-xs-12">
