@@ -34,6 +34,7 @@
                                     echo $title[0];
                             } else {
                                 echo 'Error retreive survey title';
+                                end;
                             }
                             ?>
                         </strong>
@@ -53,11 +54,9 @@
                             <?php 
                             if (count($questions) > 0) {
 
-                                $openSurveyEmpty = true;
-
                                 foreach ($questions as $question) {
 
-                                    echo '<tr class="info">';
+                                    echo '<tr>';
                                     
                                     $qNum = (int)$question["questionNumber"] + 1;
                                     
@@ -67,6 +66,8 @@
                                         <td>'. $question["questionType"].'</td>
                                         <td>
                                             <form action="viewQuestionResponse.php" method="get">
+                                                <input type="hidden" id="questionType" name="questionType" value="' . $question["questionType"] . '"/>
+                                                <input type="hidden" id="surveyID" name="surveyID" value="' . $_GET['surveyID'] . '"/>
                                                 <input type="hidden" id="questionID" name="questionID" value="' . $question["questionID"] . '"/>
                                                 <button type="submit" class="btn btn-info">View Response</button>
                                             </form>

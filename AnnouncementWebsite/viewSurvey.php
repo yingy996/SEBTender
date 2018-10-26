@@ -41,13 +41,13 @@
 
                         <tbody>
                             <?php 
+                            $openSurveyEmpty = true;
+                            
                             if (count($results) > 0) {
-
-                                $openSurveyEmpty = true;
                                 
                                 foreach ($results as $survey) {
 
-                                    echo '<tr class="info">';
+                                    echo '<tr>';
                                     
                                     if ($survey["isEnded"] == 0)
                                     {
@@ -102,13 +102,13 @@
 
                         <tbody>
                             <?php 
+                            $closedSurveyEmpty = true;
+                            
                             if (count($results) > 0) {
-
-                                $closedSurveyEmpty = true;
 
                                 foreach ($results as $survey) {
 
-                                    echo '<tr class="info">';
+                                    echo '<tr>';
 
                                     if ($survey["isEnded"] == 1)
                                     {
