@@ -14,17 +14,6 @@
         include("header.php");
         include("process_viewSurvey.php");
 
-        if (isset($_SESSION["user_login"])) {
-            if(isset($_SESSION["user_role"])) {
-                if ($_SESSION["user_role"] != "admin") {
-                    header("location: index.php");
-                    exit();
-                }
-            }
-        } else {
-            header("location: login.php");
-            exit();
-        }
         ?>
 
         <div class="container">
