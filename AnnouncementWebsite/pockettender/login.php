@@ -16,9 +16,9 @@
 </head>
 <body background="../images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="contentDiv">
         <div class="row">
-            <div class="col-xs-4 col-xs-offset-4" style="background-color:rgba(255, 255, 255, 0.8);border-radius:9px;">
+            <div class="col-xs-12 col-sm-4 col-sm-offset-4"  style="background-color:rgba(255, 255, 255, 0.8);border-radius:9px;">
                 <br/>
                 <form id="login" method="post">
                     <fieldset>
