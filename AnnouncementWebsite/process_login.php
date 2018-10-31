@@ -3,7 +3,7 @@ require_once("dbcontroller.php");
 $errorMsg = "";
 $resultMsg = "";
 
-if (isset($_SESSION["user_login"])) {
+if (isset($_SESSION["user_login"]) || isset($_SESSION["normaluser_login"])) {
     header("location: index.php");
 }
 

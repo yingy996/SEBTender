@@ -22,6 +22,7 @@
         $login_userRole = $result[0]["role"];
     } 
     
+
     /*if(!isset($_SESSION["user_login"])) {
         if (basename($_SERVER["PHP_SELF"]) == "addproduct.php" || basename($_SERVER["PHP_SELF"]) == "viewuseraccount.php" || basename($_SERVER["PHP_SELF"]) == "edituseraccount.php" || basename($_SERVER["PHP_SELF"]) == "productdetails.php") {
 			header("location: login.php");

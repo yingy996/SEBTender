@@ -1,15 +1,31 @@
 <?php
-require_once("dbcontroller.php");
+require_once("../dbcontroller.php");
 $db_handle = new DBController();
+$showDivFlag = false;
+$getSourceQuery = $db_handle->getConn()->prepare("SELECT DISTINCT originatingSource FROM scrapped_tender");
+$getSourceQuery->execute();
+$getSourceResults = $getSourceQuery->fetchAll();
 
+$errorMessage = "";
+$errorpresence = false;
+$resultMsg = "";
+$reference = "";
+$title = "";
+$originatingSource = "";
+$closingDateFrom = "";
+$closingDateTo = "";
 //Check which information to return
 if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_POST["searchOriginatingSource"]) || isset($_POST["searchClosingDateFrom"]) || isset($_POST["searchClosingDateTo"])) {
-    $reference = $_POST["searchReference"];
+    
+    $reference= $_POST["searchReference"];
     $title = $_POST["searchTitle"];
     $originatingSource = $_POST["searchOriginatingSource"];
     $closingDateFrom = $_POST["searchClosingDateFrom"];
     $closingDateTo = $_POST["searchClosingDateTo"];
     
+    echo $reference;
+    echo $title;
+    echo $originatingSource;
     $initialQuery = "SELECT * FROM scrapped_tender";
     $laterQuery = "";
     
@@ -45,21 +61,21 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
     }
     if($closingDateFrom != "" && $closingDateTo != ""){
         if($reference == "" && $title == "" && $originatingSource == ""){
-            $laterQuery = $laterQuery . " WHERE closingDate BETWEEN STR_TO_DATE(:closingDateFrom, '%m/%d/%Y') AND STR_TO_DATE(:closingDateTo, '%m/%d/%Y')";
+            $laterQuery = $laterQuery . " WHERE closingDate BETWEEN :closingDateFrom AND :closingDateTo";
         }else{
-            $laterQuery = $laterQuery . " AND closingDate BETWEEN STR_TO_DATE(:closingDateFrom, '%m/%d/%Y') AND STR_TO_DATE(:closingDateTo, '%m/%d/%Y')";
+            $laterQuery = $laterQuery . " AND closingDate BETWEEN :closingDateFrom AND :closingDateTo";
         }
     }else if($closingDateFrom != "" && $closingDateTo == ""){
         if($reference == "" && $title == "" && $originatingSource == ""){
-            $laterQuery = $laterQuery . " WHERE closingDate > STR_TO_DATE(:closingDateFrom, '%m/%d/%Y')";
+            $laterQuery = $laterQuery . " WHERE closingDate > :closingDateFrom";
         }else{
-            $laterQuery = $laterQuery . " AND closingDate > STR_TO_DATE(:closingDateFrom, '%m/%d/%Y')";
+            $laterQuery = $laterQuery . " AND closingDate > :closingDateFrom";
         }
     }else if($closingDateTo != "" && $closingDateFrom == ""){
         if($reference == "" && $title == "" && $originatingSource == ""){
-            $laterQuery = $laterQuery . " WHERE closingDate < STR_TO_DATE(:closingDateTo, '%m/%d/%Y')";
+            $laterQuery = $laterQuery . " WHERE closingDate < :closingDateTo";
         }else{
-            $laterQuery = $laterQuery . " AND closingDate < STR_TO_DATE(:closingDateTo, '%m/%d/%Y')";
+            $laterQuery = $laterQuery . " AND closingDate < :closingDateTo";
         }
     }
     
@@ -90,54 +106,48 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
         $query->bindParam(":closingDateTo", $closingDateTo);
     }
     
-    
-    //$query->bindParam(":closingDate", $pollID);
-    
-    
-    
     $query->execute();
     $result = $query->fetchAll();
         
         
     if($result != null) {
-        $resultString = json_encode($result);
-        echo $resultString;
-    } else {
-        $error_message = "No tenders available";
+        /*$resultString = json_encode($result);
+        echo $resultString;*/
+        $resultMsg = "Search success";
+        //Get the bookmark status for each tenders
+        $showDivFlag = "true";
+        $bookmarkQuery = $db_handle->getConn()->prepare("SELECT * FROM tender_bookmark WHERE username = :username");
+        $bookmarkQuery->bindParam(":username", $login_user);
+        $bookmarkQuery->execute();
+        $bookmarkResult = $bookmarkQuery->fetchAll();
+
+        foreach ($result as $key => $tender) {
+            //Set default bookmark image as non-bookmark
+            $result[$key]["bookmarkImg"] = "bookmark.png";
+            foreach ($bookmarkResult as $bookmark) {
+                if (isset($tender["reference"])) {
+                    if ($tender["reference"] == $bookmark["tenderReferenceNumber"]) {
+                        $result[$key]["bookmarkImg"] = "bookmarkfilled.png";
+                    }
+                } else {
+                    if ($tender["title"] == $bookmark["tenderTitle"]) {
+                        $result[$key]["bookmarkImg"] = "bookmarkfilled.png";
+                    }
+                }
+
+            }
+        }
         
-        echo $error_message;
-    }
-}else if(isset($_POST["retrieveOriginatingSource"])){
-    $query = $db_handle->getConn()->prepare("SELECT DISTINCT originatingSource FROM scrapped_tender");
-    $query->execute();
-    $result = $query->fetchAll();
-    if($result[0][0] != ""){
-        $resultString = json_encode($result);
-        echo $resultString;
-    }
-}else if(isset($_POST["tenderKeywordSearch"])){
-    $keywordSearch = $_POST["tenderKeywordSearch"];
-    $keywordSearchquery = "%" . $keywordSearch . "%";
-    $query = $db_handle->getConn()->prepare("SELECT * FROM scrapped_tender WHERE reference LIKE :keywordsearch OR title LIKE :keywordsearch OR category LIKE :keywordsearch OR originatingSource LIKE :keywordsearch OR agency LIKE :keywordsearch");
-    
-    //SELECT * FROM `scrapped_tender` WHERE `reference` LIKE '%kontrak%' OR `title` LIKE '%kontrak%' OR `category` LIKE '%kontrak%' OR `originatingSource` LIKE '%kontrak%' OR `agency` LIKE '%kontrak%'
-    $query->bindParam(":keywordsearch", $keywordSearchquery);
-    $query->execute();
-    $result = $query->fetchAll();
-    
-    if($result != null){
-        $resultString = json_encode($result);
-        echo $resultString;
-    }else{
-        $error_message = "No tenders found with the keyword";
-        echo $error_message;
+    } else {
+        $errorMessage = "No tenders available";
+
     }
     
 }else{
-    $error_message = "Problems in post parameters";
-    echo $error_message;
+    //View all tenders
+    $query = $db_handle->getConn()->prepare("SELECT * FROM scrapped_tender ORDER BY tenderSource");
+    $query->execute();
+    $result = $query->fetchAll();
 }
-
-
 
 ?>
