@@ -13,117 +13,33 @@
 
     <?php 
     include("header.php");
-    include("process_tenders.php");
+    include("process_bookmark.php");
     ?>
        
     <div class="container-fluid">
-        <!--<div class="row">
-            <div class="col-xs-12">
-                <div class="jumbotron" style="background-color:rgba(255, 255, 255, 0.6)">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                            <h2>Pocket Tender</h2>
-                            <hr/>
-                            <h5 align="justify" style="line-height:1.6;">Welcome to Pocket Tender! An application that helps you in searching for tenders or procurements in Malaysia! Make tender searching easier now with Pocket Tender. Download the application to explore the awesome features offered!</h5>
-                            <br/>
-
-                            <p class="text-center"><a href="file/pockettender.apk" download><img src="../images/downloadBtnlower2.png" alt="Download Button"/></a></p>
-                        </div>
-                        
-                        <div class="clearfix visible-xs"></div>
-                        
-                        <div class="col-xs-12 col-sm-6 text-center">
-                            <img src="../images/pockettenderimg.png" alt="Pocket Tender main page" width="60%">
-                        </div>
-                    </div>
-                      
-                </div>
-            </div>
-        </div>-->
-        
         <div class="row">
             <div class="col-xs-12" style="background-color:rgba(255, 255, 255, 0.7)">
                 <div class="page-header">
-                  <h3>View Tenders</h3>
+                  <h3>Tender Bookmarks</h3>
                 </div>
-                <!--onclick="window.location=\'tenderDetails.php?ref='. $tender["reference"].'\';" -->
                 <?php
-                if(count($results) > 0) {
-                    foreach($results as $key => $tender) {
-                        //echo json_encode($tender);
-                        $tenderJson = json_encode($tender);
-                        echo '<div class="row contentRow" data-toggle="modal" data-target="#detailsModal' . $tender["tenderSource"] . '" data-tender="'. $key .'">';
+                
+                if (count($tenderArr) > 0) {
+                    //Display the list of bookmark
+                    foreach ($tenderArr as $key => $tender){
                         echo 
-                        '<div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 text-center">
-                                    <p><strong>
-                                    '. $tender["originatingSource"] .'
-                                    </strong></p>
-                                </div>
-                            </div>';
-                            
-                        if ($tender["originatingSource"] != "Telekom") {
-                            echo '<div class="row">
-                                <div class="col-xs-5 text-right">
-                                    <p><strong>Reference:</strong>
-                                    '. $tender["reference"] .'
-                                    </p>
-                                </div>                          
-                                
-                                <div class="col-xs-5 col-xs-offset-2">
-                                    <p><strong>Closing Date:</strong>
-                                    '. $tender["closingDate"] .'
-                                    </p>
-                                </div>
-                            </div>';
-                        }
-                            
-                            echo '<hr/><div class="row">
-                                <div class="col-xs-12 text-center">
-                                    <p><strong>Title:</strong></p>
-                                    <p>
-                                    '. $tender["title"] .'
-                                    </p>
-                                </div>
+                        '<div class="row contentRow" data-toggle="modal" data-target="#detailsModal' . $tender["tenderSource"] . '" data-tender="'. $key .'">
+                            <div class="col-xs-12">
+                                <p><strong>' . $tender["originatingSource"] . '</strong></p>
+                                <hr/>
+                                <p><strong>' . $tender["reference"] . '</strong></p>
+                                <p>' . $tender["title"] . '</p>
                             </div>
-                            <hr/>';
-                            
-                        if ($tender["originatingSource"] != "Telekom"){
-                            echo '<div class="row">
-                                <div class="col-xs-12 col-sm-5 text-right">';
-                                    if (isset($tender["agency"])) {
-                                        echo '<p><strong>Agency:</strong> '. $tender["agency"] .'</p>';
-                                    }
-                            echo '</div><div class="clearfix visible-xs"></div>                          
-                                <div class="col-xs-12 col-sm-5 col-sm-offset-2">';
-                                    if (isset($tender["category"])) {
-                                        echo '<p><strong>Category:</strong>
-                                        '. $tender["category"] .'
-                                        </p>';
-                                    }
-                                    
-                            echo '</div>
-                            </div>';
-                        }
-                        //Create bookmark object for bookmarking process
-                        $bookmarkObj = (object)[];
-                        $bookmarkObj->bookmarkId = "bookmark" . $key;
-                        $bookmarkObj->user = $login_user;
-                        $bookmarkObj->tenderRef = $tender["reference"];
-                        $bookmarkObj->tenderTitle = $tender["title"];
-                        $bookmarkObj->originatingSource = $tender["originatingSource"];
-                        $bookmarkObj->closingDate = $tender["closingDate"];
-                        $bookmarkJsonStr = json_encode($bookmarkObj);
-                        
-                        echo '<div class="row">
-                                <div class="col-xs-12 text-center">
-                                     <img id="bookmark'. $key .'" src="../images/'. $tender["bookmarkImg"] .'" alt="Bookmark" onclick="event.stopPropagation();manageBookmark(' . str_replace('"', '\'', $bookmarkJsonStr) . ');"/>
-                                </div>
-                            </div>';
-                        
-                        echo '</div></div><br/>';
+                        </div><br/>';
                     }
+                } else {
+                    //Display error message when no bookmark is found
+                    echo '<div class="alert alert-warning"><h5>Bookmark is empty! You have not bookmarked anything.</h5></div>';
                 }
                 ?>
             </div>
@@ -254,14 +170,14 @@
     <script src="../js/jquery.min.js"></script>
     <!-- All Bootstrap plug-ins file -->
     <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/process_bookmark.js"></script>
+    
     <!-- Passing data to Bootstrap modal -->
     <script type="text/javascript">
         //SEB modal
         $(document).ready(function(){
             $('#detailsModal0').on('shown.bs.modal', function(e) {
                 var tenderKey = $(e.relatedTarget).data('tender');
-                var tendersJson = <?php echo json_encode($results); ?>;
+                var tendersJson = <?php echo json_encode($tenderArr); ?>;
                 var selectedTender = tendersJson[tenderKey];
 
                 var modal = $(this);
@@ -323,7 +239,7 @@
         $(document).ready(function(){
             $('#detailsModal1').on('shown.bs.modal', function(e) {
                 var tenderKey = $(e.relatedTarget).data('tender');
-                var tendersJson = <?php echo json_encode($results); ?>;
+                var tendersJson = <?php echo json_encode($tenderArr); ?>;
                 var selectedTender = tendersJson[tenderKey];
 
                 var modal = $(this);
@@ -340,7 +256,7 @@
         $(document).ready(function(){
             $('#detailsModal2').on('shown.bs.modal', function(e) {
                 var tenderKey = $(e.relatedTarget).data('tender');
-                var tendersJson = <?php echo json_encode($results); ?>;
+                var tendersJson = <?php echo json_encode($tenderArr); ?>;
                 var selectedTender = tendersJson[tenderKey];
 
                 var modal = $(this);
@@ -365,7 +281,7 @@
         $(document).ready(function(){
             $('#detailsModal3').on('shown.bs.modal', function(e) {
                 var tenderKey = $(e.relatedTarget).data('tender');
-                var tendersJson = <?php echo json_encode($results); ?>;
+                var tendersJson = <?php echo json_encode($tenderArr); ?>;
                 var selectedTender = tendersJson[tenderKey];
 
                 var modal = $(this);
@@ -385,6 +301,6 @@
                 modal.find('#fileLinks').html(fileElementsString);
             })
         });
-    </script>    
+    </script>
 </body>
 </html>

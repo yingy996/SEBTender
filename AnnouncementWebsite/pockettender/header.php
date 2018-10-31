@@ -10,8 +10,8 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-to-collapse">
                     <ul class="nav navbar-nav navbar-right">';
-                    if(isset($_SESSION["normaluser_login"])){
-                        echo '<li><a href="#"class="btn disabled hidden-xs">Welcome, <em>'. $_SESSION["normaluser_login"] .'</em></a></li>
+                    if(isset($login_user)){
+                        echo '<li><a href="#"class="btn disabled hidden-xs">Welcome, <em>'. $login_user .'</em></a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         
                        echo '<li><a href="logout.php">Logout</a></li>';
@@ -30,9 +30,9 @@ echo'
                      
                
 function sanitizeInput($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        
-        return $data;
-    }
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+
+    return $data;
+}
