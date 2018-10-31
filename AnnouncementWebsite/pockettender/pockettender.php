@@ -16,6 +16,9 @@
             <div class="navbar-header">
               <a class="navbar-brand" href="index.php">Pocket Tender</a>
             </div>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="web">Web Version</a></li>
+            </ul>
         </div>
     </nav>
     <div class="container-fluid">
