@@ -1,12 +1,7 @@
-<?php 
-    include("header.php"); 
-    include("process_userLogin.php");
-?>
-    
 <!DOCTYPE html>
 <html data-ng-app="">
 <head>
-    <title>SESCo eTender Mobile Application Announcements</title>
+    <title>Pocket Tender</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initialscale=1.0"/>
     <!-- Bootstrap -->
@@ -15,7 +10,10 @@
     
 </head>
 <body background="../images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
-
+    <?php 
+        include("header.php"); 
+        include("process_userLogin.php");
+    ?>
     <div class="container-fluid" id="contentDiv">
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-sm-offset-4"  style="background-color:rgba(255, 255, 255, 0.8);border-radius:9px;">
