@@ -22,6 +22,7 @@
                     if(isset($login_user)){
                         echo '<li><a href="#">Welcome, <em>'. $login_user .'</em></a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        echo '<li><a href="searchTenders.php">Search Tenders</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="bookmark.php">Bookmark</a></li>';
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
