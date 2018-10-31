@@ -17,60 +17,61 @@
 <body background="../images/paintimg.png"> <!--full page background img -->
     
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 col-xs-offset-4" style="background-color:rgba(255, 255, 255, 0.8); border-radius:9px;">
+        <div class="row contentRow">
+            <div class="col-xs-12 col-sm-12">
                 <br/>
                 <form id="search" method="post">
                     <fieldset>
                         <legend>Search Tenders</legend>
-                        <p>Search for Tenders.</p>
                         
                         <p id="isSuccess" class="text-success"><?php echo $resultMsg; ?></p>
                         <p class="text-danger"><?php echo $errorMessage; ?></p>
-                        <div class="form-group">
+                        
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label for="searchReference">Tender Reference:</label>
                             <input type="text" class="form-control" id="searchReference" name="searchReference" placeholder="Enter tender reference number"/>
                         </div>
                         
-                        <div class="form-group">
+                        <div class="form-group col-xs-12 col-sm-6">
+                            <label for="searchOriginatingSource">Originating Source:</label>
+                            <?php
+                                echo '<select class="form-control" id="searchOriginatingSource" name="searchOriginatingSource">';
+                                echo '<option value="all"> </option>';
+                                if(count($getSourceResults) > 0) {
+                                    foreach($getSourceResults as $getSourceResult) {
+                                        echo '<option value="' . htmlspecialchars($getSourceResult[0]) . '">' . htmlspecialchars($getSourceResult[0]) . '</option>';
+                                    }
+                                }
+                                echo '</select>';
+                            ?>
+                        </div>
+                        
+                        <div class="form-group col-xs-12">
                             <label for="searchTitle">Tender Title:</label>
                             <input type="text" class="form-control" id="searchTitle" name="searchTitle" placeholder="Enter tender title"/>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="searchOriginatingSource">Originating Source:</label>
-                            <?php
-                            echo '<select class="form-control" id="searchOriginatingSource" name="searchOriginatingSource">';
-                            echo '<option value="all"> </option>';
-                            if(count($getSourceResults) > 0) {
-                                foreach($getSourceResults as $getSourceResult) {
-                                    echo '<option value="' . htmlspecialchars($getSourceResult[0]) . '">' . htmlspecialchars($getSourceResult[0]) . '</option>';
-                                }
-                            }
-                            
-                            echo '</select>';
-                            ?>
-                            
-                            
-                            
-                        </div>
-                        
-                        <div class="form-group">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label for="searchClosingDateFrom">From:</label>
                             <input type="date" class="form-control" id="searchClosingDateFrom" name="searchClosingDateFrom"/>
                         </div>
                     
-                        <div class="form-group">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label for="searchClosingDateTo">To:</label>
                             <input type="date" class="form-control" id="searchClosingDateTo" name="searchClosingDateTo"/>
                         </div>
                         
-                        <p><input type="submit" class="btn btn-default" id="loginBtn" value="Search"/></p>
+                        <div class="form-group col-xs-12">
+                            <div class="margin-left">
+                                <p style="font-weight:bold; text-align:right"><input type="submit" class="btn btn-default" id="loginBtn" value="Search"/></p>
+                            </div>
+                        </div>
                     </fieldset>
                 </form>
             </div>
         </div>
     
+        <br/>
     
     <div class="row" <?php if ($showDivFlag===false){?>style="display:none"<?php } ?>>
             <div class="col-xs-12" style="background-color:rgba(255, 255, 255, 0.7)">

@@ -1,7 +1,11 @@
 <?php
+
 require_once("../dbcontroller.php");
 $db_handle = new DBController();
+//control tenders result field visibility
 $showDivFlag = false;
+
+//Retrieve all originating sources
 $getSourceQuery = $db_handle->getConn()->prepare("SELECT DISTINCT originatingSource FROM scrapped_tender");
 $getSourceQuery->execute();
 $getSourceResults = $getSourceQuery->fetchAll();
@@ -9,11 +13,13 @@ $getSourceResults = $getSourceQuery->fetchAll();
 $errorMessage = "";
 $errorpresence = false;
 $resultMsg = "";
+
 $reference = "";
 $title = "";
 $originatingSource = "";
 $closingDateFrom = "";
 $closingDateTo = "";
+
 //Check which information to return
 if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_POST["searchOriginatingSource"]) || isset($_POST["searchClosingDateFrom"]) || isset($_POST["searchClosingDateTo"])) {
     
@@ -23,9 +29,7 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
     $closingDateFrom = $_POST["searchClosingDateFrom"];
     $closingDateTo = $_POST["searchClosingDateTo"];
     
-    echo $reference;
-    echo $title;
-    echo $originatingSource;
+
     $initialQuery = "SELECT * FROM scrapped_tender";
     $laterQuery = "";
     
@@ -134,15 +138,12 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
                         $result[$key]["bookmarkImg"] = "bookmarkfilled.png";
                     }
                 }
-
             }
         }
         
     } else {
         $errorMessage = "No tenders available";
-
     }
-    
 }else{
     //View all tenders
     $query = $db_handle->getConn()->prepare("SELECT * FROM scrapped_tender ORDER BY tenderSource");
