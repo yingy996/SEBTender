@@ -79,13 +79,14 @@ if (!$errorpresence) {
         echo $errorMessage;
     } else {
         //if inputs are valid and username is unique, register user into database
-        $insertQuery = $db_handle->getConn()->prepare("INSERT INTO user (username, password, email, fullName) VALUES (:username, :password, :email, :name)");
+        $insertQuery = $db_handle->getConn()->prepare("INSERT INTO user (username, password, email, fullName, dateSubmitted, registeredFrom) VALUES (:username, :password, :email, :name, NOW(), :fromWhere)");
 
         $insertQuery->bindParam(":username", $username);
         $insertQuery->bindParam(":password", $password);
         $insertQuery->bindParam(":name", $name);
         $insertQuery->bindParam(":email", $email);
-
+        $fromWhere = "Mobile";
+        $insertQuery->bindParam(":fromWhere", $fromWhere);
         $insertResult = $insertQuery->execute();
         
         if ($insertResult) {
