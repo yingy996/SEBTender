@@ -1,3 +1,7 @@
+<?php 
+    include("header.php");
+    include("process_userRegistration.php");
+?>
 <!DOCTYPE html>
 <html data-ng-app="">
 <head>
@@ -10,13 +14,10 @@
     
 </head>
 <body background="../images/paintimg.png"> <!--full page background img -->
-    <?php 
-        include("header.php");
-        include("process_userRegistration.php");
-    ?>
-    <div class="container-fluid">
+    
+    <div class="container-fluid" id="contentDiv">
         <div class="row">
-            <div class="col-xs-4 col-xs-offset-4" style="background-color:rgba(255, 255, 255, 0.8); border-radius:9px;">
+            <div class="col-xs-12 col-sm-4 col-sm-offset-4" style="background-color:rgba(255, 255, 255, 0.8); border-radius:9px;">
                 <br/>
                 <form id="login" method="post">
                     <fieldset>
@@ -70,9 +71,9 @@
 
     
     <!-- jQuery – required for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
     <!-- All Bootstrap plug-ins file -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <!--Basic AngularJS-->
     
 </body>
