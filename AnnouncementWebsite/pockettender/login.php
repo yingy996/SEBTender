@@ -1,3 +1,7 @@
+<?php 
+    include("header.php"); 
+    include("process_userLogin.php");
+?>
 <!DOCTYPE html>
 <html data-ng-app="">
 <head>
@@ -10,10 +14,6 @@
     
 </head>
 <body background="../images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
-    <?php 
-        include("header.php"); 
-        include("process_userLogin.php");
-    ?>
     <div class="container-fluid" id="contentDiv">
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-sm-offset-4"  style="background-color:rgba(255, 255, 255, 0.8);border-radius:9px;">
@@ -53,9 +53,9 @@
     
     
     <!-- jQuery – required for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
     <!-- All Bootstrap plug-ins file -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <!--Basic AngularJS-->
     
 </body>

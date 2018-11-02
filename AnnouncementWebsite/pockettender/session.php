@@ -20,15 +20,5 @@
 		$result = $query->fetchAll();
 		$login_user = $result[0]["username"];
         
-    } 
-    /*if(!isset($_SESSION["user_login"])) {
-        if (basename($_SERVER["PHP_SELF"]) == "addproduct.php" || basename($_SERVER["PHP_SELF"]) == "viewuseraccount.php" || basename($_SERVER["PHP_SELF"]) == "edituseraccount.php" || basename($_SERVER["PHP_SELF"]) == "productdetails.php") {
-			header("location: login.php");
-        	exit;
-		}
-		
-    }*/
-
-	
-
+    }
 ?>

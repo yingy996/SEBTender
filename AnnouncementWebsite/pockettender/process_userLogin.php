@@ -31,7 +31,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
                 }
                 $_SESSION["normaluser_login"] = $username;
                 $resultMsg = "Login successfully! You will be redirected soon.";
-                header("refresh:2;url=index.php");
+                header("refresh:1;url=index.php");
             } else {
                 $errorMsg =  "Invalid password. Please try again!";
             }
@@ -43,5 +43,4 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
     }
 
 }
-
 ?>

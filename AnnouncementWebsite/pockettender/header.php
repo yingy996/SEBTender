@@ -3,7 +3,7 @@
 
     //Display the navigation bar
     echo 
-        '<nav class="navbar navbar-inverse" role="navigation">
+        '<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <!--3 bar icon-->
@@ -30,11 +30,10 @@
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="registration.php">Register</a></li>';
                     }            
-echo '
-        </div>
-    </nav>';
-                
-                     
+        echo '      </ul>
+                </div>
+            </div>
+        </nav>';
                
 function sanitizeInput($data) {
     $data = trim($data);
@@ -43,3 +42,4 @@ function sanitizeInput($data) {
 
     return $data;
 }
+?>

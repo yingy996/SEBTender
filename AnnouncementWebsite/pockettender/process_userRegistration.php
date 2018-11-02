@@ -93,6 +93,7 @@ if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confi
 
             if ($insertResult) {
                 $resultMsg = "Registration successful";
+                header("refresh:1;url=login.php");
             } else {
                 $errorMessage = "Error occured while registering. Please try again! ";
             }
