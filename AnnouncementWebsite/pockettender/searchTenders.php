@@ -28,8 +28,6 @@
           <li <?php if($keywordTabActive=="keywordsearch"){echo "class='active'";}  ?>><a data-toggle="tab" href="#keywordsearch">Keyword Search</a></li>
         </ul>
         <div class="row contentRow">
-            
-            
             <div class="col-xs-12 col-sm-12">
                 <br/>
                 <div class="tab-content">
