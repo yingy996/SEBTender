@@ -144,6 +144,45 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
     } else {
         $errorMessage = "No tenders available";
     }
+}else if(isset($_POST["searchKeyword"])){
+    $keywordSearch = $_POST["searchKeyword"];
+    $keywordSearchquery = "%" . $keywordSearch . "%";
+    $query = $db_handle->getConn()->prepare("SELECT * FROM scrapped_tender WHERE reference LIKE :keywordsearch OR title LIKE :keywordsearch OR category LIKE :keywordsearch OR originatingSource LIKE :keywordsearch OR agency LIKE :keywordsearch");
+    
+    $query->bindParam(":keywordsearch", $keywordSearchquery);
+    $query->execute();
+    $result = $query->fetchAll();
+    
+    if($result != null) {
+        /*$resultString = json_encode($result);
+        echo $resultString;*/
+        $resultMsg = "Search success";
+        //Get the bookmark status for each tenders
+        $showDivFlag = "true";
+        $bookmarkQuery = $db_handle->getConn()->prepare("SELECT * FROM tender_bookmark WHERE username = :username");
+        $bookmarkQuery->bindParam(":username", $login_user);
+        $bookmarkQuery->execute();
+        $bookmarkResult = $bookmarkQuery->fetchAll();
+
+        foreach ($result as $key => $tender) {
+            //Set default bookmark image as non-bookmark
+            $result[$key]["bookmarkImg"] = "bookmark.png";
+            foreach ($bookmarkResult as $bookmark) {
+                if (isset($tender["reference"])) {
+                    if ($tender["reference"] == $bookmark["tenderReferenceNumber"]) {
+                        $result[$key]["bookmarkImg"] = "bookmarkfilled.png";
+                    }
+                } else {
+                    if ($tender["title"] == $bookmark["tenderTitle"]) {
+                        $result[$key]["bookmarkImg"] = "bookmarkfilled.png";
+                    }
+                }
+            }
+        }
+        
+    } else {
+        $errorMessage = "No tenders available";
+    }
 }else{
     //View all tenders
     $query = $db_handle->getConn()->prepare("SELECT * FROM scrapped_tender ORDER BY tenderSource");
