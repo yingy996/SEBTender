@@ -15,59 +15,93 @@
     
 </head>
 <body background="../images/paintimg.png"> <!--full page background img -->
-    
+    <?php
+        $keywordTabActive = "";
+        //store the current tab so that the tab would be unchanged after search
+        if(!empty($_GET["tab"]) && $_GET["tab"] == "keywordsearch"){
+            $keywordTabActive = "keywordsearch";
+        }
+    ?>
     <div class="container-fluid">
+        <ul class="nav nav-tabs">
+          <li <?php if($keywordTabActive!="keywordsearch"){echo "class='active'";}  ?>><a data-toggle="tab" href="#normalsearch">Normal Search</a></li>
+          <li <?php if($keywordTabActive=="keywordsearch"){echo "class='active'";}  ?>><a data-toggle="tab" href="#keywordsearch">Keyword Search</a></li>
+        </ul>
         <div class="row contentRow">
             <div class="col-xs-12 col-sm-12">
                 <br/>
-                <form id="search" method="post">
-                    <fieldset>
-                        <legend>Search Tenders</legend>
-                        
-                        <p id="isSuccess" class="text-success"><?php echo $resultMsg; ?></p>
-                        <p class="text-danger"><?php echo $errorMessage; ?></p>
-                        
-                        <div class="form-group col-xs-12 col-sm-6">
-                            <label for="searchReference">Tender Reference:</label>
-                            <input type="text" class="form-control" id="searchReference" name="searchReference" placeholder="Enter tender reference number"/>
-                        </div>
-                        
-                        <div class="form-group col-xs-12 col-sm-6">
-                            <label for="searchOriginatingSource">Originating Source:</label>
-                            <?php
-                                echo '<select class="form-control" id="searchOriginatingSource" name="searchOriginatingSource">';
-                                echo '<option value="all"> </option>';
-                                if(count($getSourceResults) > 0) {
-                                    foreach($getSourceResults as $getSourceResult) {
-                                        echo '<option value="' . htmlspecialchars($getSourceResult[0]) . '">' . htmlspecialchars($getSourceResult[0]) . '</option>';
-                                    }
-                                }
-                                echo '</select>';
-                            ?>
-                        </div>
-                        
-                        <div class="form-group col-xs-12">
-                            <label for="searchTitle">Tender Title:</label>
-                            <input type="text" class="form-control" id="searchTitle" name="searchTitle" placeholder="Enter tender title"/>
-                        </div>
-                        
-                        <div class="form-group col-xs-12 col-sm-6">
-                            <label for="searchClosingDateFrom">From:</label>
-                            <input type="date" class="form-control" id="searchClosingDateFrom" name="searchClosingDateFrom"/>
-                        </div>
+                <div class="tab-content">
+                    <div id="normalsearch" class="<?php if($keywordTabActive == "keywordsearch"){echo "tab-pane fade";}else{echo "tab-pane fade in active";}?>">
+                        <form id="search" action="searchTenders.php" method="post" >
+                            <fieldset>
+                                <legend>Search Tenders</legend>
+                                <p id="isSuccess" class="text-success"><?php echo $resultMsg; ?></p>
+                                <p class="text-danger"><?php echo $errorMessage; ?></p>
+                                 
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="searchReference">Tender Reference:</label>
+                                    <input type="text" class="form-control" id="searchReference" name="searchReference" placeholder="Enter tender reference number"/>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="searchOriginatingSource">Originating Source:</label>
+                                    <?php
+                                        echo '<select class="form-control" id="searchOriginatingSource" name="searchOriginatingSource">';
+                                        echo '<option value="all"> </option>';
+                                        if(count($getSourceResults) > 0) {
+                                            foreach($getSourceResults as $getSourceResult) {
+                                                echo '<option value="' . htmlspecialchars($getSourceResult[0]) . '">' . htmlspecialchars($getSourceResult[0]) . '</option>';
+                                            }
+                                        }
+                                        echo '</select>';
+                                    ?>
+                                </div>
+
+                                <div class="form-group col-xs-12">
+                                    <label for="searchTitle">Tender Title:</label>
+                                    <input type="text" class="form-control" id="searchTitle" name="searchTitle" placeholder="Enter tender title"/>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="searchClosingDateFrom">From:</label>
+                                    <input type="date" class="form-control" id="searchClosingDateFrom" name="searchClosingDateFrom"/>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="searchClosingDateTo">To:</label>
+                                    <input type="date" class="form-control" id="searchClosingDateTo" name="searchClosingDateTo"/>
+                                </div>
+
+                                <div class="form-group col-xs-12">
+                                    <div class="margin-left">
+                                        <p style="font-weight:bold; text-align:right"><input type="submit" class="btn btn-default" id="searchBtn" value="Search"/></p>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
                     
-                        <div class="form-group col-xs-12 col-sm-6">
-                            <label for="searchClosingDateTo">To:</label>
-                            <input type="date" class="form-control" id="searchClosingDateTo" name="searchClosingDateTo"/>
-                        </div>
-                        
-                        <div class="form-group col-xs-12">
-                            <div class="margin-left">
-                                <p style="font-weight:bold; text-align:right"><input type="submit" class="btn btn-default" id="loginBtn" value="Search"/></p>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
+                    <div id="keywordsearch" class="<?php if($keywordTabActive == "keywordsearch"){echo "tab-pane fade in active";}else{echo "tab-pane fade";}?>">
+                        <form id="keywordSearch" action="searchTenders.php?tab=keywordsearch" method="post" >
+                            <fieldset>
+                                <legend>Search Tenders</legend>
+                                <p id="isSuccess" class="text-success"><?php echo $resultMsg; ?></p>
+                                <p class="text-danger"><?php echo $errorMessage; ?></p>
+                                
+                                <div class="form-group col-xs-12 col-sm-12">
+                                    <label for="searchKeyword">Tender Keyword:</label>
+                                    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" placeholder="Enter tender keyword"/>
+                                </div>
+                                
+                                <div class="form-group col-xs-12">
+                                    <div class="margin-left">
+                                        <p style="font-weight:bold; text-align:right"><input type="submit" class="btn btn-default" id="keywordSearchBtn" value="KeywordSearch"/></p>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     
