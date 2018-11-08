@@ -28,7 +28,7 @@ if(isset($_POST["username"]) && isset($_POST["tenderReferenceNumber"]) && isset(
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
-} elseif (isset($_POST["username"]) && isset($_POST["tenderReferenceNumber"]) && isset($_POST["tenderTitle"]) && isset($_POST["isDelete"])) { 
+} elseif (isset($_POST["username"]) && isset($_POST["tenderReferenceNumber"]) && isset($_POST["tenderTitle"]) && isset($_POST["isDelete"])) {
     //remove bookmark from database
     $username = sanitizeInput($_POST["username"]);
     $tenderRefNumber = sanitizeInput($_POST["tenderReferenceNumber"]);
@@ -36,22 +36,28 @@ if(isset($_POST["username"]) && isset($_POST["tenderReferenceNumber"]) && isset(
     $isDeleteAction = sanitizeInput($_POST["isDelete"]);
     
     try {
-        $query = $db_handle->getConn()->prepare("DELETE FROM tender_bookmark WHERE tender_bookmark.username = :username AND tender_bookmark.tenderReferenceNumber = :tendeRefNumber");
-        $query->bindParam(":username", $username);
-        $query->bindParam(":tendeRefNumber", $tenderRefNumber);
+        $queryRef = $db_handle->getConn()->prepare("DELETE FROM tender_bookmark WHERE tender_bookmark.username = :username AND tender_bookmark.tenderReferenceNumber = :tendeRefNumber");
+        $queryRef->bindParam(":username", $username);
+        $queryRef->bindParam(":tendeRefNumber", $tenderRefNumber);
         
-        if (empty($tenderRefNumber)) {
-            $query = $db_handle->getConn()->prepare("DELETE FROM tender_bookmark WHERE tender_bookmark.username = :username AND tender_bookmark.tenderTitle = :tenderTitle");
-            $query->bindParam(":username", $username);
-            $query->bindParam(":tenderTitle", $tenderTitle);
-        }
+        $queryTitle = $db_handle->getConn()->prepare("DELETE FROM tender_bookmark WHERE tender_bookmark.username = :username AND tender_bookmark.tenderTitle = :tenderTitle");
+        $queryTitle->bindParam(":username", $username);
+        $queryTitle->bindParam(":tenderTitle", $tenderTitle);
         
-        $result = $query->execute();
-        
-        if($result == true) {
-            echo "Success";	
+        if (empty($tenderRefNumber) || $tenderRefNumber == "" || $tenderRefNumber == "null") {
+            $result = $queryTitle->execute();
+            if($queryTitle->rowCount() > 0) {
+                echo "Success";	
+            } else {
+                echo "Failed";	
+            }
         } else {
-            echo "Failed";	
+            $result = $queryRef->execute();
+            if($queryRef->rowCount() > 0) {
+                echo "Success";	
+            } else {
+                echo "Failed";	
+            }
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
