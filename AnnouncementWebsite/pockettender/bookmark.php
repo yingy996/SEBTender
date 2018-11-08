@@ -29,6 +29,7 @@
                     foreach ($tenderArr as $key => $tender){
                         //Set bookmark object json for purpose of removing bookmark
                         $bookmarkObj = (object)[];
+                        $bookmarkObj->bookmarkId = "bookmarkTender" . $key;
                         $bookmarkObj->user = $login_user;
                         $bookmarkObj->tenderRef = $tender["reference"];
                         $bookmarkObj->tenderTitle = $tender["title"];
