@@ -20,6 +20,12 @@ if (count($results) > 0) {
             if (isset($tender["reference"])) {
                 if ($tender["reference"] == $bookmark["tenderReferenceNumber"]) {
                     $results[$key]["bookmarkImg"] = "bookmarkfilled.png";
+                } else {
+                    $escapedReference = preg_replace("/\b&amp;\b/", "&", $bookmark["tenderReferenceNumber"]);
+                    
+                    if ($tender["reference"] == $escapedReference) {
+                        $results[$key]["bookmarkImg"] = "bookmarkfilled.png";
+                    }
                 }
             } else {
                 if ($tender["title"] == $bookmark["tenderTitle"]) {

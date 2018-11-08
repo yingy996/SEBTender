@@ -27,13 +27,24 @@
                 if (count($tenderArr) > 0) {
                     //Display the list of bookmark
                     foreach ($tenderArr as $key => $tender){
+                        //Set bookmark object json for purpose of removing bookmark
+                        $bookmarkObj = (object)[];
+                        $bookmarkObj->user = $login_user;
+                        $bookmarkObj->tenderRef = $tender["reference"];
+                        $bookmarkObj->tenderTitle = $tender["title"];
+                        $bookmarkObj->originatingSource = $tender["originatingSource"];
+                        $bookmarkObj->closingDate = $tender["closingDate"];
+                        $bookmarkJsonStr = json_encode($bookmarkObj);
+                        
                         echo 
-                        '<div class="row contentRow" data-toggle="modal" data-target="#detailsModal' . $tender["tenderSource"] . '" data-tender="'. $key .'">
+                        '<div id="'. $bookmarkObj->bookmarkId .'" class="row contentRow" data-toggle="modal" data-target="#detailsModal' . $tender["tenderSource"] . '" data-tender="'. $key .'">
                             <div class="col-xs-12">
                                 <p><strong>' . $tender["originatingSource"] . '</strong></p>
                                 <hr/>
                                 <p><strong>' . $tender["reference"] . '</strong></p>
                                 <p>' . $tender["title"] . '</p>
+                                <hr/>
+                                <h4><span class="glyphicon glyphicon-trash" onclick="event.stopPropagation();confirmRemoveBookmark(' . str_replace('"', '\'', $bookmarkJsonStr) . ');"></span></h4>
                             </div>
                         </div><br/>';
                     }
@@ -169,6 +180,7 @@
     <!-- jQuery – required for Bootstrap's JavaScript plugins) -->
     <script src="../js/jquery.min.js"></script>
     <!-- All Bootstrap plug-ins file -->
+    <script src="../js/process_bookmark.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     
     <!-- Passing data to Bootstrap modal -->
