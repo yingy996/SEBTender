@@ -15,37 +15,78 @@
     include("header.php");
     include("process_tenders.php");
     ?>
-       
+    
     <div class="container-fluid">
-        <!--<div class="row">
-            <div class="col-xs-12">
-                <div class="jumbotron" style="background-color:rgba(255, 255, 255, 0.6)">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                            <h2>Pocket Tender</h2>
-                            <hr/>
-                            <h5 align="justify" style="line-height:1.6;">Welcome to Pocket Tender! An application that helps you in searching for tenders or procurements in Malaysia! Make tender searching easier now with Pocket Tender. Download the application to explore the awesome features offered!</h5>
-                            <br/>
-
-                            <p class="text-center"><a href="file/pockettender.apk" download><img src="../images/downloadBtnlower2.png" alt="Download Button"/></a></p>
-                        </div>
-                        
-                        <div class="clearfix visible-xs"></div>
-                        
-                        <div class="col-xs-12 col-sm-6 text-center">
-                            <img src="../images/pockettenderimg.png" alt="Pocket Tender main page" width="60%">
-                        </div>
-                    </div>
-                      
-                </div>
-            </div>
-        </div>-->
-        
         <div class="row">
             <div class="col-xs-12" style="background-color:rgba(255, 255, 255, 0.7)">
                 <div class="page-header">
                   <h3>View Tenders</h3>
                 </div>
+                
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Show tenders from <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="filterUl">
+                                <li class="dropdown-item"><a><label><input type="checkbox" id="allChkb" name="all" value="all" onchange="checkFilter('all');" checked/> All</label></a></li>
+                                <li class="divider"></li>
+                                <?php
+                                    if(count($sourceResults) > 0) {
+                                        foreach ($sourceResults as $key => $tenderSource) {
+                                            echo '<li class="dropdown-item"><a><label><input id="checkbox'. $key .'" type="checkbox" name="checkbox'. $key .'" value="'. $tenderSource["originatingSource"] .'" onchange="checkFilter(\'checkbox'. $key .'\')" checked/> '. $tenderSource["originatingSource"] .'</label></a></li>';
+                                        }
+                                    }
+                                ?>
+                            </ul>
+                            <button class="btn btn-primary" onclick="filterTenders();">Filter</button>
+                        </div>
+                        
+                        <!-- Hidden form to send filter info -->
+                        <form style="display: hidden;" method="POST" id="filterForm">
+                            <input type="hidden" name="filterJSON" id="filterInput"/>
+                        </form>
+                        <p style="display: none;" id="jsonStr"><?php if(isset($filterJson)) {echo $filterJson;} ?></p>
+                    </div>
+                    
+                    <div class="clearfix visible-xs"></div>
+                    
+                    <div class="col-xs 12 col-sm-6">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="sortBtn">Sort by: <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="sortUl">
+                                <li class="dropdown-item" onclick="handleSortingSelect(this);"><a href="#">Closing Date</a></li>
+                                <li class="dropdown-item" onclick="handleSortingSelect(this);"><a href="#">Originating Source</a></li>
+                            </ul>
+                            <button class="btn btn-primary" onclick="sortTenders();">Sort</button>
+                        </div>
+                        
+                        <label><input type="radio" name="sortOrder" id="ascRadio" value="asc" checked/>Ascending</label>
+                        <label><input type="radio" name="sortOrder" id="descRadio" value="desc"/>Descending</label>
+                        
+                        <!-- Hidden form to send sorting info -->
+                        <form style="display: hidden" method="POST" id="sortForm">
+                            <input type="hidden" name="sortField" id="sortFieldInput"/>
+                            <input type="hidden" name="sortOrder" id="sortOrder"/>
+                            <input type="hidden" name="filterJSON" id="currentFilter" value=""/>
+                        </form>
+                    </div>
+                </div>
+                
+                <?php
+                    if (isset($filterArr)){
+                        echo '<br/><p><strong>Showing tenders from:</strong> <span id="filterList">';
+                        for($i = 0; $i < count($filterArr); $i++) {
+                            if ($i == count($filterArr)-1) {
+                                echo $filterArr[$i];
+                            } else {
+                                echo $filterArr[$i] . ', ';
+                            }
+                        }
+                        echo '</span></p>';
+                    }
+                ?>
+                <br/>
+                
                 <!--onclick="window.location=\'tenderDetails.php?ref='. $tender["reference"].'\';" -->
                 <?php
                 if(count($results) > 0) {
@@ -255,6 +296,8 @@
     <!-- All Bootstrap plug-ins file -->
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/process_bookmark.js"></script>
+    <script src="../js/process_sortFilter.js"></script>
+    
     <!-- Passing data to Bootstrap modal -->
     <script type="text/javascript">
         //SEB modal

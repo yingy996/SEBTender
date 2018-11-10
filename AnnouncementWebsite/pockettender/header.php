@@ -30,6 +30,8 @@
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="logout.php">Logout</a></li>';
                     }else {
+                        echo '<li><a href="index.php">View Tenders</a></li>';
+                        echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="searchTenders.php">Search Tenders</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="login.php">Login</a></li>
