@@ -56,14 +56,10 @@ if($_GET['questionType'] == 'dropdown')
 // Get question response answer based on questionID (LONGSENTENCE)
 if($_GET['questionType'] == 'longsentence')
 {
-    $query = $db_handle->getConn()->prepare("SELECT survey_response_answer.text_answer as text_answer,survey_response.userID as userID ,survey_response.dateSubmitted as dateSubmitted FROM survey_response_answer JOIN survey_response ON survey_response_answer.responseID = survey_response.responseID WHERE survey_response_answer.questionID = :questionID");
+    $query = $db_handle->getConn()->prepare("SELECT survey_response_answer.text_answer as text_answer,survey_response.userID as userID ,survey_response.dateSubmitted as dateSubmitted FROM survey_response_answer JOIN survey_response ON survey_response_answer.responseID = survey_response.responseID WHERE survey_response_answer.questionID = :questionID ORDER BY dateSubmitted DESC");
     $query->bindParam(":questionID", $_GET['questionID']);
     $query->execute();
     $response_answers = $query->fetchAll(); 
 }
-
-
-// Get respondent userID based on surveyID
-
 
 ?>

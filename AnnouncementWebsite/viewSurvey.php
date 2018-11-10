@@ -59,7 +59,11 @@
                                         <td>
                                             <form action="viewSurveyQuestion.php" method="get">
                                                 <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
-                                                <button type="submit" class="btn btn-info">View</button>
+                                                <button type="submit" class="btn btn-info btn-block">View Questions</button>
+                                            </form>
+                                            <form action="viewResponseByUser.php" method="get" style="margin-top: 5px;">
+                                                <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
+                                                <button type="submit" class="btn btn-default btn-block">View by User</button>
                                             </form>
                                         </td>';
                                         
@@ -120,7 +124,11 @@
                                         <td>
                                             <form action="viewSurveyQuestion.php" method="get">
                                                 <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
-                                                <button type="submit" class="btn btn-info">View</button>
+                                                <button type="submit" class="btn btn-info btn-block">View Questions</button>
+                                            </form>
+                                            <form action="viewResponseByUser.php" method="get" style="margin-top: 5px;">
+                                                <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
+                                                <button type="submit" class="btn btn-default btn-block">View by User</button>
                                             </form>
                                         </td>';
 

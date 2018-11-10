@@ -12,7 +12,7 @@
     <body> <!--full page background img -->
         <?php 
         include("header.php");
-        include("process_viewSurveyQuestion.php");
+        include("process_viewResponseByUser.php");
 
         ?>
 
@@ -33,56 +33,61 @@
                                 foreach ($survey as $title)
                                     echo $title[0];
                             } else {
-                                echo 'Error retreive survey title';
+                                echo 'Error retreive question title';
                                 end;
                             }
                             ?>
                         </strong>
-                    </p> <br/>
-                    <p class="h4"><strong>Survey Question List</strong></p>
+                    </p> 
+                    <p class="h4"><strong>Respondents</strong></p>
 
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Title</th>
-                                <th>Type</th>
+                                <th>Respondent ID</th>
+                                <th>Date Submitted</th>
                                 <th></th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <?php 
-                            if (count($questions) > 0) {
+                            <?php
+                            // Display list of respondents' userID
+                            $userEmpty = true;
 
-                                foreach ($questions as $question) {
+                            if (count($users) > 0) {
+
+                                foreach ($users as $user) {
 
                                     echo '<tr>';
-                                    
-                                    $qNum = (int)$question["questionNumber"] + 1;
-                                    
-                                    echo 
-                                        '<td>'. $qNum .'</td>
-                                        <td>'. $question["questionTitle"].'</td>
-                                        <td>'. $question["questionType"].'</td>
-                                        <td>
-                                            <form action="viewQuestionResponse.php" method="get">
-                                                <input type="hidden" id="questionType" name="questionType" value="' . $question["questionType"] . '"/>
-                                                <input type="hidden" id="surveyID" name="surveyID" value="' . $_GET['surveyID'] . '"/>
-                                                <input type="hidden" id="questionID" name="questionID" value="' . $question["questionID"] . '"/>
-                                                <button type="submit" class="btn btn-info btn-block">View Response</button>
-                                            </form>
-                                        </td>';
 
+                                    echo '<td>'. $user["userID"] .'</td>
+                                            <td>'. $user["dateSubmitted"] .'</td>
+                                            <td>
+                                                <form action="viewUserResponse.php" method="get">
+                                                    <input type="hidden" id="surveyID" name="surveyID" value="' . $_GET['surveyID'] . '"/>
+                                                    <input type="hidden" id="userID" name="userID" value="' . $user["userID"] . '"/>
+                                                    <button type="submit" class="btn btn-info">View Response</button>
+                                                </form>
+                                            </td>';
+
+                                    $userEmpty = false;
 
                                     echo '</tr>';
                                 }
 
                             }
+
                             ?>
                         </tbody>
 
                     </table>
+
+                    <?php
+                    if ($userEmpty == true) 
+                        echo '<strong>No survey respondent available.</strong>';
+                    ?>
+
 
                 </div>
             </div>

@@ -41,7 +41,7 @@
             echo "Error: " . $e->getMessage();
         }
     } else {
-        $query = $db_handle->getConn()->prepare("SELECT * FROM survey ORDER BY startDate ASC");
+        $query = $db_handle->getConn()->prepare("SELECT * FROM survey ORDER BY startDate DESC");
         $query->execute();
         $results = $query->fetchAll();
     }    
