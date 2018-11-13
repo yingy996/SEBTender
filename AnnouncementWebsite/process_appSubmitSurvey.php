@@ -120,7 +120,7 @@ if (!$errorPresence && $errorMessage == "") {
         $randomID = rand(pow(10, $digits-1), pow(10, $digits)-1);
         $isIDUnique = false;
 
-        //Check for ID uniqueness  
+        //Check for survey_response ID uniqueness  
         do {
            $selectQuery = $db_handle->getConn()->prepare("SELECT responseID FROM survey_response WHERE responseID = :responseID");
            $selectQuery->bindParam(":responseID", $randomID);
@@ -135,7 +135,7 @@ if (!$errorPresence && $errorMessage == "") {
            }
         } while(!$isIDUnique);  
         $responseID = $randomID;
-        //Insert information into database
+        //Insert survey_response ID into database
         $insertResponseQuery = $db_handle->getConn()->prepare("INSERT INTO survey_response (responseID, userID, surveyID, dateSubmitted) VALUES
         (:responseID, :userID, :surveyID, NOW())");
 
@@ -155,7 +155,7 @@ if (!$errorPresence && $errorMessage == "") {
                 $randomID = rand(pow(10, $digits-1), pow(10, $digits)-1);
                 $isIDUnique = false;
 
-                //Check for ID uniqueness  
+                //Check for survey_response_answer ID uniqueness  
                 do {
                    $selectQuery = $db_handle->getConn()->prepare("SELECT resp_answerID FROM survey_response_answer WHERE resp_answerID = :resp_answerID");
                    $selectQuery->bindParam(":resp_answerID", $randomID);

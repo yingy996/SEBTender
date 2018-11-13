@@ -28,6 +28,8 @@
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="bookmark.php">Bookmark</a></li>';
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        echo '<li><a href="viewSurveyList.php">Survey</a></li>';
+                        echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="logout.php">Logout</a></li>';
                     }else {
                         echo '<li><a href="index.php">View Tenders</a></li>';
