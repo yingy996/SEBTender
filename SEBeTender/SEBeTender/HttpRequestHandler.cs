@@ -1220,7 +1220,7 @@ namespace SEBeTender
             {
                 HttpClient client = new HttpClient();
 
-                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+                var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_appGetSurvey.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
 
@@ -1248,7 +1248,7 @@ namespace SEBeTender
 
                 HttpClient client = new HttpClient();
 
-                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+                var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_appGetSurvey.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
 
@@ -1275,7 +1275,7 @@ namespace SEBeTender
 
                 HttpClient client = new HttpClient();
 
-                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
+                var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_appGetSurvey.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
 
@@ -1303,7 +1303,7 @@ namespace SEBeTender
 
                 HttpClient client = new HttpClient();
 
-                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appSubmitSurvey.php", parameters);
+                var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_appSubmitSurvey.php", parameters);
                 if (response.IsSuccessStatusCode)
                 {
                     result = response.Content.ReadAsStringAsync().Result;
@@ -1315,7 +1315,7 @@ namespace SEBeTender
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fetch surveys error: " + ex);
+                Console.WriteLine("Submit user survey response error: " + ex);
                 return null;
             }
 
@@ -1340,7 +1340,7 @@ namespace SEBeTender
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fetch surveys error: " + ex);
+                Console.WriteLine("Retrieve originating source error: " + ex);
                 return null;
             }
         }
