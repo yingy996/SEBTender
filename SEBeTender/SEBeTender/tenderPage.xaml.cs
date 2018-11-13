@@ -28,6 +28,9 @@ namespace SEBeTender
         //store the current tender page which will be inserted into the tender database column
         private int Page = 1;
 
+        private List<string> originatingSources = new List<string>();
+        private List<string> currentFilter = new List<string>();
+        private List<tenderItem> tenderListing = new List<tenderItem>();
 		public tenderPage ()
 		{
             BindingContext = this;
@@ -35,7 +38,7 @@ namespace SEBeTender
             InitializeComponent ();
             
             //Set "Previous" and "Next" hyperlink label. 
-            var previousLblTapRecognizer = new TapGestureRecognizer();
+            /*var previousLblTapRecognizer = new TapGestureRecognizer();
             previousLblTapRecognizer.Tapped += onPreviousPageTapped;
             previousPage.GestureRecognizers.Add(previousLblTapRecognizer);
             previousPage.IsVisible = false;  //"Previous" label is set to invisible for first page
@@ -43,7 +46,7 @@ namespace SEBeTender
             var nextLblTapRecognizer = new TapGestureRecognizer();
             nextLblTapRecognizer.Tapped += onNextPageTapped;
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);
-            nextPage.IsVisible = false;
+            nextPage.IsVisible = false;*/
 
             retrieveAndDisplayFirstPageTenders();
 
@@ -55,6 +58,24 @@ namespace SEBeTender
         {
             activityIndicator.IsRunning = true;
             activityIndicator.IsVisible = true;
+
+            //Retrieve originating sources from server
+            string origSourceHttpTask = await Task.Run<string>(() => HttpRequestHandler.PostRetrieveOrigSources());
+            while (origSourceHttpTask == null)
+            {
+                origSourceHttpTask = await Task.Run<string>(() => HttpRequestHandler.PostRetrieveOrigSources());
+            }
+
+            if (origSourceHttpTask != null)
+            {
+                if (origSourceHttpTask != "Originating sources not found")
+                {
+                    Console.WriteLine("HTTP TASK IS: " + origSourceHttpTask);
+                    originatingSources = JsonConvert.DeserializeObject<List<string>>(origSourceHttpTask);
+                    currentFilter = originatingSources; //Default filter contain all sources
+                }
+            }
+            
             //Show tenders from database first if exists, then clear database to make way for new tenders
             List<tenderItem> dbtenders1 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
             //List<tenderItem> dbtenders2 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(2));
@@ -90,7 +111,7 @@ namespace SEBeTender
 
                     }
                 }
-
+                tenderListing = dbtenders1;
                 listView.ItemsSource = dbtenders1;
                 /*if (dbtenders2.Count > 0)
                 {
@@ -252,6 +273,7 @@ namespace SEBeTender
                             }
                         }
                         Console.WriteLine("Num of tender items: " + tenderItems.Count);
+                        tenderListing = tenderItems;
                         listView.ItemsSource = tenderItems;
                     }
                 }
@@ -423,7 +445,7 @@ namespace SEBeTender
 
                         }
                     }
-
+                    tenderListing = tenderItems;
                     listView.ItemsSource = tenderItems;
                 }
             }
@@ -433,8 +455,8 @@ namespace SEBeTender
             activityIndicator.IsVisible = true;
 
             //Disable next page and previous page button to disallow user from navigating to other page while update is running
-            previousPage.IsEnabled = false;
-            nextPage.IsEnabled = false;
+            //previousPage.IsEnabled = false;
+            //nextPage.IsEnabled = false;
 
             //delete existing tenders from database
             deleteAllTenders();
@@ -482,12 +504,13 @@ namespace SEBeTender
             }
 
             //await DisplayAlert("Update Tenders", "Refresh Tenders", "Okay");
+            tenderListing = tenderItems;
             listView.ItemsSource = tenderItems;
 
             activityIndicator.IsRunning = false;
             activityIndicator.IsVisible = false;
-            previousPage.IsEnabled = true;
-            nextPage.IsEnabled = true;
+            //previousPage.IsEnabled = true;
+            //nextPage.IsEnabled = true;
 
             await WaitAndExecuteUpdateTenders(10800000);
         }
@@ -697,7 +720,7 @@ namespace SEBeTender
 
             if (dbtenders.Count > 0)
             {
-                nextPage.IsVisible = true;
+                //nextPage.IsVisible = true;
             }
             //await WaitAndExecuteUpdateTenders(10800000, storeAllTenders);
         }
@@ -707,7 +730,7 @@ namespace SEBeTender
             App.Database.deleteAllTenders();
         }
 
-        async void onNextPageTapped(object sender, EventArgs eventArgs)
+        /*async void onNextPageTapped(object sender, EventArgs eventArgs)
         {
             Page = Page + 1;
             nextPage.IsEnabled = false;
@@ -749,7 +772,7 @@ namespace SEBeTender
             }
 
             listView.ItemsSource = tenderItems;
-            listView.ItemTemplate = dataTemplate;
+            listView.ItemTemplate = dataTemplate;*/
             
             /*//Delete tenders of next page from the database
             deleteTenders(tenderItems);
@@ -775,7 +798,7 @@ namespace SEBeTender
             listView.ItemTemplate = dataTemplate;
             */
 
-            List<tenderItem> dbprevious = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page - 1));
+            /*List<tenderItem> dbprevious = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page - 1));
             List<tenderItem> dbnext = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page + 1));
             if (dbprevious.Count > 0)
             {
@@ -796,9 +819,9 @@ namespace SEBeTender
             nextPage.IsEnabled = true;
             activityIndicator.IsRunning = false;
             activityIndicator.IsVisible = false;
-        }
+        }*/
 
-        async void onPreviousPageTapped(object sender, EventArgs eventArgs)
+        /*async void onPreviousPageTapped(object sender, EventArgs eventArgs)
         {
             if (Page > 1)
             {
@@ -843,7 +866,7 @@ namespace SEBeTender
             }
 
             listView.ItemsSource = tenderItems;
-            listView.ItemTemplate = dataTemplate;
+            listView.ItemTemplate = dataTemplate;*/
 
             /*//Delete tenders of previous page from the database
             deleteTenders(tenderItems);
@@ -869,7 +892,7 @@ namespace SEBeTender
             listView.ItemTemplate = dataTemplate;
             */
 
-            List<tenderItem> dbprevious = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page - 1));
+            /*List<tenderItem> dbprevious = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page - 1));
             List<tenderItem> dbnext = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(Page + 1));
 
             if (dbprevious.Count > 0)
@@ -899,7 +922,7 @@ namespace SEBeTender
             previousPage.IsEnabled = true;
             activityIndicator.IsRunning = false;
             activityIndicator.IsVisible = false;
-        }
+        }*/
 
         async void OnBookmarkTapped(object sender, EventArgs eventArgs)
         {
@@ -966,6 +989,77 @@ namespace SEBeTender
                     }
                 }
             }
+        }
+
+        async void OnFilterTapped(object sender, EventArgs eventArgs)
+        {
+            //Navigate to filter page for user to select the filter options
+            var filterPage = new filterPage(originatingSources, this, currentFilter);
+            await Navigation.PushModalAsync(filterPage);
+        }
+
+        public void filterTenders(List<string> origSourcesToShow)
+        {
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
+
+            currentFilter = origSourcesToShow;
+
+            List<tenderItem> tempTenders = new List<tenderItem>();
+
+            foreach (tenderItem tender in tenderListing)
+            {
+                if (currentFilter.Contains(tender.OriginatingStation))
+                {
+                    tempTenders.Add(tender);
+                }
+            }
+
+            listView.ItemsSource = tempTenders;
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
+        }
+
+        async void OnSortButtonTapped(object sender, EventArgs eventArgs)
+        {
+            //Navigate to sort page for user to select the sorting options
+            var sortPage = new sortPage(this);
+            await Navigation.PushModalAsync(sortPage);
+        }
+
+        public void sortTenders(string fieldToSort, string sortOrder)
+        {
+            Console.WriteLine("Field sort: " + fieldToSort + " ==Order: " + sortOrder);
+            List<tenderItem> tempList = (List<tenderItem>) listView.ItemsSource;
+            List<tenderItem> sortedTenders = new List<tenderItem>();
+
+            if (fieldToSort == "Closing date")
+            {
+                if (sortOrder == "ascending")
+                {
+                    //Sort by closing date in ascending order
+                    sortedTenders = tempList.OrderBy(o => o.ClosingDate).ToList();
+                } else
+                {
+                    //Sort by closing date in descending order
+                    sortedTenders = tempList.OrderByDescending(o => o.ClosingDate).ToList();
+                }
+            } else if (fieldToSort == "Originating source")
+            {
+                if (sortOrder == "ascending")
+                {
+                    //Sort by originating source in ascending order
+                    sortedTenders = tempList.OrderBy(o => o.OriginatingStation).ToList();
+                }
+                else
+                {
+                    //Sort by originating source in descending order
+                    sortedTenders = tempList.OrderByDescending(o => o.OriginatingStation).ToList();
+                }
+            }
+            
+            listView.ItemsSource = sortedTenders;
+            
         }
     }
 }

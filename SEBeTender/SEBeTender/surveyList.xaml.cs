@@ -38,8 +38,6 @@ namespace SEBeTender
                 httpTask = await Task.Run<string>(() => HttpRequestHandler.PostGetSurveys());
             }
 
-
-
             if (httpTask != null)
             {
                 List<Survey> surveyList = JsonConvert.DeserializeObject<List<Survey>>(httpTask.ToString());
