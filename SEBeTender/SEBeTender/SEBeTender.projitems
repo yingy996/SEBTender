@@ -90,6 +90,10 @@
       <DependentUpon>editUserPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)filterPage.xaml.cs">
+      <DependentUpon>filterPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)HttpRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ILocalFileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INotificationSubscription.cs" />
@@ -145,6 +149,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sortPage.xaml.cs">
+      <DependentUpon>sortPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Survey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)surveyList.xaml.cs">
       <DependentUpon>surveyList.xaml</DependentUpon>
@@ -421,6 +429,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)surveyList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)filterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)sortPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

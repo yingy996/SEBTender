@@ -16,7 +16,7 @@ namespace SEBeTender
             menuPage = new menuPage();
             Master = menuPage;
             var displayPage = new tenderPage(); 
-            //var displayPage = new accountRegistrationPage(); 
+            //var displayPage = new sortPage(); 
 
             Detail = new NavigationPage(displayPage);   
             

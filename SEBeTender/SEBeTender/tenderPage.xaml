@@ -16,8 +16,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label x:Name="previousPage" Text="Previous" TextColor="DodgerBlue" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" Margin="5,0,0,5"/>
-                <Label x:Name="nextPage" Text="Next" TextColor="DodgerBlue" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" Margin="0,0,5,5"/>
+                <!--<Label x:Name="previousPage" Text="Previous" TextColor="DodgerBlue" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" Margin="5,0,0,5"/>
+                <Label x:Name="nextPage" Text="Next" TextColor="DodgerBlue" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" Margin="0,0,5,5"/>-->
+
+                <Button Text="Filter tenders" x:Name="filterButton" VerticalOptions="End" Grid.Row="0" Grid.Column="0" BackgroundColor="#0383c7" TextColor="White" Clicked="OnFilterTapped"/>
+                <Button Text="Sort tenders" x:Name="sortButton" VerticalOptions="End" Grid.Row="0" Grid.Column="1" BackgroundColor="#0383c7" TextColor="White" Clicked="OnSortButtonTapped"/>
             </Grid>
                 
             <Grid VerticalOptions="FillAndExpand">

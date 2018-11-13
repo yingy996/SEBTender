@@ -1218,7 +1218,6 @@ namespace SEBeTender
 
             try
             {
-
                 HttpClient client = new HttpClient();
 
                 var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetSurvey.php", parameters);
@@ -1320,6 +1319,30 @@ namespace SEBeTender
                 return null;
             }
 
+        }
+
+        public static async Task<string> PostRetrieveOrigSources()
+        {
+            var parameters = new FormUrlEncodedContent(new[] {
+                new KeyValuePair<string,string>("dataToRetrieve", "originating source")
+            });
+
+            try
+            {
+                HttpClient client = new HttpClient();
+
+                var response = await client.PostAsync("https://pockettender.000webhostapp.com/process_appRetrieveData.php", parameters);
+
+                string result = response.Content.ReadAsStringAsync().Result;
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fetch surveys error: " + ex);
+                return null;
+            }
         }
     }
 }

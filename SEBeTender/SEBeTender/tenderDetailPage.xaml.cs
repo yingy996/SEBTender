@@ -42,7 +42,13 @@ namespace SEBeTender
             feeGSTLbl.Text = aTenderItem.FeeGST;
             feeAfterGSTLbl.Text = aTenderItem.FeeAfterGST;
 
-            if (aTenderItem.Company == "Sarawak Energy")
+            string[] originatingSource = aTenderItem.OriginatingStation.Split();
+            string tempStr = "";
+            if (originatingSource.Count() > 2)
+            {
+                tempStr = originatingSource[0] + " " + originatingSource[1];
+            }
+            if (tempStr == "Sarawak Energy")
             {
                 nameLbl.Text = aTenderItem.Name;
                 officePhoneLbl.Text = aTenderItem.OffinePhone;

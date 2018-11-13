@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.filterPage"  Title="Pocket Tender">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
+            <Label Text="Show tenders from:" FontSize="20" FontAttributes="Bold"/>
+            <Grid VerticalOptions="Start" Padding="15,10,15,5" Margin="0,0,0,15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="All" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Grid.Row="0" Grid.Column="0"></Label>
+                <Switch StyleId="all" x:Name="allSwitch" IsToggled="True" VerticalOptions="Center" Grid.Row="0" Grid.Column="1" Toggled="allSwitchToggled"></Switch>
+
+                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+            </Grid>
+            
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListView x:Name="listView" HasUnevenRows="True" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:Name="dataTemplate">
+                            <ViewCell>
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="15,0,15,5" Margin="0,0,0,15" BackgroundColor="Transparent">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="{Binding Key}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Grid.Row="0" Grid.Column="0"></Label>
+                                    <Switch VerticalOptions="Center" Grid.Row="0" Grid.Column="1" Toggled="switcherToggled" IsToggled="{Binding Value}"></Switch>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Button Text="Filter" x:Name="filterButton" VerticalOptions="End" Grid.Row="1" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black" Clicked="OnFilterButtonClicked"/>
+                <Button Text="Cancel" x:Name="cancelButton" VerticalOptions="End" Grid.Row="1" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black" Clicked="OnCancelButtonClicked"/>
+            </Grid>
+  
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

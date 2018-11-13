@@ -39,10 +39,6 @@ namespace SEBeTender
 
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
-
-
-
-
         }
 
         public searchTenderPage(customSearchesItem aCustomSearchItem)
@@ -64,8 +60,6 @@ namespace SEBeTender
 
         async void displaySearchFields()
         {
-            await retrieveOriginatingSource();
-
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
             bookmarkImg.GestureRecognizers.Add(tapRecognizer);
@@ -89,12 +83,12 @@ namespace SEBeTender
 
             keywordSubmitButton.Clicked += OnKeywordSubmitButtonClicked;
             keywordClearButton.Clicked += OnClearButtonClicked;
+
+            await retrieveOriginatingSource();
         }
 
         async void displayBookmarkedSearchFields(customSearchesItem aCustomSearchItem)
         {
-            await retrieveOriginatingSource();
-
             var tapRecognizer = new TapGestureRecognizer();
             tapRecognizer.Tapped += OnSearchBookmarkTapped;
             bookmarkImg.GestureRecognizers.Add(tapRecognizer);
@@ -120,6 +114,8 @@ namespace SEBeTender
 
             searchButton.Clicked += OnSubmitButtonClicked;
             clearButton.Clicked += OnClearButtonClicked;
+
+            await retrieveOriginatingSource();
 
             if (!string.IsNullOrEmpty(aCustomSearchItem.searchID))
             {

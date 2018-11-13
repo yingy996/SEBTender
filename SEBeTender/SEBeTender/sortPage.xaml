@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SEBeTender.sortPage" Title="Pocket Tender">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" Padding="10,10,10,0">
+            <Label Text="Sort Tenders" FontSize="20" FontAttributes="Bold"/>
+            <Grid VerticalOptions="StartAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Text="Sort tenders by:" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
+                <Frame CornerRadius="5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#E5E7E8" Padding="2" HasShadow="False">
+                    <Picker x:Name="sortPicker" SelectedIndexChanged="OnPickerSelectedIndexChanged">
+                        <Picker.Items>
+                        </Picker.Items>
+                    </Picker>
+                </Frame>
+
+                <Label Text="Order by:" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
+                <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+                    <Switch x:Name="ascendingSwitch" StyleId="ascending" VerticalOptions="Center" Toggled="switcherToggled" IsToggled="True"></Switch>
+                    <Label Text="Ascending" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                    <Switch x:Name="descendingSwitch" StyleId="descending" VerticalOptions="Center" Toggled="switcherToggled" IsToggled="False"></Switch>
+                    <Label Text="Descending" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
+                
+                <Button Text="Sort" x:Name="filterButton" VerticalOptions="End" Grid.Row="4" Grid.Column="0" BackgroundColor="#c0d94e" TextColor="Black" Clicked="OnSortButtonClicked"/>
+                <Button Text="Cancel" x:Name="cancelButton" VerticalOptions="End" Grid.Row="4" Grid.Column="1" BackgroundColor="#c0d94e" TextColor="Black" Clicked="OnCancelButtonClicked"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
