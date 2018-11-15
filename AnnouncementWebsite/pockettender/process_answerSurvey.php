@@ -5,7 +5,7 @@ $db_handle = new DBController();
 $surveyID="";
 
 /* Retrieving Survey Questions' details */
-/*if(isset($_POST["surveyidinput"])) {
+if(isset($_POST["surveyidinput"])) {
     $surveyID = sanitizeInput($_POST["surveyidinput"]);
     //Obtain survey question details
     $query = $db_handle->getConn()->prepare("SELECT * FROM survey_question WHERE surveyID = :surveyID ORDER BY questionNumber ASC");
@@ -18,9 +18,9 @@ $surveyID="";
     
     header("refresh:0;url=viewSurveyList.php");
     
-}*/
+}
 
-$surveyID = 3332691;
+
 //Obtain survey question details
     $query = $db_handle->getConn()->prepare("SELECT * FROM survey_question WHERE surveyID = :surveyID ORDER BY questionNumber ASC");
     $query->bindParam(":surveyID", $surveyID);
@@ -209,7 +209,7 @@ if(!isset($_SESSION["normaluser_login"])) {
                 }
                 if (!$errorPresence) {
                     $resultMsg = "Successfully submitted survey. Thank you for participating!";
-                    header("refresh:20;url=index.php");
+                    header("refresh:2;url=index.php");
                 } else {
                     $resultMsg = "Error occured while submitting survey. Please try again!";
                 }

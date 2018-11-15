@@ -1,3 +1,8 @@
+<?php 
+include("header.php");
+include("process_answerSurvey.php");
+
+?>
 <!DOCTYPE html>
 <html data-ng-app="">
 <head>
@@ -10,11 +15,6 @@
     
 </head>
 <body background="../images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
-    <?php 
-    include("header.php");
-    include("process_answerSurvey.php");
-    
-    ?>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12" style="background-color:rgba(255, 255, 255, 0.7)">
@@ -37,7 +37,7 @@
                         
                         if($question["questionType"] == "longsentence"){
                             echo 
-                            '<div class="tab">
+                            '<div class="tab surveytab">
                                 <div class="row contentRow">
                                     <div class="col-xs-12">
                                         <div class="row">
@@ -51,7 +51,7 @@
                             </div>';
                         }else if($question["questionType"] == "shortsentence"){
                             echo 
-                            '<div class="tab">
+                            '<div class="tab surveytab">
                                 <div class="row contentRow">
                                     <div class="col-xs-12">
                                         <div class="row">
@@ -67,7 +67,7 @@
                             $answerresult = getAnswersList($currentquestionID);
                             $answercount = 0;
                             echo 
-                            '<div class="tab">
+                            '<div class="tab surveytab">
                                 <div class="row contentRow">
                                     <div class="col-xs-12">
                                         <div class="row">
@@ -89,22 +89,22 @@
                         }else if($question["questionType"] == "dropdown"){
                             $answerresult = getAnswersList($currentquestionID);
                             echo 
-                            '<div class="tab">
+                            '<div class="tab surveytab">
                                 <div class="row contentRow">
                                     <div class="col-xs-12">
                                         <div class="row">
                                             <p><strong>' . $question["questionTitle"] . '</strong></p>
                                         </div>
                                         <div class="row">
-                                            <select name="'.$currentquestionname.'" id="'.$currentquestionname.'" onchange="toggleDropdownNextPage(\'' . $currentquestionname . '\');">';
-                                            
+                                            <select name="'.$currentquestionname.'" id="'.$currentquestionname.'" onchange="toggleDropdownNextPage(\'' . $currentquestionname . '\', \''. $currentquestionnumber .'\');">';
+                                            echo '<option disabled selected value> -- select an option -- </option>';
                                             foreach($answerresult as $key => $answers){
                                                 echo '
                                                 <option value="'.$answers["answerID"].'">'.$answers["answerTitle"].'</option>
                                                 ';
                                             }
                                     echo'   </select>
-                                        <input type="hidden" name="dropdowninteract" id="dropdowninteract" oninput="this.className = \'\'">
+                                        <input type="hidden" name="dropdowninteract'. $currentquestionnumber .'" id="dropdowninteract'. $currentquestionnumber .'" oninput="this.className = \'\'">
                                         </div>
                                     </div>
                                 </div>
@@ -112,21 +112,22 @@
                         }else if($question["questionType"] == "radiobuttons"){
                             $answerresult = getAnswersList($currentquestionID);
                             echo 
-                            '<div class="tab">
+                            '<div class="tab surveytab">
                                 <div class="row contentRow">
                                     <div class="col-xs-12">
                                         <div class="row">
                                             <p><strong>' . $question["questionTitle"] . '</strong></p>
                                         </div>
                                         <div class="row">
-                                            <select name="'.$currentquestionname.'" id="'.$currentquestionname.'" onchange="toggleRadioNextPage(\'' . $currentquestionname . '\');">';
+                                            <select name="'.$currentquestionname.'" id="'.$currentquestionname.'" onchange="toggleRadioNextPage(\'' . $currentquestionname . '\', \''. $currentquestionnumber .'\');">';
+                                            echo '<option disabled selected value> -- select an option -- </option>';   
                                             foreach($answerresult as $key => $answers){
                                                 echo '
                                                 <option value="'.$answers["answerID"].'">'.$answers["answerTitle"].'</option>
                                                 ';
                                             }
                                     echo'   </select>
-                                        <input type="hidden" name="radiobuttoninteract" id="radiobuttoninteract" oninput="this.className = \'\'">
+                                        <input type="hidden" name="radiobuttoninteract'. $currentquestionnumber .'" id="radiobuttoninteract'. $currentquestionnumber .'" oninput="this.className = \'\'">
                                         </div>
                                     </div>
                                 </div>
@@ -146,6 +147,13 @@
                 
                 
                 ?>
+                <!-- Re-post survey id so that even if this "post" overrides the $_POST[surveyidinput] from the earlier page, i can still access it -->
+                <input type="hidden" name="surveyidinput" value="<?php echo $_POST["surveyidinput"];?>"/>
+                <!-- Re-post survey title so that even if this "post" override the earlier $_POST[surveytitleinput] from the earlier page, it can still be accessed -->
+                <input type="hidden" name="surveytitleinput" value="<?php echo $_POST["surveytitleinput"];?>"/>   
+                <!-- $_POST[] to determine whether the form is submitted -->
+                <input type="hidden" name="formsubmitted" value=""/>
+                    
                     
                 <div style="overflow:auto;">
                   <div style="float:right;">
@@ -163,8 +171,14 @@
                         }
                     ?>    
                 </div>
-                <input type="hidden" name="formsubmitted" value="";/>
+                
                 </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <hr/>
+                <p>&copy; Developed by Team <em>Dinosaur</em> | Swinburne University of Technology Sarawak</p>
             </div>
         </div>
     </div>
@@ -255,10 +269,11 @@
         }
         
         //On select dropdown, fill hidden input so that next page would be available
-        function toggleDropdownNextPage(dropdownid){
+        function toggleDropdownNextPage(dropdownid, questionnumber){
             var selectDropdown = document.getElementById(dropdownid);
             var selectDropdownValue = selectDropdown.options[selectDropdown.selectedIndex].value;
-            document.getElementById("dropdowninteract").value = selectDropdownValue;
+            var hiddeninputid = "dropdowninteract" + questionnumber;
+            document.getElementById(hiddeninputid).value = selectDropdownValue;
             
         }
         
@@ -281,10 +296,11 @@
         }
         
         //On select radiobutton, fill hidden input so that next page would be available
-        function toggleRadioNextPage(radiobuttonid){
+        function toggleRadioNextPage(radiobuttonid, questionnumber){
             var selectRadio = document.getElementById(radiobuttonid);
             var selectRadioValue = selectRadio.options[selectRadio.selectedIndex].value;
-            document.getElementById("radiobuttoninteract").value = selectRadioValue;
+            var hiddeninputid = "radiobuttoninteract" + questionnumber;
+            document.getElementById(hiddeninputid).value = selectRadioValue;
             
         }
     </script>
