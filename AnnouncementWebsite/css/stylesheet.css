@@ -79,7 +79,7 @@
     cursor: pointer;
 }
 
-/* answerSurvey.php form design */
+/* Form design for answerSurvey.php, code inspired from https://www.w3schools.com/howto/howto_js_form_steps.asp */
  /* Style the form */
 #regForm {
   background-color: #ffffff;
@@ -90,7 +90,7 @@
 }
 
 /* Style the input fields */
-input {
+.surveytab input {
   padding: 10px;
   width: 100%;
   font-size: 17px;
@@ -99,12 +99,12 @@ input {
 }
 
 /* Mark input boxes that gets an error on validation: */
-input.invalid {
+.surveytab input.invalid {
   background-color: #ffdddd;
 }
 
 /* Hide all steps by default: */
-.tab {
+.surveytab {
   display: none;
 }
 

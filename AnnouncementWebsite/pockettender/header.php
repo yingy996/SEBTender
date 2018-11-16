@@ -19,10 +19,12 @@
             
             <div class="collapse navbar-collapse" id="navbar-to-collapse">
                     <ul class="nav navbar-nav navbar-right">';
-                    if(isset($login_user)){
+                    if(isset($_SESSION["normaluser_login"])){
                         echo '<li><a href="#">Welcome, <em>'. $login_user .'</em></a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="index.php">View Tenders</a></li>';
+                        echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        echo '<li><a href="announcement.php">Announcements</a></li>';
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="searchTenders.php">Search Tenders</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
@@ -31,14 +33,49 @@
                         echo '<li><a href="viewSurvey.php">Survey</a></li>';
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="logout.php">Logout</a></li>';
-                    }else {
+                    }else if(isset($_SESSION["user_login"])){
+                        //if logged in as admin
+                        echo '<li><a href="#">Welcome, <em>'. $login_user .'</em></a></li>
+                        <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        echo '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="announcement.php">Announcement <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="announcement.php">View Announcements</a></li>
+                                <li><a href="postAnnouncement.php">Post Announcement</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        echo '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Poll <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="poll.php">View Polls</a></li>
+                                <li><a href="createPoll.php">Create Poll</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        
+                        echo '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="viewSurvey.php">Survey <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="viewSurvey.php">View Surveys</a></li>
+                                <li><a href="postSurvey.php">Create Survey</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        echo '<li><a href="index.php">View Tenders</a></li>';
+                        echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
+                            echo '<li><a href="manage_users.php">Manage Users</a></li>
+                            <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        }
+                        echo '<li><a href="logout.php">Logout</a></li>';
+                    }else{
                         echo '<li><a href="index.php">View Tenders</a></li>';
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="searchTenders.php">Search Tenders</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="login.php">Login</a></li>
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
-                        echo '<li><a href="registration.php">Register</a></li>';
+                        echo '<li><a href="registration.php">Register</a></li>
+                        <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
+                        echo '<li><a href="adminLogin.php">Administrator Login</a></li>';
                     }            
         echo '      </ul>
                 </div>

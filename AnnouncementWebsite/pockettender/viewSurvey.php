@@ -43,12 +43,11 @@
                             <?php 
                             $openSurveyEmpty = true;
 
+
                             if (count($results) > 0) {
 
                                 foreach ($results as $survey) {
-
                                     echo '<tr>';
-
                                     if ($survey["isEnded"] == 0)
                                     {
                                         echo '<td>'. $survey["surveyTitle"] .'</td>
@@ -69,7 +68,6 @@
 
                                         $openSurveyEmpty = false;
                                     }
-
                                     echo '</tr>';
                                 }
 
