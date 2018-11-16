@@ -41,8 +41,40 @@
             echo "Error: " . $e->getMessage();
         }
     } else {
-        $query = $db_handle->getConn()->prepare("SELECT * FROM survey ORDER BY startDate DESC");
-        $query->execute();
-        $results = $query->fetchAll();
+        if(isset($_SESSION["user_login"])){
+            $query = $db_handle->getConn()->prepare("SELECT * FROM survey ORDER BY startDate DESC");
+            $query->execute();
+            $results = $query->fetchAll();
+            if (isset($_POST["deleteSurveyButton"])) {
+                    $deleteSurveyID = $_POST["surveyID"];
+
+                    $query = $db_handle->getConn()->prepare("SELECT * FROM survey WHERE surveyID = :deleteSurveyID AND isDeleted = 0");
+                    $query->bindParam(":deleteSurveyID", $deleteSurveyID);
+                    $query->execute();
+                    $selectResult = $query->fetchAll();
+
+                    //If survey exists
+                    if($selectResult[0][0] != "")
+                    {
+                        $query = $db_handle->getConn()->prepare("UPDATE survey SET isDeleted = 1, isEnded = 1 WHERE surveyID = :deleteSurveyID");
+                        $query->bindParam(":deleteSurveyID", $deleteSurveyID);
+                        $result = $query->execute();
+
+                        if($result == true) {
+                            echo "<script type='text/javascript'>alert('Survey has been successfully deleted.');</script>";
+                            header("refresh:0, viewSurvey.php");
+                        } else {
+                            echo "<script type='text/javascript'>alert('Error occured while trying to delete survey. Please try again.');</script>";
+                            header("refresh:0, viewSurvey.php");
+                        }
+
+                    } else {
+                        echo "CANNOT FIND ". $deleteSurveyID . "It might have already been deleted.";
+                        header("refresh:2;url=viewSurvey.php");
+                    }
+            }
+        }else{
+            header("Location: index.php");
+        }
     }    
 ?>

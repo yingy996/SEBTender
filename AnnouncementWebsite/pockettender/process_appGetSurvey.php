@@ -6,7 +6,7 @@ $db_handle = new DBController();
 if(isset($_POST["infoToObtain"])) {
     if($_POST["infoToObtain"] == "surveys"){
         //Obtain survey question details
-        $query = $db_handle->getConn()->prepare("SELECT * FROM survey WHERE isEnded = 0");
+        $query = $db_handle->getConn()->prepare("SELECT * FROM survey WHERE isEnded = 0 AND isDeleted = 0");
         $query->execute();
         $result = $query->fetchAll();
         
