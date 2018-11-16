@@ -105,7 +105,7 @@ if (isset($_SESSION["user_login"])) {
             }
             
             //Insert surveys into database
-            $surveyquery = $db_handle->getConn()->prepare("INSERT INTO survey (surveyID, surveyTitle, description, publishedBy, startDate, endDate, noOfResponse, isEnded) VALUES (:randomsurveyID, :survey_title, :survey_description, :login_user, NOW(), :end_date, :numberofresponse, :isended)");
+            $surveyquery = $db_handle->getConn()->prepare("INSERT INTO survey (surveyID, surveyTitle, description, publishedBy, startDate, endDate, noOfResponse, isEnded, isDeleted) VALUES (:randomsurveyID, :survey_title, :survey_description, :login_user, NOW(), :end_date, :numberofresponse, :isended, 0)");
                 
             $surveyquery->bindParam(":randomsurveyID", $randomsurveyID);
             $surveyquery->bindParam(":survey_title", $survey_title);

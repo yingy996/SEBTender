@@ -1,3 +1,7 @@
+<?php 
+    include("header.php");
+    include("process_viewSurvey.php");
+?>
 <!DOCTYPE html>
 <html data-ng-app="">
     <head>
@@ -10,12 +14,6 @@
 
     </head>
     <body> <!--full page background img -->
-        <?php 
-        include("header.php");
-        include("process_viewSurvey.php");
-
-        ?>
-
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -63,6 +61,10 @@
                                             <form action="viewResponseByUser.php" method="get" style="margin-top: 5px;">
                                                 <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
                                                 <button type="submit" class="btn btn-default btn-block">View by User</button>
+                                            </form>
+                                            <form action="" method="POST" style="margin-top: 5px;">
+                                                <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
+                                                <button type="submit" name="deleteSurveyButton" class="btn btn-default btn-block">Delete Survey</button>
                                             </form>
                                         </td>';
 
@@ -112,7 +114,7 @@
 
                                     echo '<tr>';
 
-                                    if ($survey["isEnded"] == 1)
+                                    if ($survey["isEnded"] == 1 && $survey["isDeleted"] == 0)
                                     {
                                         echo '<td>'. $survey["surveyTitle"] .'</td>
                                         <td>'. $survey["description"].'</td>
@@ -144,6 +146,71 @@
 
                     <?php
                     if ($closedSurveyEmpty == true) 
+                        echo '<strong>No survey found.</strong>';
+                    ?>
+
+                </div>
+            </div>
+            
+            <hr/><br/><br/>
+            
+            <div class="row">
+                <div class="col-xs-12">
+                    <p class="h4"><strong>Deleted Surveys</strong></p>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 150px;">Title</th>
+                                <th style="width: 600px;">Description</th>
+                                <th style="width: 120px;">Published By</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php 
+                            $deletedSurveyEmpty = true;
+
+                            if (count($results) > 0) {
+
+                                foreach ($results as $survey) {
+
+                                    echo '<tr>';
+
+                                    if ($survey["isDeleted"] == 1)
+                                    {
+                                        echo '<td>'. $survey["surveyTitle"] .'</td>
+                                        <td>'. $survey["description"].'</td>
+                                        <td>'. $survey["publishedBy"] .'</td>
+                                        <td>'. $survey["startDate"] .'</td>
+                                        <td>'. $survey["endDate"] .'</td>
+                                        <td>
+                                            <form action="viewSurveyQuestion.php" method="get">
+                                                <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
+                                                <button type="submit" class="btn btn-info btn-block">View Questions</button>
+                                            </form>
+                                            <form action="viewResponseByUser.php" method="get" style="margin-top: 5px;">
+                                                <input type="hidden" id="surveyID" name="surveyID" value="' . $survey["surveyID"] . '"/>
+                                                <button type="submit" class="btn btn-default btn-block">View by User</button>
+                                            </form>
+                                        </td>';
+
+                                        $deletedSurveyEmpty = false;
+                                    }
+
+                                    echo '</tr>';
+                                }
+
+                            }
+                            ?>
+                        </tbody>
+
+                    </table>
+
+                    <?php
+                    if ($deletedSurveyEmpty == true) 
                         echo '<strong>No survey found.</strong>';
                     ?>
 
