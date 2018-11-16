@@ -3,6 +3,9 @@
   Default color: #ecf0f1
   Active color: #2f8e86
 */
+#pocketTenderBody {
+    background-color:#bed8d4;
+}
 
 /*--- Custom Navigation bar ---*/
 .navbar-default {

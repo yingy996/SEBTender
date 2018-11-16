@@ -9,7 +9,7 @@
     <link href="../css/stylesheet.css" rel="stylesheet" />
     
 </head>
-<body background="../images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
+<body id="pocketTenderBody"> <!--Photo by rawpixel.com from Pexels -->
 
     <?php 
     include("header.php");
