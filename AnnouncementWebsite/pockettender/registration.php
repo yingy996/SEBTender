@@ -13,7 +13,7 @@
     <link href="../css/stylesheet.css" rel="stylesheet" />
     
 </head>
-<body background="../images/paintimg.png"> <!--full page background img -->
+<body id="pocketTenderBody"> <!--full page background img -->
     
     <div class="container-fluid" id="contentDiv">
         <div class="row">

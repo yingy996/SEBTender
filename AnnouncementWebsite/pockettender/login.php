@@ -13,7 +13,7 @@
     <link href="../css/stylesheet.css" rel="stylesheet" />
     
 </head>
-<body background="../images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
+<body id="pocketTenderBody"> <!--Photo by rawpixel.com from Pexels -->
     <div class="container-fluid" id="contentDiv">
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-sm-offset-4"  style="background-color:rgba(255, 255, 255, 0.8);border-radius:9px;">

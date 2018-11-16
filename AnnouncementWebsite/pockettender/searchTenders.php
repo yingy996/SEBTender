@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html data-ng-app="">
 <head>
-    <title>SESCo eTender Mobile Application Announcements</title>
+    <title>Pocket Tender</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initialscale=1.0"/>
     <!-- Bootstrap -->
@@ -14,7 +14,7 @@
     <link href="../css/stylesheet.css" rel="stylesheet" />
     
 </head>
-<body background="../images/paintimg.png"> <!--full page background img -->
+<body id="pocketTenderBody"> <!--full page background img -->
     <?php
         $keywordTabActive = "";
         //store the current tab so that the tab would be unchanged after search

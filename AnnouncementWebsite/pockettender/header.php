@@ -30,7 +30,7 @@
                         <li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="bookmark.php">Bookmark</a></li>';
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
-                        echo '<li><a href="viewSurvey.php">Survey</a></li>';
+                        echo '<li><a href="viewSurveyList.php">Survey</a></li>';
                         echo '<li><a href="#" class="btn disabled hidden-xs">|</a></li>';
                         echo '<li><a href="logout.php">Logout</a></li>';
                     }else if(isset($_SESSION["user_login"])){
