@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-ng-app="">
     <head>
-        <title>SESCO eTender Announcements</title>
+        <title>Pocket Tender</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initialscale=1.0"/>
         <!-- Bootstrap -->
@@ -77,14 +77,12 @@
             </div>
 
             <hr/>
-            <div class="row">
-                <div class="col-xs-12 text-center">
-                    <hr/>
-                    <p>&copy; Developed by Team <em>Dinosaur</em> | Swinburne University of Technology Sarawak</p>
-                </div>
-            </div>
         </div>   
 
+        <!-- Footer -->
+        <?php 
+        include("footer.php");
+        ?>
 
         <!-- jQuery – required for Bootstrap's JavaScript plugins) -->
         <script src="../js/jquery.min.js"></script>
