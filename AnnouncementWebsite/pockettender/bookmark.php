@@ -37,9 +37,17 @@
                         $bookmarkObj->closingDate = $tender["closingDate"];
                         $bookmarkJsonStr = json_encode($bookmarkObj);
                         
-                        echo 
-                        '<div id="'. $bookmarkObj->bookmarkId .'" class="row contentRow" data-toggle="modal" data-target="#detailsModal' . $tender["tenderSource"] . '" data-tender="'. $key .'">
-                            <div class="col-xs-12">
+                        if ($tender["isAvailable"]) {
+                            echo 
+                                '<div id="'. $bookmarkObj->bookmarkId .'" class="row contentRow" data-toggle="modal" data-target="#detailsModal' . $tender["tenderSource"] . '" data-tender="'. $key .'">';
+                        } else {
+                            echo
+                                '<div class="row contentRow" onclick="alert(\'This tender is not available anymore!\');">
+                                    <p class="text-warning"><span class="glyphicon glyphicon-alert"></span>  <em>This tender is not available anymore!</em></p>';
+                        }
+                        
+                        
+                        echo '<div class="col-xs-12">
                                 <p><strong>' . $tender["originatingSource"] . '</strong></p>
                                 <hr/>
                                 <p><strong>' . $tender["reference"] . '</strong></p>

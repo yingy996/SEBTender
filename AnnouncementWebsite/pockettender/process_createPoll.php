@@ -1,5 +1,18 @@
 <?php
+require_once("../dbcontroller.php");
+$db_handle = new DBController();
 if (isset($_SESSION["user_login"])) {
+    //Check if poll is already available
+    $query = $db_handle->getConn()->prepare("SELECT pollID FROM poll_question WHERE isEnded = 0");
+    $query->execute();
+    $result = $query->fetchAll();
+    $pollTotal = count($result);
+    if($pollTotal > 0) {
+        //Show error message if there is poll active currently
+        echo "<script type='text/javascript'>alert('Cannot create new poll because a poll is currently active! Close current poll to start a new poll.');</script>";
+        header("refresh:0; url=poll.php");
+    }
+    
     $pollQuestion = $pollOptionNumber = "";
     $pollQuestion_Error = $pollOptionNumber_Error = "";
     $questionType = $questionType_Error = "";
@@ -60,10 +73,7 @@ if (isset($_SESSION["user_login"])) {
         }
         
         if($error_message == "" && $errorpresence == false) {
-            //If inputs are valid, save the poll details into the database and publish the poll
-            require_once("../dbcontroller.php");
-            $db_handle = new DBController();
-            
+            //If inputs are valid, save the poll details into the database and publish the poll            
             //Generate Unique ID for poll question
             $digits = 7;
             $randomPollID = rand(pow(10, $digits-1), pow(10, $digits)-1);
@@ -135,7 +145,7 @@ if (isset($_SESSION["user_login"])) {
                 $error_message = "";
                 $success_message = "You have succesfully published a poll!";	
                 unset($_POST);
-                header("refresh:2; url=index.php");
+                header("refresh:2; url=poll.php");
             } else {
                 $error_message = "Problem in publishing poll. Please try again!";	
             }

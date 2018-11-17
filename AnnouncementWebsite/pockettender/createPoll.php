@@ -1,7 +1,11 @@
+<?php 
+include("header.php");
+include("process_createPoll.php");
+?>
 <!DOCTYPE html>
 <html data-ng-app="">
     <head>
-        <title>SESCO eTender Announcements</title>
+        <title>Pocket Tender</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initialscale=1.0"/>
         <!-- Bootstrap -->
@@ -10,12 +14,6 @@
 
     </head>
     <body id="loginpg"> <!--full page background img -->
-        <?php 
-        include("header.php");
-        //include("process_postAnnouncement.php");
-        include("process_createPoll.php");
-        ?>
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
