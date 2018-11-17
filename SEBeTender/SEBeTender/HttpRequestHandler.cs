@@ -47,41 +47,6 @@ namespace SEBeTender
             return result;
         }
 
-        /*public static async Task<string> SearchPostRequest(string url, string tenderReference, string tenderTitle, string originatingStation, string closingDateFrom, string closingDateTo, string biddingClosingDateFrom, string biddingClosingDateTo)
-        {
-            HttpClient client = new HttpClient();
-            string result = "";
-            var parameters = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string,string>("SchReferno", tenderReference),
-                new KeyValuePair<string,string>("SchTendertitle", tenderTitle),
-                new KeyValuePair<string,string>("SchStation", originatingStation),
-                new KeyValuePair<string,string>("SchFromClosedate", closingDateFrom),
-                new KeyValuePair<string,string>("SchToClosedate", closingDateTo),
-                new KeyValuePair<string,string>("SchFromEbidClosedate", biddingClosingDateFrom),
-                new KeyValuePair<string,string>("SchToEbidClosedate", biddingClosingDateTo)
-
-
-            });
-
-            var uri = new Uri(string.Format(url, string.Empty));
-            try
-            {                                                                                                                                                                                                                         
-                var response = await client.PostAsync(uri, parameters);
-                Console.WriteLine("Response code: " + response.StatusCode);
-                if(response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    result = await response.Content.ReadAsStringAsync();
-                    
-                }
-            }catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-
-            return result;
-         }*/
-
         //get originating source from web database
         public static async Task<string> searchGetOriginatingSource(string url)
         {
@@ -109,9 +74,7 @@ namespace SEBeTender
             }
             return result;
         }
-        
-
-        
+               
         //get tender search result from web database
         public static async Task<string> searchTendersFromDatabase(string url, string tenderReference, string tenderTitle, string originatingSource, string closingDateFrom, string  closingDateTo)
         {
@@ -159,8 +122,6 @@ namespace SEBeTender
             string responseStatus = "";
             string result = "";
             var parameters = new FormUrlEncodedContent(new[] {
-                //new KeyValuePair<string,string>("VenUserId", username),
-                //new KeyValuePair<string,string>("VenPassword", password)
                 new KeyValuePair<string,string>("username", username),
                 new KeyValuePair<string,string>("password", password)
             });
@@ -168,7 +129,6 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                //var response = await httpClient.PostAsync("http://www2.sesco.com.my/etender/notice/notice_login_set_session.jsp", parameters);
                 var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_appUserLogin.php", parameters);
                 
                 responseStatus = response.StatusCode.ToString();
@@ -205,7 +165,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appLogin.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/process_appAdminLogin.php", parameters);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -224,29 +184,6 @@ namespace SEBeTender
             catch (Exception ex)
             {
                 Console.WriteLine("Admin login error: " + ex);
-                //Try to send the HTTP request to log in again
-                /*try
-                {
-                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appLogin.php", parameters);
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        result = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine("Login success");
-                        //for future automated login (user just need to login for once and will be kept logged in afterward)
-                        Settings.Username = username;
-                        Settings.Password = password;
-                        Settings.Role = "admin";
-                    }
-                    else
-                    {
-                        Console.WriteLine("Status code: " + response.IsSuccessStatusCode.ToString());
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Admin login error: " + exception);
-                }*/
             }
             return result;
         }
@@ -258,7 +195,7 @@ namespace SEBeTender
 
             try
             {
-                var response = await httpClient.GetAsync("http://www2.sesco.com.my/etender/vendor/vendor_logout.jsp");
+                var response = await httpClient.GetAsync("https://pockettender.000webhostapp.com/web/logout.php");
                 Console.WriteLine("Response code: " + response.StatusCode);
                 responseStatus = response.StatusCode.ToString();
 
@@ -287,9 +224,7 @@ namespace SEBeTender
 
                 HttpClient client = new HttpClient();
 
-                //client.BaseAddress = new Uri("https://sebannouncement.000webhostapp.com/");
-
-                var response = await client.GetAsync("https://sebannouncement.000webhostapp.com/getAnnouncementMobile.php");
+                var response = await client.GetAsync("https://pockettender.000webhostapp.com/web/getAnnouncementMobile.php");
 
                 string result = response.Content.ReadAsStringAsync().Result;
 
@@ -314,7 +249,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/checkAccountExists.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/checkAccountExists.php", parameters);
                 result = response.Content.ReadAsStringAsync().Result;
 
                 return result;
@@ -339,7 +274,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appPostAnnouncement.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appPostAnnouncement.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -367,7 +302,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appEditAnnouncement.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appEditAnnouncement.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -391,7 +326,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/deleteAnnouncement.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/deleteAnnouncement.php", parameters);
 
 
                 result = await response.Content.ReadAsStringAsync();
@@ -717,7 +652,7 @@ namespace SEBeTender
                 HttpClient httpClient = new HttpClient();
                 try
                 {
-                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appAddAdmin.php", parameters);
+                    var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appAddAdmin.php", parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -749,7 +684,7 @@ namespace SEBeTender
                     });
                     HttpClient client = new HttpClient();
 
-                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_manageUsers.php", parameters);
+                    var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_manageUsers.php", parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -783,7 +718,7 @@ namespace SEBeTender
                     });
                     HttpClient client = new HttpClient();
 
-                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_deleteUser.php", parameters);
+                    var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_deleteUser.php", parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -820,7 +755,7 @@ namespace SEBeTender
                 HttpClient httpClient = new HttpClient();
                 try
                 {
-                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appEditUser.php", parameters);
+                    var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appEditUser.php", parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -855,7 +790,7 @@ namespace SEBeTender
                 HttpClient httpClient = new HttpClient();
                 try
                 {
-                    var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appChangePassword.php", parameters);
+                    var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appChangePassword.php", parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -888,7 +823,7 @@ namespace SEBeTender
                     });
                     HttpClient client = new HttpClient();
 
-                    var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetUser.php", parameters);
+                    var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_appGetUser.php", parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -989,7 +924,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appCreatePoll.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appCreatePoll.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -1014,7 +949,7 @@ namespace SEBeTender
 
                 HttpClient client = new HttpClient();
 
-                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetPoll.php", parameters);
+                var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_appGetPoll.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
                 Console.WriteLine("GET poll question: " + result);
@@ -1040,7 +975,7 @@ namespace SEBeTender
 
                 HttpClient client = new HttpClient();
 
-                var response = await client.PostAsync("https://sebannouncement.000webhostapp.com/process_appGetPoll.php", parameters);
+                var response = await client.PostAsync("https://pockettender.000webhostapp.com/web/process_appGetPoll.php", parameters);
 
                 string result = response.Content.ReadAsStringAsync().Result;
 
@@ -1085,7 +1020,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appEditPoll.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appEditPoll.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -1113,7 +1048,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appDeleteOption.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appDeleteOption.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -1139,7 +1074,7 @@ namespace SEBeTender
             try
             {
                 //Send HTTP request to close poll
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appClosePoll.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appClosePoll.php", parameters);
 
                 result = await response.Content.ReadAsStringAsync();
                 
@@ -1195,7 +1130,7 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.PostAsync("https://sebannouncement.000webhostapp.com/process_appInsertPollAnswer.php", parameters);
+                var response = await httpClient.PostAsync("https://pockettender.000webhostapp.com/web/process_appInsertPollAnswer.php", parameters);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -1233,7 +1168,6 @@ namespace SEBeTender
                 return null;
             }
         }
-
         
         //get list of survey questions
         public static async Task<string> PostGetSurveyQuestions(string surveyID)

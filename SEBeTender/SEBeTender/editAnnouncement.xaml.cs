@@ -25,8 +25,7 @@ namespace SEBeTender
             editID = announcementid;
             //Task<string> httpTask = Task.Run<string>(() => getEditPageResultAsync(editID).Result);
             //Console.WriteLine(httpTask.Result);
-            getEditPageResultAsync(editID);
-            
+            getEditPageResultAsync(editID);            
         }
 
         async Task getEditPageResultAsync(string announcementid)
@@ -38,10 +37,10 @@ namespace SEBeTender
             HttpClient httpClient = new HttpClient();
             try
             {
-                var response = await httpClient.GetAsync("http://sebannouncement.000webhostapp.com/getEditPageMobile.php?announcementid=" + announcementid);
+                var response = await httpClient.GetAsync("https://pockettender.000webhostapp.com/web/getEditPageMobile.php?announcementid=" + announcementid);
 
                 result = response.Content.ReadAsStringAsync().Result;
-
+                Console.WriteLine("Edit Page result: " + result);
                 List<RootObject> announcementItem = JsonConvert.DeserializeObject<List<RootObject>>(result);
                 
                 editID = announcementItem[0].announcementID;

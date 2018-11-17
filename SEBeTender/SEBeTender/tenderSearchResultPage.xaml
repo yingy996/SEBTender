@@ -8,18 +8,6 @@
             <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" Color="#2acc4a"/>
             <Label Text="Tender Search Results" x:Name="pageTitle" IsVisible="False" FontSize="20" FontAttributes="Bold"/>
             <Label Text="No result found." x:Name="errorMsg" FontAttributes="Italic" IsVisible="False"/>
-            <Grid VerticalOptions="FillAndExpand">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Label x:Name="previousPage" Text="Previous" TextColor="DodgerBlue" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" Margin="5,0,0,5"/>
-                <Label x:Name="nextPage" Text="Next" TextColor="DodgerBlue" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" Margin="0,0,5,5"/>
-            </Grid>
 
             <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
@@ -30,7 +18,6 @@
                     <ColumnDefinition Width="4*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
 
                 <ListView x:Name="listView" HasUnevenRows="true" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
                     <ListView.ItemTemplate>
@@ -46,30 +33,32 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Text="{Binding Reference}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                        <Label Text="{Binding ClosingDate}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding Company}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
 
-                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-                                        <Label Text="{Binding Title}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                        <Label Text="{Binding Reference}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding ClosingDate}" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                                        <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                        <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                        <Label Text="{Binding Title}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
 
-                                        <Label Text="{Binding OriginatingStation}" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                        <Label Text="{Binding FeeAfterGST}" Grid.Row="4" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DarkGray" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
 
-                                        <StackLayout Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
-                                            <Image Source="{Binding BookmarkImage}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0,20,10,0">
-                                                <Image.GestureRecognizers>
-                                                    <TapGestureRecognizer Tapped="OnBookmarkTapped" CommandParameter="{Binding .}" />
-                                                </Image.GestureRecognizers>
-                                            </Image>
-                                        </StackLayout>
+                                        <Label Text="{Binding OriginatingStation}" Grid.Row="5" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding FeeAfterGST}" Grid.Row="5" Grid.Column="1" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                        <Label Text="{Binding Category, StringFormat='Category: {0:N}'}" Grid.Row="6" Grid.Column="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Image Source="{Binding BookmarkImage}" x:Name="bookmarkImg" Grid.Row="6" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" Margin="0,20,10,0">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnBookmarkTapped" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
                                     </Grid>
                                 </Frame>
                             </ViewCell>
