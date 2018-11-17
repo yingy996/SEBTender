@@ -6,7 +6,7 @@ if (isset($_SESSION["normaluser_login"])) {
     $user = sanitizeInput($_SESSION["normaluser_login"]);
     
 	$db_handle = new DBController();
-    $query = $db_handle->getConn()->prepare("SELECT * FROM tender_bookmark WHERE username = :username");
+    $query = $db_handle->getConn()->prepare("SELECT * FROM tender_bookmark WHERE username = :username ORDER BY bookmarkDate DESC");
     $query->bindParam(":username", $user);
     $query->execute();
     $result = $query->fetchAll();
@@ -14,8 +14,8 @@ if (isset($_SESSION["normaluser_login"])) {
     if (count($result) > 0) {
         $tenderArr = array();
         //Retrieve tender details for each of the bookmarked tenders
-        foreach($result as $tenderBookmark) {
-            if(isset($tenderBookmark["tenderReferenceNumber"]) && $tenderBookmark["tenderReferenceNumber"] != "null") {
+        foreach($result as $key => $tenderBookmark) {
+            if($tenderBookmark["tenderReferenceNumber"] != "" && $tenderBookmark["tenderReferenceNumber"] != null) {
                 $tenderQuery = $db_handle->getConn()->prepare("SELECT * FROM scrapped_tender WHERE reference = :reference");
                 $tenderQuery->bindParam(":reference", $tenderBookmark["tenderReferenceNumber"]);
             } else {
@@ -27,6 +27,7 @@ if (isset($_SESSION["normaluser_login"])) {
             $tenderResult = $tenderQuery->fetchAll();
             
             if (count($tenderResult) > 0) {
+                $tenderResult[0]["isAvailable"] = true;
                 $tenderArr[] = $tenderResult[0];
             } else {
                 //Special Checking for &amp; & in tender reference
@@ -38,7 +39,18 @@ if (isset($_SESSION["normaluser_login"])) {
                 $tenderResult2 = $tenderQuery2->fetchAll();
                 
                 if (count($tenderResult2) > 0) {
+                    $tenderResult2[0]["isAvailable"] = true;
                     $tenderArr[] = $tenderResult2[0];
+                } else {
+                    $tempTender = array();
+                    $tempTender["reference"] = $tenderBookmark["tenderReferenceNumber"];
+                    $tempTender["title"] = $tenderBookmark["tenderTitle"];
+                    $tempTender["originatingSource"] = $tenderBookmark["originatingSource"];
+                    $tempTender["closingDate"] = $tenderBookmark["closingDate"];
+                    $tempTender["tenderSource"] = "";
+                    $tempTender["isAvailable"] = false;
+                    
+                    $tenderArr[] = $tempTender;
                 }
             }
         }

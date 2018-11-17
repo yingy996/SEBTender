@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>SESCo eTender Mobile Application Announcements</title>
+        <title>Pocket Tender</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initialscale=1.0"/>
         <!-- Bootstrap -->

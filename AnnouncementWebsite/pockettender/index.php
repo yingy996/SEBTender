@@ -17,6 +17,13 @@
     ?>
     
     <div class="container-fluid">
+        <hr/>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <img id="logo" src="../images/pockettenderLogo.png" alt="Pocket Tender Logo"/>
+            </div>
+        </div>
+        <hr/>
         <div class="row">
             <div class="col-xs-12" style="background-color:rgba(255, 255, 255, 0.7)">
                 <div class="page-header">

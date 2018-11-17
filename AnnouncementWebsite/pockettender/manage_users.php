@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-ng-app="">
     <head>
-        <title>SESCO eTender Announcements</title>
+        <title>Pocket Tender</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initialscale=1.0"/>
         <!-- Bootstrap -->

@@ -7,6 +7,10 @@
     background-color:#bed8d4;
 }
 
+#logo {
+    max-width:100%;
+    height:auto;
+}
 /*--- Custom Navigation bar ---*/
 .navbar-default {
     background-color: #a4b62c;

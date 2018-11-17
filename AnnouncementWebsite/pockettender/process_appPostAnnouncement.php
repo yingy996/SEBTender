@@ -62,12 +62,15 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
                     $randomID = rand(pow(10, $digits-1), pow(10, $digits)-1);
 
                     //insert announcement into database
+                    date_default_timezone_set("Asia/Kuching");
+                    $currentDate = date("Y-m-d G:i:s");
                     $query = $db_handle->getConn()->prepare("INSERT INTO announcement (announcementID, announcementTitle, announcementContent, publishedDate, editedDate, editedBy, postedBy) VALUES
-                    (:randomID, :announcement_title, :announcement_content, NOW(), NULL, NULL, :login_user)");
+                    (:randomID, :announcement_title, :announcement_content, :date, NULL, NULL, :login_user)");
                     $query->bindParam(":randomID", $randomID);
                     $query->bindParam(":announcement_title", $announcement_title);
                     $query->bindParam(":announcement_content", $announcement_content);
                     $query->bindParam(":login_user", $username);
+                    $query->bindParam(":date", $currentDate);
 
                     $result = $query->execute();
                     if($result == true) {

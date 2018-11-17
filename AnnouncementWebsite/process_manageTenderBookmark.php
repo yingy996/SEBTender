@@ -14,9 +14,17 @@ if(isset($_POST["username"]) && isset($_POST["tenderReferenceNumber"]) && isset(
         $query = $db_handle->getConn()->prepare("INSERT INTO tender_bookmark (bookmarkID, username, tenderReferenceNumber, tenderTitle, originatingSource, isAvailable, bookmarkDate, closingDate) VALUES (NULL, :username, :tendeRefNumber, :tenderTitle, :originatingSource, 1, NOW(), :closingDate)");
     
         $query->bindParam(":username", $username);
+        
+        if ($tenderRefNumber == "null") {
+            $tenderRefNumber = "";
+        }
         $query->bindParam(":tendeRefNumber", $tenderRefNumber);
         $query->bindParam(":tenderTitle", $tenderTitle);
         $query->bindParam(":originatingSource", $originatingSource);
+        
+        if ($closingDate == "null") {
+            $closingDate = "NULL";
+        }
         $query->bindParam(":closingDate", $closingDate);
         $result = $query->execute();
 

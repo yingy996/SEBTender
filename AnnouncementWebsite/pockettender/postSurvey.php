@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-ng-app="">
     <head>
-        <title>SESCo eTender Mobile Application Surveys</title>
+        <title>Pocket Tender</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initialscale=1.0"/>
         <!-- JQuery -->
