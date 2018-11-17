@@ -93,46 +93,51 @@ namespace SEBeTender
             adminUser user = (adminUser)userSelected;
 
             List<adminUser> tempAdminList = (List<adminUser>)listView.ItemsSource;
-
-            var answer = await DisplayAlert("Remove User", "Are you sure you want to remove user '" + user.Username + "'?", "YES", "NO");
-
-            if (answer)
+            if (user.Username != adminAuth.Username)
             {
-                //remove user from listview
-                foreach (var admin in tempAdminList.ToList())
+                var answer = await DisplayAlert("Remove User", "Are you sure you want to remove user '" + user.Username + "'?", "YES", "NO");
+
+                if (answer)
                 {
-                    if (admin == user)
+                    //remove user from listview
+                    foreach (var admin in tempAdminList.ToList())
                     {
-                        int index = tempAdminList.IndexOf(admin);
-                        tempAdminList.Remove(admin);
+                        if (admin == user)
+                        {
+                            int index = tempAdminList.IndexOf(admin);
+                            tempAdminList.Remove(admin);
+                        }
+                    }
+
+                    //Refresh listview
+                    listView.ItemsSource = tempAdminList.ToList();
+
+                    //Display error message when there are no user
+                    if (tempAdminList.Count <= 0)
+                    {
+                        errorMsg.Text = "No user found.";
+                        errorMsg.IsVisible = true;
+                        upBtn.IsVisible = false;
+                    }
+
+                    //Remove user from database
+                    string httpTask = await Task.Run<string>(() => HttpRequestHandler.deleteAdminUser(user));
+                    var httpResult = httpTask.ToString();
+                    Console.WriteLine(httpResult);
+                    int count = 0;
+
+                    while (count < 3 && httpResult != "Success")
+                    {
+                        Console.WriteLine("Looping for failure delete");
+                        httpTask = await Task.Run<string>(() => HttpRequestHandler.deleteAdminUser(user));
+                        httpResult = httpTask.ToString();
+                        count++;
                     }
                 }
-
-                //Refresh listview
-                listView.ItemsSource = tempAdminList.ToList();
-
-                //Display error message when there are no user
-                if (tempAdminList.Count <= 0)
-                {
-                    errorMsg.Text = "No user found.";
-                    errorMsg.IsVisible = true;
-                    upBtn.IsVisible = false;
-                }
-
-                //Remove user from database
-                string httpTask = await Task.Run<string>(() => HttpRequestHandler.deleteAdminUser(user));
-                var httpResult = httpTask.ToString();
-                Console.WriteLine(httpResult);
-                int count = 0;
-
-                while (count < 3 && httpResult != "Success")
-                {
-                    Console.WriteLine("Looping for failure delete");
-                    httpTask = await Task.Run<string>(() => HttpRequestHandler.deleteAdminUser(user));
-                    httpResult = httpTask.ToString();
-                    count++;
-                }
-            }
+            } else
+            {
+                DisplayAlert("Cannot delete user", "Cannot delete your own account!", "OK");
+            }   
         }
 	}
 }

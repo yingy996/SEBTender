@@ -24,7 +24,7 @@ namespace SEBeTender
             BindingContext = this;
             
             InitializeComponent();
-            int currentGridRow;     
+            int currentGridRow;
             /*string closingDate = "";
             if (aTenderItem.Company == "Sarawak Energy")
             {
@@ -32,7 +32,7 @@ namespace SEBeTender
                 string[] words = Regex.Split(aTenderItem.ClosingDate, ": ");
                 closingDate = words[1];
             }*/
-            
+            Console.WriteLine("Tender source is from: " + aTenderItem.TenderSource);
             tenderRefLbl.Text = aTenderItem.Reference;
             tenderTitleLbl.Text = aTenderItem.Title;
             oriStationLbl.Text = aTenderItem.OriginatingStation;

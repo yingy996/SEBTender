@@ -292,6 +292,9 @@ namespace SEBeTender
                 bidclosingdateto = "";
                 closingdateFrom.TextColor = Color.LightGray;
                 closingdateTo.TextColor = Color.LightGray;
+            } else
+            {
+                tenderKeywordInput.Text = "";
             }
         }
 

@@ -13,10 +13,7 @@ namespace SEBeTender
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class tenderSearchResultPage : ContentPage
 	{
-        private string nextUrl;
-        private string previousUrl;
-        private bool isPreviousAvailable = false;
-        private bool isNextAvailable = false;
+
 
         public tenderSearchResultPage ()
 		{
@@ -37,12 +34,12 @@ namespace SEBeTender
             /*var previousLblTapRecognizer = new TapGestureRecognizer();
             previousLblTapRecognizer.Tapped += onPreviousPageTapped;
             previousPage.GestureRecognizers.Add(previousLblTapRecognizer);*/
-            previousPage.IsVisible = false;  //"Previous" label is set to invisible for first page
+            //previousPage.IsVisible = false;  //"Previous" label is set to invisible for first page
 
             /*var nextLblTapRecognizer = new TapGestureRecognizer();
             nextLblTapRecognizer.Tapped += onNextPageTapped;
             nextPage.GestureRecognizers.Add(nextLblTapRecognizer);*/
-            nextPage.IsVisible = false;
+            //nextPage.IsVisible = false;
 
             if(searchTenderResult == "Search Local Database")
             {
@@ -102,35 +99,38 @@ namespace SEBeTender
                 if (scrappedTender.originatorJson != null)
                 {
                     dynamic originatorInfo = JsonConvert.DeserializeObject(scrappedTender.originatorJson);
-                    if (originatorInfo.name != null)
+                    if (originatorInfo != null)
                     {
-                        tender.Name = originatorInfo.name;
-                    }
+                        if (originatorInfo.name != null)
+                        {
+                            tender.Name = originatorInfo.name;
+                        }
 
-                    if (originatorInfo.officePhone != null)
-                    {
-                        tender.OffinePhone = originatorInfo.officePhone;
-                    }
+                        if (originatorInfo.officePhone != null)
+                        {
+                            tender.OffinePhone = originatorInfo.officePhone;
+                        }
 
-                    if (originatorInfo.extension != null)
-                    {
-                        tender.Extension = originatorInfo.extension;
-                    }
+                        if (originatorInfo.extension != null)
+                        {
+                            tender.Extension = originatorInfo.extension;
+                        }
 
-                    if (originatorInfo.mobilePhone != null)
-                    {
-                        tender.MobilePhone = originatorInfo.mobilePhone;
-                    }
+                        if (originatorInfo.mobilePhone != null)
+                        {
+                            tender.MobilePhone = originatorInfo.mobilePhone;
+                        }
 
-                    if (originatorInfo.email != null)
-                    {
-                        tender.Email = originatorInfo.email;
-                    }
+                        if (originatorInfo.email != null)
+                        {
+                            tender.Email = originatorInfo.email;
+                        }
 
-                    if (originatorInfo.fax != null)
-                    {
-                        tender.Fax = originatorInfo.fax;
-                    }
+                        if (originatorInfo.fax != null)
+                        {
+                            tender.Fax = originatorInfo.fax;
+                        }
+                    }                   
                 }
 
                 if (scrappedTender.fileLinks != null)
@@ -140,6 +140,38 @@ namespace SEBeTender
                     //{"Folder 1.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 1.zip","Folder 2.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 2.zip","Folder 3.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 3.zip","Folder 4.zip":"http:\/\/www2.sesco.com.my\/noticeDoc\/Folder 4.zip"}
                 }
                 tenderItems.Add(tender);
+            }
+
+            if (userSession.username != "")
+            {
+                List<tenderBookmark> bookmarkHttpTask = await Task.Run<List<tenderBookmark>>(() => retrieveBookmark());
+                List<tenderBookmark> tenderBookmarks = bookmarkHttpTask.ToList();
+                if (tenderBookmarks.Count > 0)
+                {
+                    foreach (var tenderItem in tenderItems)
+                    {
+                        foreach (var tenderBookmark in tenderBookmarks)
+                        {
+                            if (tenderItem.Reference != "" && tenderItem.Reference != null)
+                            {
+                                if (tenderItem.Reference == tenderBookmark.tenderReferenceNumber)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (tenderItem.Title == tenderBookmark.tenderTitle)
+                                {
+                                    tenderItem.BookmarkImage = "bookmarkfilled.png";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
 
             pageTitle.IsVisible = true;
@@ -163,14 +195,17 @@ namespace SEBeTender
         {
             activityIndicator.IsVisible = true;
             activityIndicator.IsRunning = true;
-
             
             List<tenderItem> tenderItems = new List<tenderItem>();
             foreach (var item in dbTenderItems)
             {
                 Dictionary<string, string> fileLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.FileLinks);
                 tenderItem tenderitem = new tenderItem();
+                tenderitem.Company = item.Company;
                 tenderitem.Reference = item.Reference;
+                tenderitem.TenderSource = item.TenderSource;
+                tenderitem.Category = item.Category;
+                tenderitem.Agency = item.Agency;
                 tenderitem.Title = item.Title;
                 tenderitem.OriginatingStation = item.OriginatingSource;
                 tenderitem.ClosingDate = item.ClosingDate;

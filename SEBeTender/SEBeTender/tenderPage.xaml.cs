@@ -49,7 +49,7 @@ namespace SEBeTender
             nextPage.IsVisible = false;*/
 
             retrieveAndDisplayFirstPageTenders();
-
+            
             listView.SeparatorVisibility = SeparatorVisibility.None;
             listView.ItemSelected += onItemSelected;
         }
@@ -117,6 +117,8 @@ namespace SEBeTender
                 {
                     nextPage.IsVisible = true;
                 }*/
+                filterButton.IsVisible = true;
+                sortButton.IsVisible = true;
                 activityIndicator.IsRunning = false;
                 activityIndicator.IsVisible = false;
                 await WaitAndExecuteUpdateTenders(10000);
@@ -278,13 +280,13 @@ namespace SEBeTender
                     }
                 }
 
-
                 //Save page 1 tenders to database
                 await saveToTenderDb(tenderItems, 1);
 
                 //save subsequent page tenders to database;
-                await storeAllTenders();
-
+                //await storeAllTenders();
+                filterButton.IsVisible = true;
+                sortButton.IsVisible = true;
                 activityIndicator.IsRunning = false;
                 activityIndicator.IsVisible = false;
 
@@ -326,7 +328,7 @@ namespace SEBeTender
                 if (httpTaskResult != "No tender found")
                 {
                     scrappedTenders = JsonConvert.DeserializeObject<List<scrapped_tender>>(httpTaskResult);
-                    
+                    Console.WriteLine("Number of scrapped tenders: " + scrappedTenders.Count + " yes");
                     //Convert scrapped tender item into tender item
                     if (scrappedTenders != null)
                     {
@@ -373,35 +375,38 @@ namespace SEBeTender
                             if (scrappedTender.originatorJson != null)
                             {
                                 dynamic originatorInfo = JsonConvert.DeserializeObject(scrappedTender.originatorJson);
-                                if (originatorInfo.name != null)
+                                if (originatorInfo != null)
                                 {
-                                    tender.Name = originatorInfo.name;
-                                }
+                                    if (originatorInfo.name != null)
+                                    {
+                                        tender.Name = originatorInfo.name;
+                                    }
 
-                                if (originatorInfo.officePhone != null)
-                                {
-                                    tender.OffinePhone = originatorInfo.officePhone;
-                                }
+                                    if (originatorInfo.officePhone != null)
+                                    {
+                                        tender.OffinePhone = originatorInfo.officePhone;
+                                    }
 
-                                if (originatorInfo.extension != null)
-                                {
-                                    tender.Extension = originatorInfo.extension;
-                                }
+                                    if (originatorInfo.extension != null)
+                                    {
+                                        tender.Extension = originatorInfo.extension;
+                                    }
 
-                                if (originatorInfo.mobilePhone != null)
-                                {
-                                    tender.MobilePhone = originatorInfo.mobilePhone;
-                                }
+                                    if (originatorInfo.mobilePhone != null)
+                                    {
+                                        tender.MobilePhone = originatorInfo.mobilePhone;
+                                    }
 
-                                if (originatorInfo.email != null)
-                                {
-                                    tender.Email = originatorInfo.email;
-                                }
+                                    if (originatorInfo.email != null)
+                                    {
+                                        tender.Email = originatorInfo.email;
+                                    }
 
-                                if (originatorInfo.fax != null)
-                                {
-                                    tender.Fax = originatorInfo.fax;
-                                }
+                                    if (originatorInfo.fax != null)
+                                    {
+                                        tender.Fax = originatorInfo.fax;
+                                    }
+                                }                              
                             }
 
                             if (scrappedTender.fileLinks != null)
@@ -465,7 +470,7 @@ namespace SEBeTender
             await saveToTenderDb(tenderItems, 1);
 
             //save subsequent page tenders to database;
-            await storeAllTenders();
+            //await storeAllTenders();
 
             List<tenderItem> dbtenders1 = await Task.Run<List<tenderItem>>(() => retrieveTenderFromDatabase(1));
             

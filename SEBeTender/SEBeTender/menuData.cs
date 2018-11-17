@@ -105,24 +105,6 @@ namespace SEBeTender
                     TargetType = typeof(purchasedTendersPage)
                 });
 
-                this.Add(new menuItem()
-                {
-                    Title = "Payment",
-                    TargetType = typeof(MainPage)
-                });
-
-                this.Add(new menuItem()
-                {
-                    Title = "Download list",
-                    TargetType = typeof(MainPage)
-                });
-
-                this.Add(new menuItem()
-                {
-                    Title = "View Cart",
-                    TargetType = typeof(MainPage)
-                });*/
-
                 /*this.Add(new menuItem()
                 {
                     Title = "User Info",
