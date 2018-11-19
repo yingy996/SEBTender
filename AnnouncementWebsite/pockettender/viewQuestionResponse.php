@@ -45,7 +45,7 @@
                         <thead>
                             <tr>
                                 <?php
-                                if($_GET['questionType'] == 'longsentence')
+                                if($_GET['questionType'] == 'longsentence' || $_GET['questionType'] == 'shortsentence')
                                 {
                                     echo '<th style="width: 300px;">Response Answer</th>
                                     <th style="width: 80px;">Respondent ID</th>
@@ -63,59 +63,91 @@
                         <tbody>
                             <?php
                             // Display response data if questionType is longsentence
-                            if($_GET['questionType'] == 'longsentence')
+                            if($_GET['questionType'] == 'longsentence' || $_GET['questionType'] == 'shortsentence')
                             {
                                 $responseEmpty = true;
 
-                                if (count($response_answers) > 0) {
+                                if (isset($response_answers))
+                                {
+                                    if (count($response_answers) > 0) {
 
-                                    foreach ($response_answers as $response) {
+                                        foreach ($response_answers as $response) {
 
-                                        echo '<tr>';
+                                            echo '<tr>';
 
-                                        echo '<td>'. $response["text_answer"] .'</td>
+                                            echo '<td>'. $response["text_answer"] .'</td>
                                             <td>'. $response["userID"] .'</td>
                                             <td>'. $response["dateSubmitted"] .'</td>';
 
-                                        $responseEmpty = false;
+                                            $responseEmpty = false;
 
-                                        echo '</tr>';
-                                    }
-
+                                            echo '</tr>';
+                                        }
+                                    } 
                                 }
+
                             }
 
                             // Display response data if questionType is dropdown
                             if($_GET['questionType'] == 'dropdown')
                             {
-                                echo '<td>'. 1 .'</td>
+                                $responseEmpty = true;
+
+                                if ($total_response > 0) {
+
+                                    $responseEmpty = false;
+
+                                    echo '<td>'. 1 .'</td>
                                         <td>'. $scale1/$total_response*100 . '%</td>';
-                                echo '</tr>';
-                                echo '<td>'. 2 .'</td>
+                                    echo '</tr>';
+                                    echo '<td>'. 2 .'</td>
                                         <td>'. $scale2/$total_response*100 . '%</td>';
-                                echo '</tr>';
-                                echo '<td>'. 3 .'</td>
+                                    echo '</tr>';
+                                    echo '<td>'. 3 .'</td>
                                         <td>'. $scale3/$total_response*100 . '%</td>';
-                                echo '</tr>';
-                                echo '<td>'. 4 .'</td>
+                                    echo '</tr>';
+                                    echo '<td>'. 4 .'</td>
                                         <td>'. $scale4/$total_response*100 . '%</td>';
-                                echo '</tr>';
-                                echo '<td>'. 5 .'</td>
+                                    echo '</tr>';
+                                    echo '<td>'. 5 .'</td>
                                         <td>'. $scale5/$total_response*100 . '%</td>';
-                                echo '</tr>';
+                                    echo '</tr>';
+
+                                } else {
+
+
+                                    echo '<td>'. 1 .'</td>
+                                        <td>'. 0 . '%</td>';
+                                    echo '</tr>';
+                                    echo '<td>'. 2 .'</td>
+                                        <td>'. 0 . '%</td>';
+                                    echo '</tr>';
+                                    echo '<td>'. 3 .'</td>
+                                        <td>'. 0 . '%</td>';
+                                    echo '</tr>';
+                                    echo '<td>'. 4 .'</td>
+                                        <td>'. 0 . '%</td>';
+                                    echo '</tr>';
+                                    echo '<td>'. 5 .'</td>
+                                        <td>'. 0 . '%</td>';
+                                    echo '</tr>';
+                                }
 
                             }
                             ?>
                         </tbody>
 
                     </table>
-
                     <?php
+                    
                     if($_GET['questionType'] == 'dropdown')
                     {
                         echo '<p><strong>
                         Number of respondents: ' . $total_response .
-                        '</strong></p>';
+                            '</strong></p>';
+                    } elseif ($responseEmpty == true) 
+                    {
+                        echo '<p><strong>No respondents available.</strong></p> <br/>';
                     }
 
                     ?>
