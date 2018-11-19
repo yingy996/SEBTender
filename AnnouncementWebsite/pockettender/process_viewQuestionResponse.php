@@ -56,12 +56,13 @@ if(isset($_SESSION["user_login"])){
 }
 
 // Get question response answer based on questionID (LONGSENTENCE)
-if($_GET['questionType'] == 'longsentence')
+if($_GET['questionType'] == 'longsentence' || $_GET['questionType'] == 'shortsentence')
 {
     $query = $db_handle->getConn()->prepare("SELECT survey_response_answer.text_answer as text_answer,survey_response.userID as userID ,survey_response.dateSubmitted as dateSubmitted FROM survey_response_answer JOIN survey_response ON survey_response_answer.responseID = survey_response.responseID WHERE survey_response_answer.questionID = :questionID ORDER BY dateSubmitted DESC");
     $query->bindParam(":questionID", $_GET['questionID']);
     $query->execute();
     $response_answers = $query->fetchAll(); 
 }
+
 
 ?>
