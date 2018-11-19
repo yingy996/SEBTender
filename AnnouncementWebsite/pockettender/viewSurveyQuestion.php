@@ -70,7 +70,7 @@
                                                 <input type="hidden" id="questionType" name="questionType" value="' . $question["questionType"] . '"/>
                                                 <input type="hidden" id="surveyID" name="surveyID" value="' . $_GET['surveyID'] . '"/>
                                                 <input type="hidden" id="questionID" name="questionID" value="' . $question["questionID"] . '"/>
-                                                <button type="submit" class="btn btn-info btn-block">View Response</button>
+                                                <button type="submit" class="btn btn-info">View Response</button>
                                             </form>
                                         </td>';
 

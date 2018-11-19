@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6 col-xs-offset-1 col-lg-3 col-lg-offset-4">
+                <div class="col-xs-5 col-xs-offset-1 col-lg-3 col-lg-offset-4">
                     <?php
                     //Display EDIT and DELETE button if admin is logged in and poll is present
                         if (isset($_SESSION["user_login"]) && $error_message == "") {
@@ -106,7 +106,22 @@
                     ?>
                 </div>
                 
-                <div class="col-xs-4 col-lg-1">
+                <div class="col-xs-3 col-lg-1">
+                <?php 
+                    if (isset($_SESSION["user_login"]) && $error_message == "") {
+                        // DIsplay 'View Result' button for logged in user
+                        echo 
+                        '<div class="text-right"><form action="viewPollResult.php" method="get">
+                            <input type="hidden" id="pollID" name="pollID" value="' . $pollID . '"/>
+                            <input type="hidden" name="login_user" value="' . $login_user . '"/>
+                            <input type="submit" id="viewResult" class="btn btn-info" value="View Result"/>           
+                        </form></div>';
+                    }
+                ?>
+                    
+                </div>
+                
+                <div class="col-xs-3 col-lg-1">
                 <?php 
                     if (isset($_SESSION["user_login"]) && $error_message == "") {
                         // Delete button for logged in user
