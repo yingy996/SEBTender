@@ -178,58 +178,64 @@ namespace SEBeTender
                                 if (scrappedTender.docInfoJson != null)
                                 {
                                     dynamic docInfo = JsonConvert.DeserializeObject(scrappedTender.docInfoJson);
-                                    if (docInfo.bidCloseDate != null)
+                                    if (docInfo != null)
                                     {
-                                        tender.BidClosingDate = docInfo.bidCloseDate;
-                                    }
+                                        if (docInfo.bidCloseDate != null)
+                                        {
+                                            tender.BidClosingDate = docInfo.bidCloseDate;
+                                        }
 
-                                    if (docInfo.feeBeforeGST != null)
-                                    {
-                                        tender.FeeBeforeGST = docInfo.feeBeforeGST;
-                                    }
+                                        if (docInfo.feeBeforeGST != null)
+                                        {
+                                            tender.FeeBeforeGST = docInfo.feeBeforeGST;
+                                        }
 
-                                    if (docInfo.feeGST != null)
-                                    {
-                                        tender.FeeGST = docInfo.feeGST;
-                                    }
+                                        if (docInfo.feeGST != null)
+                                        {
+                                            tender.FeeGST = docInfo.feeGST;
+                                        }
 
-                                    if (docInfo.feeAfterGST != null)
-                                    {
-                                        tender.FeeAfterGST = docInfo.feeAfterGST;
+                                        if (docInfo.feeAfterGST != null)
+                                        {
+                                            tender.FeeAfterGST = docInfo.feeAfterGST;
+                                        }
                                     }
                                 }
 
                                 if (scrappedTender.originatorJson != null)
                                 {
                                     dynamic originatorInfo = JsonConvert.DeserializeObject(scrappedTender.originatorJson);
-                                    if (originatorInfo.name != null)
+                                    if (originatorInfo != null)
                                     {
-                                        tender.Name = originatorInfo.name;
-                                    }
+                                        if (originatorInfo.name != null)
+                                        {
+                                            tender.Name = originatorInfo.name;
+                                        }
 
-                                    if (originatorInfo.officePhone != null)
-                                    {
-                                        tender.OffinePhone = originatorInfo.officePhone;
-                                    }
+                                        if (originatorInfo.officePhone != null)
+                                        {
+                                            tender.OffinePhone = originatorInfo.officePhone;
+                                        }
 
-                                    if (originatorInfo.extension != null)
-                                    {
-                                        tender.Extension = originatorInfo.extension;
-                                    }
+                                        if (originatorInfo.extension != null)
+                                        {
+                                            tender.Extension = originatorInfo.extension;
+                                        }
 
-                                    if (originatorInfo.mobilePhone != null)
-                                    {
-                                        tender.MobilePhone = originatorInfo.mobilePhone;
-                                    }
+                                        if (originatorInfo.mobilePhone != null)
+                                        {
+                                            tender.MobilePhone = originatorInfo.mobilePhone;
+                                        }
 
-                                    if (originatorInfo.email != null)
-                                    {
-                                        tender.Email = originatorInfo.email;
-                                    }
+                                        if (originatorInfo.email != null)
+                                        {
+                                            tender.Email = originatorInfo.email;
+                                        }
 
-                                    if (originatorInfo.fax != null)
-                                    {
-                                        tender.Fax = originatorInfo.fax;
+                                        if (originatorInfo.fax != null)
+                                        {
+                                            tender.Fax = originatorInfo.fax;
+                                        }
                                     }
                                 }
 
@@ -351,24 +357,27 @@ namespace SEBeTender
                             if (scrappedTender.docInfoJson != null)
                             {
                                 dynamic docInfo = JsonConvert.DeserializeObject(scrappedTender.docInfoJson);
-                                if (docInfo.bidCloseDate != null)
+                                if (docInfo != null)
                                 {
-                                    tender.BidClosingDate = docInfo.bidCloseDate;
-                                }
+                                    if (docInfo.bidCloseDate != null)
+                                    {
+                                        tender.BidClosingDate = docInfo.bidCloseDate;
+                                    }
 
-                                if (docInfo.feeBeforeGST != null)
-                                {
-                                    tender.FeeBeforeGST = docInfo.feeBeforeGST;
-                                }
+                                    if (docInfo.feeBeforeGST != null)
+                                    {
+                                        tender.FeeBeforeGST = docInfo.feeBeforeGST;
+                                    }
 
-                                if (docInfo.feeGST != null)
-                                {
-                                    tender.FeeGST = docInfo.feeGST;
-                                }
+                                    if (docInfo.feeGST != null)
+                                    {
+                                        tender.FeeGST = docInfo.feeGST;
+                                    }
 
-                                if (docInfo.feeAfterGST != null)
-                                {
-                                    tender.FeeAfterGST = docInfo.feeAfterGST;
+                                    if (docInfo.feeAfterGST != null)
+                                    {
+                                        tender.FeeAfterGST = docInfo.feeAfterGST;
+                                    }
                                 }
                             }
 
