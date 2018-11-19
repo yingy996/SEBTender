@@ -264,18 +264,28 @@ namespace SEBeTender
                 if (String.IsNullOrEmpty(tenderReferenceInput.Text) && String.IsNullOrEmpty(tenderTitleInput.Text) && selectedSource == "" && closingdatefrom == "" && closingdateto == ""/*&& bidclosingdatefrom == "" && bidclosingdateto == ""*/)
                 {
                     DisplayAlert("Error", "Please enter at least one search field", "Okay");
-
                 }
                 else
                 {
+                    activityIndicator.IsVisible = true;
+                    activityIndicator.IsRunning = true;
                     //Sending HTTP request to obtain the tender page search result data
-                    Task<string> httpSearchTask = Task.Run<string>(() => HttpRequestHandler.searchTendersFromDatabase("https://pockettender.000webhostapp.com/process_appSearchTenders.php", tenderReferenceInput.Text, tenderTitleInput.Text, selectedSource, closingdatefrom, closingdateto/*, bidclosingdatefrom, bidclosingdateto*/));
-                    var httpSearchResult = httpSearchTask.Result.ToString();
+                    string httpSearchTask = await Task.Run<string>(() => HttpRequestHandler.searchTendersFromDatabase("https://pockettender.000webhostapp.com/process_appSearchTenders.php", tenderReferenceInput.Text, tenderTitleInput.Text, selectedSource, closingdatefrom, closingdateto/*, bidclosingdatefrom, bidclosingdateto*/));
+                    var httpSearchResult = httpSearchTask.ToString();
+                    //Task<string> httpSearchTask = Task.Run<string>(() => HttpRequestHandler.searchTendersFromDatabase("https://pockettender.000webhostapp.com/process_appSearchTenders.php", tenderReferenceInput.Text, tenderTitleInput.Text, selectedSource, closingdatefrom, closingdateto/*, bidclosingdatefrom, bidclosingdateto*/));
+                    //var httpSearchResult = httpSearchTask.Result.ToString();
                     //Console.WriteLine(httpSearchResult);
-                    await Navigation.PushAsync(new tenderSearchResultPage(httpSearchResult, null));
+                    activityIndicator.IsVisible = false;
+                    activityIndicator.IsRunning = false;
+                    if (httpSearchResult == "No tenders available")
+                    {
+                        DisplayAlert("No tender found", "No tender is found!", "OK");
+                    } else
+                    {
+                        await Navigation.PushAsync(new tenderSearchResultPage(httpSearchResult, null));
+                    }
                 }
             }
-
         }
 
         void OnClearButtonClicked(object sender, EventArgs e)
@@ -358,11 +368,8 @@ namespace SEBeTender
                     string closingDateFrom = closingdatefrom;
                     string closingDateTo = closingdateto;
                     
-
                     DisplayAlert("Add bookmark", "Search preferences added and can be viewed at the Custom Searches page", "OK");
                     
-
-
                     string postbookmarkhttptask = await Task.Run<string>(() => HttpRequestHandler.PostManageSearchBookmark(randomnumber, tenderReference, tenderTitle, originatingSource, closingDateFrom, closingDateTo, userSession.username, identifier, "add"));
                     var postbookmarkhttpresult = postbookmarkhttptask.ToString();
                     Console.WriteLine(postbookmarkhttpresult);
