@@ -76,7 +76,7 @@
                                             }
                                             
                                         }
-                                        echo '<td>' . $i/$total_response . '%</td>';
+                                        echo '<td>' . $i/$total_response*100 . '%</td>';
                                         $responseEmpty = false;
 
                                         echo '</tr>';
