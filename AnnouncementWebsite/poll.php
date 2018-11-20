@@ -128,7 +128,7 @@
                     <hr/>
                     <?php 
                         if ($error_message == ""){
-                            echo '<p><em>*The poll is <strong>only available for view</strong> here. To vote, please login to Sarawak Energy e-Tender mobile application.</em></p>';
+                            echo '<p><em>*The poll is <strong>only available for view</strong> here. To vote, please login to Pocket Tender mobile application.</em></p>';
                         }
                     ?>
                     
