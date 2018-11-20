@@ -60,70 +60,73 @@
                                 <span class="error"><?php if($answer_titleerr != "") echo "<p class='alert alert-danger'>" . $answer_titleerr . "</p>";?></span>
                                 <span class="error"><?php if($end_date != "") echo "<p class='alert alert-danger'>" . $end_dateerr . "</p>";?></span>
                                 <p>
-                                    <input type="button" value="Add Question" OnClick="addRow('surveyInput','questionDIV','answerDIV')"/>
-                                    <input type="button" value="Add Answer" OnClick="addAnswerRow()"/>
-                                    <input type="button" value="Delete Question" OnClick="deletequestionRow('questionDIV')"/>
-                                    <input type="button" value="Delete Answer" OnClick="deleteanswerRows()"/>
+                                    <input type="button" class="btn btn-default" value="Add Question" OnClick="addRow('surveyInput','questionDIV','answerDIV')"/>
+                                    <input type="button" class="btn btn-default" value="Add Answer" OnClick="addAnswerRow()"/>
+                                    <input type="button" class="btn btn-default" value="Delete Question" OnClick="deletequestionRow('questionDIV')"/>
+                                    <input type="button" class="btn btn-default" value="Delete Answer" OnClick="deleteanswerRows()"/>
                                 </p>
                                 
-                                <div id="questionDIV" style="display: none;">
+                                <div id="questionDIV" style="display: none;" class="col-sm-12">
+                                    <hr/>
                                     <input type="checkbox" required="required" name="quescheckbox" name="quescheckbox" id="quescheckbox"/>
                                     
                                     <label for="question_title">Question title:</label>
                                     
-                                    <input type="text" id="question_title" name="question_title" required="required" placeholder="question title" size = "100"/>
+                                    <input type="text" id="question_title" class="form-control" name="question_title" required="required" placeholder="question title" size = "100"/>
                                     
-                                    <div class="dropdown col-xs-offset-1">
-                                    <select id="answertype" 
-									name="answertype" onchange="answertypechange(this)">
-                                      <option value="shortsentence">Short Sentence</option>
-                                      <option value="longsentence">Long Paragraph</option>
-                                      <option value="dropdown">Dropdown</option>
-                                      <option value="checkboxes">Checkboxes</option>
-                                      <option value="radiobuttons">Radio Button</option>
-                                    </select>
+                                    <div class="dropdown col-sm-6">
+                                        <select id="answertype" class="form-control" name="answertype" onchange="answertypechange(this)">
+                                          <option value="shortsentence">Short Sentence</option>
+                                          <option value="longsentence">Long Paragraph</option>
+                                          <option value="dropdown">Dropdown</option>
+                                          <option value="checkboxes">Checkboxes</option>
+                                          <option value="radiobuttons">Radio Button</option>
+                                        </select>
                                     </div>
                                     
-                                        <div id="answerDIV" class="col-xs-offset-1" >
-                                            
-                                            <input type="checkbox" required="required" name="anscheckbox" id="anscheckbox"/>
-                                            <input type="text" id="answer_title" name="answer_title" required="required" placeholder="answer" size="100"/>
+                                    <div id="answerDIV" class="col-sm-12" >
+                                        <div class="col-sm-10">
+                                            <div class="form-inline">
+                                                <input type="checkbox" required="required" name="anscheckbox" id="anscheckbox" style="display: inline;"/>
+                                                <input type="text" class="form-control" id="answer_title" name="answer_title" required="required" placeholder="answer" size="100"/>
+                                            </div>
                                         </div>
-                                    
-                                
-                                
+                                    </div>
                                 </div>
                                 
-                                <div id="questionDIV00">
+                                <div id="questionDIV00" class="col-sm-12">
                                     <input type="checkbox" required="required" name="quescheckbox00" id="quescheckbox00"/>
                                     
                                     <label for="question_title">Question title:</label>
                                     
-                                    <input type="text" name="question_title00" id="question_title00" required="required" placeholder="question title" size = "100"/>
+                                    <input type="text" class="form-control" name="question_title00" id="question_title00" required="required" placeholder="question title" size = "100"/>
                                     
                                     
-                                    <div class="dropdown col-xs-offset-1">
-                                    <select id="answertype00" name="answertype00" onchange="answertypechange(this)">
-                                      <option value="shortsentence">Short Sentence</option>
-                                      <option value="longsentence">Long Paragraph</option>
-                                      <option value="dropdown">Dropdown</option>
-                                      <option value="checkboxes">Checkboxes</option>
-                                      <option value="radiobuttons">Radio Button</option>
-                                    </select>
+                                    <div class="dropdown col-sm-6">
+                                        <select id="answertype00" class="form-control" name="answertype00" onchange="answertypechange(this)">
+                                          <option value="shortsentence">Short Sentence</option>
+                                          <option value="longsentence">Long Paragraph</option>
+                                          <option value="dropdown">Dropdown</option>
+                                          <option value="checkboxes">Checkboxes</option>
+                                          <option value="radiobuttons">Radio Button</option>
+                                        </select>
                                     </div>
-                                        <div id="answerDIV0000" class="col-xs-offset-1">
-                                            <input type="checkbox" required="required" name="chk2[]" id="anscheckbox0000"/>
-                                            <input type="text" name="answer_title0000" id="answer_title0000" required="required" placeholder="answer" size="100"/>
+                                    <div id="answerDIV0000" class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            <div class="form-inline">
+                                                <input type="checkbox" required="required" name="chk2[]" id="anscheckbox0000"/>
+                                                <input type="text" class="form-control" name="answer_title0000" id="answer_title0000" required="required" placeholder="answer" size="100"/>
+                                            </div>
                                         </div>
-                                    
+                                        
+                                    </div>
                                 </div>      
                             </div>
                 <div id="datefields" name="datefields" class="col-xs-12">
-
-								
+                    <br/>
                     <label for="enddate">End Date:</label>
-                    <input type="date" id="enddate" name="enddate"/>
-                        <br/>
+                    <input type="date" class="form-control" id="enddate" name="enddate"/>
+                    <br/>
                 </div>
                 <div class="col-xs-12">
                     <p><input type="submit" name="submitsurvey" class="btn btn-default" id="submitsurvey" value="Posts Survey"/></p>
