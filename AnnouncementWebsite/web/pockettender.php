@@ -1,12 +1,8 @@
-<?php
-ini_set('max_execution_time', 0);
-?>
 <!DOCTYPE html>
 <html data-ng-app="">
 <head>
     <title>Pocket Tender</title>
     <meta charset="utf-8"/>
-    <meta name="keywords" content="pockettender,tender,pocket,tender malaysia,app">
     <meta name="viewport" content="width=device-width, initialscale=1.0"/>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -14,7 +10,7 @@ ini_set('max_execution_time', 0);
     
 </head>
 <body background="images/paintimg.png"> <!--Photo by rawpixel.com from Pexels -->
-        
+
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
