@@ -93,8 +93,7 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
     
     //$query->bindParam(":closingDate", $pollID);
     
-    
-    
+       
     $query->execute();
     $result = $query->fetchAll();
         
@@ -137,7 +136,4 @@ if(isset($_POST["searchReference"]) || isset($_POST["searchTitle"]) || isset($_P
     $error_message = "Problems in post parameters";
     echo $error_message;
 }
-
-
-
 ?>

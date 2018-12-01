@@ -6,7 +6,7 @@ function filterTenders() {
     var allCheckbox = document.getElementById("allChkb");
     
     if (allCheckbox.checked) {
-        window.location.href = "tenders.php";
+        window.location.href = "index.php";
     } else {
         var isAllChecked = true;
         
@@ -30,7 +30,7 @@ function filterTenders() {
         
         
         if (isAllChecked) {
-            window.location.href = "tenders.php";
+            window.location.href = "index.php";
         } else {
             //Convert tender source array to JSON
             var filterInputJson = JSON.stringify(selectedSources);
